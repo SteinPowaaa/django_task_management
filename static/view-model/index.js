@@ -10,18 +10,18 @@ function Task({title, description, status,
 }
 
 function TaskViewModel() {
+  var url = 'http://127.0.0.1:8000/api/tasks/';
   this.tasks = ko.observableArray([]);
 
   this._populateTasks = function (data) {
+    data.forEach(function (json) {
+      this.tasks.push(new Task(json));
+    })
+  }.bind(this);
 
-  };
+  // $.postJSON()
 
-  $.ajax({
-    url: 'http://127.0.0.1:8000/api/tasks/',
-    type: 'GET',
-    cache: false,
-    success: function(data){
-      this._populateTasks(data);
-    }
-  });
+  $.getJSON(url, function (data) {
+    this._populateTasks(data)
+  }).bind(this);
 }
