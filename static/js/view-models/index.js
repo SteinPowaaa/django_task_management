@@ -1,27 +1,55 @@
-function Task({title, description, status,
-               priority, creator, assignees}={}) {
-  // this.title = ko.observable(data.title) => if param is data(json)
-  this.title = ko.observable(title);
-  this.description = ko.observable(description);
-  this.status = ko.observable(status);
-  this.priority = ko.observable(priority);
-  this.creator = creator;
-  this.assigness = ko.observable(assignees);
+function Task(data) {
+  this.id = data.id
+  this.title = ko.observable(data.title);
+  this.description = ko.observable(data.description);
+  this.status = ko.observable(data.status);
+  this.priority = ko.observable(data.priority);
+  this.creator = data.creator;
+  this.assigness = ko.observable(data.assignees);
 }
 
 function TaskViewModel() {
-  var url = 'http://127.0.0.1:8000/api/tasks/';
-  this.tasks = ko.observableArray([]);
+  var self = this
+  self.url = 'http://127.0.0.1:8000/api/tasks/';
+  self.tasks = ko.observableArray([]);
 
-  this._populateTasks = function (data) {
+  self._populateTasks = function (data) {
     data.forEach(function (json) {
-      this.tasks.push(new Task(json));
+      self.tasks.push(new Task(json));
     })
-  }.bind(this);
+  }
 
-  // $.postJSON()
+  // modify data do be in JSON
+  self.createTask = function (task) {
+    $postJSON(self.url, task).then(function (data) {
+      self.tasks.push(new Task(data))
+    })
+  }
 
-  $.getJSON(url, function (data) {
-    this._populateTasks(data)
-  }).bind(this);
+  self.deleteTaskDB = function (task) {
+    $.ajax({
+      url: self.url + task.id,
+      type: 'DELETE'
+    })
+  }
+
+  // modify data to be in JSON
+  self.removeTask = function (task) {
+    self.tasks.remove(task)
+    self.deleteTaskDB(task)
+  }
+
+  self.updateTaskDB = function (task) {
+    $.ajax({
+      url: self.url + task.id,
+      type: 'PUT',
+      data: task
+    })
+  }
+
+  self.init = (function () {
+    $.getJSON(self.url).then(function (data) {
+      self._populateTasks(data);
+    });
+  });
 }
