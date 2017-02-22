@@ -1,14 +1,13 @@
-import pdb
-
+from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.contrib.auth import login as django_login, \
     logout as django_logout, authenticate
 
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from accounts.api.serializers import LoginSerializer
+from accounts.api.serializers import LoginSerializer, UserSerializer
 
 
 @api_view(['POST'])
@@ -33,4 +32,7 @@ def logout(request):
     django_logout(request)
     return JsonResponse({'details': 'OK'}, status=status.HTTP_202_ACCEPTED)
 
-# return Response('', status=status.HTTP_202_ACCEPTED)
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

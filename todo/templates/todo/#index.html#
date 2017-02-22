@@ -49,6 +49,10 @@
         crossorigin="anonymous"></script>
     {% load static %}
     <script src="{% static 'js/view-models/index.js' %}"></script>
-
+    <script>
+     Urls = {
+         createTask: "{% url 'create-tasl' %}"
+     }
+    </script>
   </body>
 </html>
