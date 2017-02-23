@@ -10,36 +10,57 @@
   </head>
   <body>
 
-    <button type="button" data-bind="click: init">Init</button>
     <button type="button" data-bind="click: populateAssignees">Populate</button>
     <form data-bind="submit: createTask">
       Title:<br>
-      <input type="text">
+      <input type="text" data-bind="value: task_title">
       <br>
       Description:<br>
-      <input type="text">
+      <input type="text" data-bind="value: task_description">
       <br>
       Status:<br>
+      <select data-bind="options: statuses,
+                         optionsText: 'name',
+                         value: selected_status"></select>
+
+      <!--
       <select>
         <option value='todo'>Todo</option>
         <option value='in-progress'>In Progress</option>
         <option value='done'>Done</option>
       </select>
+         -->
+
       <br>
       Priority:<br>
+      <select data-bind="options: priorities,
+                         optionsText: 'name',
+                         value: selected_priority"></select>
+
+      <!--
       <select>
         <option value='low'>Low</option>
         <option value='medium'>Medium</option>
         <option value='high'>High</option>
       </select>
+         -->
+
       Assignees:<br>
-      <select class="assignees">
-      </select>
+      <ul data-bind="foreach: users">
+        <li>
+          <input type="checkbox" data-bind="checkedValue: id,
+                                            checked: $root.selected_users">
+          <span data-bind="text: name"></span>
+        </li>
+      </ul>
+
       <br><br>
       <input type="submit" value="Submit">
     </form>
 
-
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.min.js">
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js"></script>
@@ -47,8 +68,8 @@
         src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
         crossorigin="anonymous"></script>
+    {% csrf_token %}
     {% load static %}
     <script src="{% static 'js/view-models/index.js' %}"></script>
-
   </body>
 </html>
