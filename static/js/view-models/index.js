@@ -99,16 +99,9 @@ function TaskViewModel() {
 
   self.createTask = function () {
     var task = self._normalizeTask()
-    debugger
-    $.ajax({
-      url: self.tasks_url,
-      method: 'POST',
-      data: JSON.stringify(task),
-      contentType: 'application/json'
-    })
-    // $.post(self.tasks_url, task).then(function (data) {
-    //   self.tasks.push(new Task(data));
-    // });
+    $.post(self.tasks_url, task).then(function (data) {
+      self.tasks.push(new Task(data));
+    });
   }
 
   self.deleteTask = function (task) {

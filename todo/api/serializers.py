@@ -12,11 +12,4 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = '__all__'
 
-    assignees = UserSerializer(many=True)
-
-    def save(self, **kwargs):
-        # pdb.set_trace()
-        assignees_ids = self.validated_data.pop('assignees')
-        assignees = list(map(lambda user_id: User.objects.get(id=user_id), assignees_ids))
-        task = super(TaskSerializer, self).save(**kwargs)
-        task.assignees.add(assignees)
+    assignees = UserSerializer(many=True, read_only=True)
