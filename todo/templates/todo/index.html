@@ -10,7 +10,7 @@
   </head>
   <body>
 
-    <button type="button" data-bind="click: populateAssignees">Populate</button>
+    <button type="button" data-bind="click: populate">Populate</button>
     <form data-bind="submit: createTask">
       Title:<br>
       <input type="text" data-bind="value: task_title">
@@ -23,28 +23,13 @@
                          optionsText: 'name',
                          value: selected_status"></select>
 
-      <!--
-      <select>
-        <option value='todo'>Todo</option>
-        <option value='in-progress'>In Progress</option>
-        <option value='done'>Done</option>
-      </select>
-         -->
-
       <br>
       Priority:<br>
       <select data-bind="options: priorities,
                          optionsText: 'name',
                          value: selected_priority"></select>
 
-      <!--
-      <select>
-        <option value='low'>Low</option>
-        <option value='medium'>Medium</option>
-        <option value='high'>High</option>
-      </select>
-         -->
-
+      <br>
       Assignees:<br>
       <ul data-bind="foreach: users">
         <li>
@@ -53,6 +38,25 @@
           <span data-bind="text: name"></span>
         </li>
       </ul>
+
+      <br>
+      Task Type:<br>
+      <select data-bind="options: taskTypes,
+                         optionsText: 'name',
+                         value: selected_type"></select>
+
+      <div data-bind="visible: selected_type().value === 'sub-task'">
+        Reference Task:<br>
+        <select data-bind="options: storyTasks,
+                           optionsText: 'title',
+                           value: selected_story"></select>
+      </div>
+
+      <br>
+      Projects:<br>
+      <select data-bind="options: projects,
+                         optionsText: 'title',
+                         value: selected_project"></select>
 
       <br><br>
       <input type="submit" value="Submit">

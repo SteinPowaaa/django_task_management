@@ -1,14 +1,11 @@
-import pdb
-
 from django.contrib.auth import get_user_model
 
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 
-from todo.models import Task
-from todo.api.serializers import TaskSerializer
-
+from todo.models import Task, Project
+from todo.api.serializers import TaskSerializer, ProjectSerializer
 
 User = get_user_model()
 
@@ -27,10 +24,16 @@ class TaskViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
 
         assignees = list(map(lambda user_id: User.objects.get(id=user_id),
-                        assignee_ids))
+                             assignee_ids))
 
-        pdb.set_trace()
         serializer.instance.assignees = assignees
 
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(serializer.data,
+                        status=status.HTTP_201_CREATED,
+                        headers=headers)
+
+
+class ProjectViewSet(viewsets.ModelViewSet):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer

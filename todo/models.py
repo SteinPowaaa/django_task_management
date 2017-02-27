@@ -39,3 +39,29 @@ class Task(models.Model):
 
     creator = models.ForeignKey(User, related_name="task_creator")
     assignees = models.ManyToManyField(User, related_name="task_assignees")
+
+    TYPE_STORY = 'story'
+    TYPE_BUG = 'bug'
+    TYPE_IMPROVEMENT = 'improvement'
+    TYPE_SUB_TASK = 'sub-task'
+
+    TYPE_CHOICES = (
+        (TYPE_STORY, 'Story'),
+        (TYPE_BUG, 'Bug'),
+        (TYPE_IMPROVEMENT, 'Improvement'),
+        (TYPE_SUB_TASK, 'Sub Task')
+    )
+
+    task_type = models.CharField(
+        max_length=30,
+        choices=TYPE_CHOICES,
+        default=TYPE_IMPROVEMENT
+    )
+
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    ref_task = models.ForeignKey('self', null=True, blank=True)
+
+
+class Project(models.Model):
+    title = models.CharField(max_length=50)
+    description = models.CharField(max_length=1024, blank=True)

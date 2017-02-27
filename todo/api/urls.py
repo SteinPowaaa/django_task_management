@@ -6,6 +6,7 @@ from todo.api import views
 
 router = DefaultRouter()
 router.register(r'tasks', views.TaskViewSet)
+router.register(r'projects', views.ProjectViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls))
