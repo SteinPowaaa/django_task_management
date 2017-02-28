@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
   <head>
     <title>ToDo</title>
@@ -7,65 +8,118 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
           crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Latest compiled and minified CSS(bs-select) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+    <!-- Latest compiled and minified JavaScript(bs-select) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+    <!-- static css -->
+    <link type="text/css" href="{% static 'css/index.css' %}" rel="stylesheet">
   </head>
   <body>
 
-    <button type="button" data-bind="click: populate">Populate</button>
-    <form data-bind="submit: createTask">
-      Title:<br>
-      <input type="text" data-bind="value: task_title">
-      <br>
-      Description:<br>
-      <input type="text" data-bind="value: task_description">
-      <br>
-      Status:<br>
-      <select data-bind="options: statuses,
-                         optionsText: 'name',
-                         value: selected_status"></select>
+    <div class="container">
+      <!-- Trigger the modal with a button
+           Button position fixed
+         -->
+      <button type="button" class="btn btn-info btn-lg" data-toggle="modal"
+              data-target="#myModal" data-bind="click: populate">Create Task</button>
 
-      <br>
-      Priority:<br>
-      <select data-bind="options: priorities,
-                         optionsText: 'name',
-                         value: selected_priority"></select>
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
 
-      <br>
-      Assignees:<br>
-      <ul data-bind="foreach: users">
-        <li>
-          <input type="checkbox" data-bind="checkedValue: id,
-                                            checked: $root.selected_users">
-          <span data-bind="text: name"></span>
-        </li>
-      </ul>
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Create Task</h4>
+            </div>
+            <div class="modal-body">
+              Title:
+              <div class="input-group">
+                <input class="form-control" type="text" data-bind="value: task_title">
+              </div>
 
-      <br>
-      Task Type:<br>
-      <select data-bind="options: taskTypes,
-                         optionsText: 'name',
-                         value: selected_type"></select>
+              Description:
+              <div class="input-group">
+                <input class="form-control" type="text" data-bind="value: task_description">
+              </div>
 
-      <div data-bind="visible: selected_type().value === 'sub-task'">
-        Reference Task:<br>
-        <select data-bind="options: storyTasks,
-                           optionsText: 'title',
-                           value: selected_story"></select>
+              Status:<br>
+              <select class="selectpicker" data-bind="options: statuses,
+                                                      optionsText: 'name',
+                                                      value: selected_status"></select>
+
+              <br>
+              Priority:<br>
+              <select class="selectpicker" data-bind="options: priorities,
+                                                      optionsText: 'name',
+                                                      value: selected_priority"></select>
+              <br>
+              Assignees:<br>
+              <select multiple data-live-search="true"
+                      data-bind="selectPicker: selected_users,
+                                 optionsText: 'name',
+                                 optionsValue:'id',
+                                 selectPickerOptions: { optionsArray: users }">
+              </select>
+                <!-- <div class="checkbox" data-bind="foreach: users">
+                     <ul>
+                     <input type="checkbox" data-bind="checkedValue: id,
+                     checked: $root.selected_users">
+                     <li data-bind="text: name"></li>
+                     </ul>
+                     </div> -->
+
+              <br>
+              Task Type:<br>
+              <select class="selectpicker" data-bind="options: taskTypes,
+                                 optionsText: 'name',
+                                 value: selected_type"></select>
+
+              <div data-bind="visible: selected_type().value === 'sub-task'">
+                Reference Task:<br>
+                <select class="selectpicker" data-bind="options: storyTasks,
+                                                        optionsText: 'title',
+                                                        value: selected_story"></select>
+                <!-- <select data-bind="options: storyTasks,
+                     optionsText: 'title',
+                     value: selected_story"></select> -->
+              </div>
+
+              <br>
+              Projects:<br>
+              <select class="selectpicker" data-bind="selectPicker: selected_project,
+                                                      optionsText: 'title',
+                                                      selectPickerOptions: { optionsArray: projects } ">
+              </select>
+              <!--
+                   <select data-bind="options: projects,
+                   optionsText: 'title',
+                   value: selected_project"></select> -->
+
+              <br><br>
+
+            </div>
+            <div class="modal-footer">
+              <input type="submit" value="Submit" data-bind="click: createTask" data-dismiss="modal">
+            </div>
+          </div>
+
+        </div>
       </div>
 
-      <br>
-      Projects:<br>
-      <select data-bind="options: projects,
-                         optionsText: 'title',
-                         value: selected_project"></select>
-
-      <br><br>
-      <input type="submit" value="Submit">
-    </form>
+    </div>
 
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.min.js">
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js"></script>
     <script
@@ -73,7 +127,6 @@
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
         crossorigin="anonymous"></script>
     {% csrf_token %}
-    {% load static %}
     <script src="{% static 'js/view-models/index.js' %}"></script>
   </body>
 </html>
