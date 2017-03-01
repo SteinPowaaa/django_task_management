@@ -1,0 +1,11 @@
+.btn-crt-tsk {
+  position: absolute;
+  left: 5%;
+  bottom: 5%;
+}
+
+.btn-crt-prj {
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
+}

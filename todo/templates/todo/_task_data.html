@@ -1,0 +1,14 @@
+<div class="task-container" style="border-style: solid;border-width:
+                                   1px" data-bind="borderColorPicker: priority">
+  <div class="task-title" data-bind="text: title"></div>
+  <div class="task-description" data-bind="text: description"></div>
+  <div class="task-assignees" data-bind="foreach: assignees">
+    <div class="assignee" data-bind="text: username"></div>
+  </div>
+  <div class="task-ref" data-bind="visible: refTask, text: title"></div>
+  <div class="task-creator" data-bind="text: creator.username"</div>
+</div>
+
+<button class="btn btn-default task-delete" data-bind="click:
+                                                       $parent.removeTask">delete</button>
+<button class="btn btn-default status-change" data-bind="click: $parent.changeStatus">change</button>

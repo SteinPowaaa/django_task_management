@@ -1,59 +1,59 @@
 function Task(data) {
-  this.id = data.id
+  this.id = data.id;
   this.title = ko.observable(data.title);
   this.description = ko.observable(data.description);
   this.status = ko.observable(data.status);
   this.priority = ko.observable(data.priority);
   this.creator = data.creator;
-  this.assigness = ko.observable(data.assignees);
-  this.task_type = ko.observable(data.task_type);
+  this.assignees = ko.observable(data.assignees);
+  this.taskType = ko.observable(data.task_type);
   this.project = ko.observable(data.project);
-  this.ref_task = ko.observable(data.ref_task);
+  this.refTask = ko.observable(data.ref_task);
 }
 
 function Project(data) {
-  this.id = data.id
+  this.id = data.id;
   this.title = ko.observable(data.title);
   this.description = ko.observable(data.description);
 }
 
 function User(data) {
-  this.id = data.id
-  this.name = data.username
+  this.id = data.id;
+  this.name = data.username;
 }
 
 function Status(value, name) {
-  this.value = value
-  this.name = name
+  this.value = value;
+  this.name = name;
 }
 
 function Priority(value, name) {
-  this.value = value
-  this.name = name
+  this.value = value;
+  this.name = name;
 }
 
 function TaskType(value, name) {
-  this.value = value
-  this.name = name
+  this.value = value;
+  this.name = name;
 }
 
 function TaskViewModel() {
-  var csrftoken = Cookies.get('csrftoken')
-  var self = this
-  self.tasks_url = '/api/tasks/';
-  self.users_url = '/api/users/';
-  self.projects_url = 'api/projects/';
+  var csrftoken = Cookies.get('csrftoken');
+  var self = this;
+  self.tasksUrl = '/api/tasks/';
+  self.usersUrl = '/api/users/';
+  self.projectsUrl = 'api/projects/';
   self.tasks = ko.observableArray([]);
   self.users = ko.observableArray([]);
-  self.selected_users = ko.observableArray([]);
-  self.task_title = ko.observable();
-  self.task_description = ko.observable();
-  self.selected_status = ko.observable();
-  self.selected_priority = ko.observable();
-  self.selected_type = ko.observable();
-  self.selected_story = ko.observable(null);
+  self.selectedUsers = ko.observableArray([]);
+  self.taskTitle = ko.observable();
+  self.taskDescription = ko.observable();
+  self.selectedStatus = ko.observable();
+  self.selectedPriority = ko.observable();
+  self.selectedType = ko.observable();
+  self.selectedStory = ko.observable(null);
   self.projects = ko.observableArray();
-  self.selected_project = ko.observable();
+  self.selectedProject = ko.observable();
 
   function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
@@ -72,7 +72,7 @@ function TaskViewModel() {
     new TaskType('bug', 'Bug'),
     new TaskType('improvement', 'Improvement'),
     new TaskType('sub-task', 'Sub Task')
-  ])
+  ]);
 
   self.statuses = ko.observableArray([
     new Status('todo', 'Todo'),
@@ -87,102 +87,123 @@ function TaskViewModel() {
   ]);
 
   self.init = (function () {
-    $.getJSON(self.tasks_url).then(function (data) {
+    self.populate();
+  });
+
+  self.populateTasks = function () {
+    $.getJSON(self.tasksUrl).then(function (data) {
       self._populateTasks(data);
-    })
-  })
+    });
+  };
 
   self._populateTasks = function (data) {
     tasks = data.map(function (taskData) {
       return new Task(taskData);
     });
     self.tasks(tasks);
-  }
+  };
 
   self._populateUsers = function (data) {
     users = data.map(function (userData) {
       return new User(userData);
     });
     self.users(users);
-  }
+  };
 
   self.populateAssignees = function () {
-    $.getJSON(self.users_url).then(function (data) {
+    $.getJSON(self.usersUrl).then(function (data) {
       self._populateUsers(data);
-    })
-  }
+    });
+  };
 
   self._populateProjects = function (data) {
     projects = data.map(function (projectData) {
       return new Project(projectData);
-    })
-    self.projects(projects)
-  }
+    });
+    self.projects(projects);
+  };
 
   self.populateProjects = function () {
-    $.getJSON(self.projects_url).then(function (data) {
+    $.getJSON(self.projectsUrl).then(function (data) {
       self._populateProjects(data);
-    })
-  }
+    });
+  };
 
   self.populate = function () {
-    self.populateProjects()
-    self.populateAssignees()
-  }
+    self.populateProjects();
+    self.populateAssignees();
+    self.populateTasks();
+  };
 
   self._normalizeTask = function () {
     return {
-      "title": self.task_title(),
-      "description": self.task_description(),
-      "status": self.selected_status().value,
-      "priority": self.selected_priority().value,
-      "assignees": self.selected_users(),
-      "task_type": self.selected_type().value,
-      "project": self.selected_project().id,
-      "ref_task": self.selected_story()
-    }
-  }
+      "title": self.taskTitle(),
+      "description": self.taskDescription(),
+      "status": self.selectedStatus().value,
+      "priority": self.selectedPriority().value,
+      "assignees": self.selectedUsers(),
+      "task_type": self.selectedType().value,
+      "project": self.selectedProject().id,
+      "ref_task": self.selectedStory()
+    };
+  };
 
   self.createTask = function () {
-    var task = self._normalizeTask()
-    $.post(self.tasks_url, task).then(function (data) {
+    var task = self._normalizeTask();
+    $.post(self.tasksUrl, task).then(function (data) {
       self.tasks.push(new Task(data));
     });
-  }
+  };
 
   self.deleteTask = function (task) {
     return $.ajax({
-      url: self.tasks_url + task.id,
+      url: self.tasksUrl + task.id,
       type: 'DELETE'
-    })
-  }
+    });
+  };
 
   // modify data to be in JSON
   self.removeTask = function (task) {
     self.deleteTask(task).then(function () {
-      self.tasks.remove(task)
-    })
-  }
+        self.tasks.remove(task);
+    });
+  };
 
   self.updateTask = function (task) {
     $.ajax({
-      url: self.tasks_url + task.id,
+      url: self.tasksUrl + task.id,
       type: 'PUT',
       data: task
-    })
-  }
+    });
+  };
 
   self.todoArray = ko.computed(function () {
     return self.tasks().filter(function (task) {
-      return task.status() === 'todo'
-    })
-  })
+      return task.status() === 'todo';
+    });
+  });
+
+  self.inProgressArray = ko.computed(function () {
+    return self.tasks().filter(function (task) {
+      return task.status() === 'in-progress';
+    });
+  });
+
+  self.doneArray = ko.computed(function () {
+    return self.tasks().filter(function (task) {
+      return task.status() === 'done';
+    });
+  });
 
   self.storyTasks = ko.computed(function () {
     return self.tasks().filter(function (task) {
-      return task.task_type() === 'story'
-    })
-  })
+      return task.taskType() === 'story';
+    });
+  });
+
+  self.changeStatus = function (task) {
+    task.status() === 'todo' ? task.status('in-progress') : task.status('done');
+  };
 
   self.init();
 
@@ -243,6 +264,19 @@ ko.bindingHandlers.selectPicker = {
              $(element).selectpicker('refresh');
          }
      }
- };
+};
+
+ko.bindingHandlers.borderColorPicker = {
+  init: function(element, valueAccessor, allBindings, viewModel,
+                 bindingContext){
+    priority = valueAccessor()();
+    var color = {'low': 'green',
+                 'medium': 'yellow',
+                 'high': 'red'}[priority];
+
+    $(element).css('border-color', color);
+  }
+};
+
 
 ko.applyBindings(new TaskViewModel());
