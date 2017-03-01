@@ -22,15 +22,16 @@ def login(request):
     user = authenticate(username=username, password=password)
     if not user:
         return Response({'details': 'BAD CREDENTIALS'},
-                        status=status.HTTP_400_BAD_REQUEST)
+                        status=status.HTTP_401_UNAUTHORIZED)
 
     django_login(request, user)
     return Response({'details': 'OK'}, status=status.HTTP_202_ACCEPTED)
 
 
+@api_view(['POST'])
 def logout(request):
     django_logout(request)
-    return JsonResponse({'details': 'OK'}, status=status.HTTP_202_ACCEPTED)
+    return Response({'details': 'OK'}, status=status.HTTP_202_ACCEPTED)
 
 
 class UserViewSet(viewsets.ModelViewSet):
