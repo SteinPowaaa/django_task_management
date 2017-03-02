@@ -54,6 +54,8 @@ function TaskViewModel() {
   self.selectedStory = ko.observable(null);
   self.projects = ko.observableArray();
   self.selectedProject = ko.observable();
+  self.currentProject = ko.observable(1);
+  self.toggle = ko.observable(false);
 
   function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
@@ -177,32 +179,46 @@ function TaskViewModel() {
     });
   };
 
-  self.todoArray = ko.computed(function () {
+  self.filterProject = ko.computed(function () {
     return self.tasks().filter(function (task) {
+      return task.project() === self.currentProject();
+    });
+  });
+
+  self.filterTodo = ko.computed(function () {
+    return self.filterProject().filter(function (task) {
       return task.status() === 'todo';
     });
   });
 
-  self.inProgressArray = ko.computed(function () {
-    return self.tasks().filter(function (task) {
+  self.filterInProgress = ko.computed(function () {
+    return self.filterProject().filter(function (task) {
       return task.status() === 'in-progress';
     });
   });
 
-  self.doneArray = ko.computed(function () {
-    return self.tasks().filter(function (task) {
+  self.filterDone = ko.computed(function () {
+    return self.filterProject().filter(function (task) {
       return task.status() === 'done';
     });
   });
 
-  self.storyTasks = ko.computed(function () {
-    return self.tasks().filter(function (task) {
+  self.filterStory = ko.computed(function () {
+    return self.filterProject().filter(function (task) {
       return task.taskType() === 'story';
     });
   });
 
   self.changeStatus = function (task) {
     task.status() === 'todo' ? task.status('in-progress') : task.status('done');
+  };
+
+  self.toggleLayout = function () {
+    self.toggle(!self.toggle());
+  };
+
+  self.pickProject = function (project) {
+    self.currentProject(project.id);
   };
 
   self.init();
@@ -277,6 +293,5 @@ ko.bindingHandlers.borderColorPicker = {
     $(element).css('border-color', color);
   }
 };
-
 
 ko.applyBindings(new TaskViewModel());
