@@ -42,6 +42,7 @@ function TaskViewModel() {
   var self = this;
   self.tasksUrl = '/api/tasks/';
   self.usersUrl = '/api/users/';
+  self.loginUrl = '/api/login';
   self.projectsUrl = 'api/projects/';
   self.tasks = ko.observableArray([]);
   self.users = ko.observableArray([]);
@@ -56,6 +57,8 @@ function TaskViewModel() {
   self.selectedProject = ko.observable();
   self.currentProject = ko.observable(1);
   self.toggle = ko.observable(false);
+  self.username = ko.observable();
+  self.password = ko.observable();
 
   function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
@@ -221,15 +224,26 @@ function TaskViewModel() {
     self.currentProject(project.id);
   };
 
-  self.init();
+  self.login = function () {
+    var data = {
+      "username": self.username(),
+      "password": self.password()
+    };
 
-  // self.disableInputs = function () {
-  //   var inputs = $(':input') // object of inputs
-  //   inputs.prop('disabled', true) // disables all in in inputs
-  // svg filter(blur, grayscale)
-  // toggle class when button clicked for user select
-  // set prop for each browser(ex. -moz-user-select: none)
-  // }
+    $.post(self.loginUrl, data).then(function (data, status) {
+      if (status === 'success') {
+        $(".login-alert").html('<div class="alert alert-success">Successfully' +
+                               ' logged-in</div>');
+        setTimeout(function() {
+          $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove();
+          });
+        }, 1000);
+      }
+    });
+  };
+
+  self.init();
 }
 
 ko.bindingHandlers.selectPicker = {
@@ -286,12 +300,21 @@ ko.bindingHandlers.borderColorPicker = {
   init: function(element, valueAccessor, allBindings, viewModel,
                  bindingContext){
     priority = valueAccessor()();
-    var color = {'low': 'green',
-                 'medium': 'yellow',
-                 'high': 'red'}[priority];
+    var color = {'low': '#6fd5d8',
+                 'medium': '#faaa7a',
+                 'high': '#f76b6f'}[priority];
 
-    $(element).css('border-color', color);
+    $(element).css('background-color', color);
   }
 };
+
+// ko.bindingHandlers.fadeInput = {
+//   init: function(element) {
+//     $('.login-input').toggle(false);
+//     $(element).click(function() {
+//       $('.login-input').fadeToggle();
+//     });
+//   }
+// };
 
 ko.applyBindings(new TaskViewModel());

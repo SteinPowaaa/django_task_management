@@ -19,11 +19,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
     <!-- static css -->
-    <link type="text/css" href="{% static 'css/index.css' %}" rel="stylesheet">
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
   </head>
   <body>
 
-    <div class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-nav">
+          <button type="button" class="btn btn-default btn-nav" data-toggle="modal"
+             data-target="#taskModal">CreateTask</button>
+          <button type="button" class="btn btn-default btn-nav"
+                  data-bind="click: toggleLayout">Projects</button>
+      </div>
+      <form class="navbar-form navbar-right">
+        <input class="login-input input-group" type="text" placeholder="username"
+               data-bind="value: username"></input>
+        <input class="login-input input-group" type="password"
+               placeholder="password" data-bind="value: password"></input>
+        <input class="login-input btn btn-default" type="submit" value="Submit"
+               data-bind="click: login"></input>
+      </form>
+    </nav>
+    <div class="container main">
 
     <!-- Modal -->
       <div class="modal fade" id="taskModal" role="dialog">
@@ -37,56 +53,69 @@
             </div>
             <div class="modal-body">
               Title:
-              <div class="input-group">
+              <div>
                 <input class="form-control" type="text" data-bind="value: taskTitle">
               </div>
 
               Description:
-              <div class="input-group">
+              <div>
                 <input class="form-control" type="text" data-bind="value: taskDescription">
               </div>
 
-              Status:<br>
-              <select class="selectpicker" data-bind="options: statuses,
-                                                      optionsText: 'name',
-                                                      value: selectedStatus"></select>
+              Status:
 
-              <br>
-              Priority:<br>
-              <select class="selectpicker" data-bind="options: priorities,
-                                                      optionsText: 'name',
-                                                      value: selectedPriority"></select>
-              <br>
-              Assignees:<br>
-              <select multiple data-live-search="true"
-                      data-bind="selectPicker: selectedUsers,
-                                 optionsText: 'name',
-                                 optionsValue:'id',
-                                 selectPickerOptions: { optionsArray: users }">
-              </select>
-
-              <br>
-              Task Type:<br>
-              <select class="selectpicker" data-bind="options: taskTypes,
-                                                      optionsText: 'name',
-                                                      value: selectedType"></select>
-
-              <div data-bind="visible: selectedType().value === 'sub-task'">
-                Reference Task:<br>
-                <select class="selectpicker" data-bind="options: filterStory,
-                                                        optionsText: 'title',
-                                                        value: selectedStory"></select>
-
+              <div class="input-group">
+                <select class="selectpicker" data-bind="options: statuses,
+                                                        optionsText: 'name',
+                                                        value: selectedStatus"></select>
               </div>
 
-              <br>
-              Projects:<br>
-              <select class="selectpicker" data-bind="selectPicker: selectedProject,
-                                                      optionsText: 'title',
-                                                      selectPickerOptions: { optionsArray: projects } ">
-              </select>
+              Priority:
 
-              <br><br>
+              <div class="input-group">
+                <select class="selectpicker tsk-input" data-bind="options: priorities,
+                                                                  optionsText: 'name',
+                                                                  value:
+                                                                  selectedPriority"></select>
+              </div>
+
+              Assignees:
+
+              <div class="input-group">
+                <select class="tsk-input" multiple data-live-search="true"
+                        data-bind="selectPicker: selectedUsers,
+                                   optionsText: 'name',
+                                   optionsValue:'id',
+                                   selectPickerOptions: { optionsArray: users }">
+                </select>
+              </div>
+
+              Task Type:
+
+              <div class="input-group">
+                <select class="selectpicker tsk-input" data-bind="options: taskTypes,
+                                                                  optionsText: 'name',
+                                                                  value: selectedType"></select>
+              </div>
+              <div data-bind="visible: selectedType().value === 'sub-task'">
+                Reference Task:
+
+                <div class="input-group">
+                  <select class="selectpicker tsk-input" data-bind="options: filterStory,
+                                                                    optionsText: 'title',
+                                                                    value:
+                                                                    selectedStory"></select>
+                </div>
+              </div>
+
+              Projects:
+
+              <div class="input-group">
+                <select class="selectpicker tsk-input" data-bind="selectPicker: selectedProject,
+                                                                  optionsText: 'title',
+                                                                  selectPickerOptions: { optionsArray: projects } ">
+                </select>
+              </div>
 
             </div>
             <div class="modal-footer">
@@ -96,31 +125,24 @@
         </div>
       </div>
 
-      <button type="button" class="btn btn-info btn-lg btn-crt-tsk" data-toggle="modal"
-              data-target="#taskModal">CreateTask</button>
+      <div class="row">
 
-      <button type="button" class="btn btn-info btn-lg btn-crt-prj"
-      data-bind="click: toggleLayout">Projects</button>
-
-      <div class="row" style="border-style:solid">
-
-        <div style="border-style: solid;border-width: 1px" class="col-md-4 col-sm-6 todo">
-          <span class="tasks-header">To do</span>
+        <div class="col-md-4 col-sm-6 todo">
+          <p class="tasks-header">To Do</p>
           <div class="dropbox" data-bind="foreach: filterTodo">
             {% include '_task_data.html' %}
           </div>
         </div>
 
-
-        <div style="border-style: solid;border-width: 1px" class="col-md-4 col-sm-6 in-progress">
-          <span class="tasks-header">In Progress</span>
+        <div class="col-md-4 col-sm-6 in-progress">
+          <p class="tasks-header">In Progress</p>
           <div class="dropbox" data-bind="foreach: filterInProgress">
             {% include '_task_data.html' %}
           </div>
         </div>
 
-        <div style="border-style: solid;border-width: 1px" class="col-md-4 col-sm-6 done">
-          <span class="tasks-header">Done</span>
+        <div class="col-md-4 col-sm-6 done">
+          <p class="tasks-header">Done</p>
           <div class="dropbox" data-bind="foreach: filterDone">
             {% include '_task_data.html' %}
           </div>
@@ -132,12 +154,14 @@
 
     <div id="projectLayout" class="overlay"
          data-bind="style: { width: toggle() ? '100%' : '0%' }">
-      <a class="closebtn" data-bind="click: toggleLayout">&times;</a>
+      <a class="closebtn" data-bind="click: toggleLayout">×</a>
       <div class="overlay-content" data-bind="foreach: projects">
         <a data-bind="text: title, click: function(project) { $root.pickProject(project),
                       $root.toggleLayout() }"></a>
       </div>
     </div>
+
+    <center><div class="login-alert"></div></center>
 
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.min.js">

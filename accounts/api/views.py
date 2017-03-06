@@ -25,7 +25,7 @@ def login(request):
                         status=status.HTTP_401_UNAUTHORIZED)
 
     django_login(request, user)
-    return Response({'details': 'OK'}, status=status.HTTP_202_ACCEPTED)
+    return Response({'username': username}, status=status.HTTP_202_ACCEPTED)
 
 
 @api_view(['POST'])

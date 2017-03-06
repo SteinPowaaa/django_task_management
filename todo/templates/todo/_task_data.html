@@ -1,14 +1,18 @@
-<div class="task-container" style="border-style: solid;border-width:
-                                   1px" data-bind="borderColorPicker: priority">
-  <div class="task-title" data-bind="text: title"></div>
-  <div class="task-description" data-bind="text: description"></div>
-  <div class="task-assignees" data-bind="foreach: assignees">
-    <div class="assignee" data-bind="text: username"></div>
+<div class="task-container" data-bind="borderColorPicker: priority">
+  <div class="tsk-heading">Title:</div>
+  <div class="tsk-output" data-bind="text: title"></div>
+  <div class="tsk-heading">Description:</div>
+  <div class="tsk-output" data-bind="text: description"></div>
+  <div class="tsk-heading">Assignees:</div>
+  <div data-bind="foreach: assignees">
+    <div class="tsk-output" data-bind="text: username"></div>
   </div>
-  <div class="task-ref" data-bind="visible: refTask, text: title"></div>
-  <div class="task-creator" data-bind="text: creator.username"></div>
-</div>
+  <div class="tsk-heading" data-bind="visible: refTask">Reference Task:</div>
+  <div class="tsk-output" data-bind="visible: refTask, text: title"></div>
+  <div class="tsk-heading">Creator:</div>
+  <div class="tsk-output" data-bind="text: creator.username"></div>
 
-<button class="btn btn-default task-delete" data-bind="click:
-                                                       $parent.removeTask">delete</button>
-<button class="btn btn-default status-change" data-bind="click: $parent.changeStatus">change</button>
+  <button class="btn btn-default btn-delete" data-bind="click:
+                                                        $parent.removeTask">delete</button>
+  <button class="btn btn-default btn-change" data-bind="click: $parent.changeStatus">change</button>
+</div>
