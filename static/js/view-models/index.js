@@ -1,14 +1,14 @@
 function Task(data) {
-  this.id = data.id;
-  this.title = ko.observable(data.title);
-  this.description = ko.observable(data.description);
-  this.status = ko.observable(data.status);
-  this.priority = ko.observable(data.priority);
-  this.creator = data.creator;
-  this.assignees = ko.observable(data.assignees);
-  this.taskType = ko.observable(data.task_type);
-  this.project = ko.observable(data.project);
-  this.refTask = ko.observable(data.ref_task);
+  this.id = data.id || "";
+  this.title = ko.observable(data.title || "");
+  this.description = ko.observable(data.description || "");
+  this.status = ko.observable(data.status || "");
+  this.priority = ko.observable(data.priority || "");
+  this.creator = data.creator || "";
+  this.assignees = ko.observable(data.assignees || "");
+  this.taskType = ko.observable(data.task_type || "");
+  this.project = ko.observable(data.project || "");
+  this.refTask = ko.observable(data.ref_task || "");
 }
 
 function Project(data) {
@@ -38,11 +38,11 @@ function TaskType(value, name) {
 }
 
 function TaskViewModel() {
-  var csrftoken = Cookies.get('csrftoken');
   var self = this;
   self.tasksUrl = '/api/tasks/';
   self.usersUrl = '/api/users/';
   self.loginUrl = '/api/login';
+  self.logoutUrl = '/api/logout';
   self.projectsUrl = 'api/projects/';
   self.tasks = ko.observableArray([]);
   self.users = ko.observableArray([]);
@@ -66,6 +66,7 @@ function TaskViewModel() {
   }
   $.ajaxSetup({
     beforeSend: function(xhr, settings) {
+      var csrftoken = Cookies.get('csrftoken');
       if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
         xhr.setRequestHeader("X-CSRFToken", csrftoken);
       }
@@ -223,27 +224,6 @@ function TaskViewModel() {
   self.pickProject = function (project) {
     self.currentProject(project.id);
   };
-
-  self.login = function () {
-    var data = {
-      "username": self.username(),
-      "password": self.password()
-    };
-
-    $.post(self.loginUrl, data).then(function (data, status) {
-      if (status === 'success') {
-        $(".login-alert").html('<div class="alert alert-success">Successfully' +
-                               ' logged-in</div>');
-        setTimeout(function() {
-          $(".alert").fadeTo(500, 0).slideUp(500, function(){
-            $(this).remove();
-          });
-        }, 1000);
-      }
-    });
-  };
-
-  self.init();
 }
 
 ko.bindingHandlers.selectPicker = {
@@ -308,13 +288,44 @@ ko.bindingHandlers.borderColorPicker = {
   }
 };
 
-// ko.bindingHandlers.fadeInput = {
-//   init: function(element) {
-//     $('.login-input').toggle(false);
-//     $(element).click(function() {
-//       $('.login-input').fadeToggle();
-//     });
-//   }
-// };
+ko.bindingHandlers.foo = {
+  init: function(element, valueAccessor, allBindings, viewModel,
+                 bindingContext){
+    $(element).click(function(e) {
+      e.preventDefault();
+      var data = {
+        "username": viewModel.username(),
+        "password": viewModel.password()
+      };
+      $.post(viewModel.loginUrl, data).then(function (data) {
+        $(".login-alert").html('<div class="alert alert-success">Successfully' +
+                               ' logged-in</div>');
+        setTimeout(function() {
+          $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove();
+          });
+        }, 1000);
+
+        viewModel.username(data.username);
+
+        $('.nav-form').hide();
+        $('.logged-in').show();
+        viewModel.init();
+      });
+    });
+  }
+};
+
+ko.bindingHandlers.logout = {
+  init: function(element, valueAccessor, allBindings, viewModel,
+                 bindingContext){
+    $(element).click(function () {
+      $.post(viewModel.logoutUrl).then(function (data, status) {
+        $('.logged-in').hide();
+        $('.nav-form').show();
+      });
+    });
+  }
+};
 
 ko.applyBindings(new TaskViewModel());

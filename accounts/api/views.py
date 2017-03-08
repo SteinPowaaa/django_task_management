@@ -1,16 +1,16 @@
 from django.contrib.auth.models import User
-from django.http import JsonResponse
 from django.contrib.auth import login as django_login, \
     logout as django_logout, authenticate
 
 from rest_framework import status, viewsets
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 from accounts.api.serializers import LoginSerializer, UserSerializer
 
 
 @api_view(['POST'])
+@permission_classes([])
 def login(request):
     serializer = LoginSerializer(data=request.data)
     if not serializer.is_valid():

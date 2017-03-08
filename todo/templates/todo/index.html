@@ -23,20 +23,32 @@
   </head>
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-nav">
-          <button type="button" class="btn btn-default btn-nav" data-toggle="modal"
+    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="navbar-header">
+          <button type="button" class="btn btn-default navbar-btn btn-nav" data-toggle="modal"
              data-target="#taskModal">CreateTask</button>
-          <button type="button" class="btn btn-default btn-nav"
+          <button type="button" class="btn btn-default navbar-btn btn-nav"
                   data-bind="click: toggleLayout">Projects</button>
       </div>
-      <form class="navbar-form navbar-right">
-        <input class="login-input input-group" type="text" placeholder="username"
+
+      <ul class="nav navbar-nav navbar-right logged-in" style="display: none;">
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown">
+            <span data-bind="text: username"></span>
+            <span class="glyphicon glyphicon-user"></span>
+            <span class="glyphicon glyphicon-chevron-down"></span>
+          <ul class="dropdown-menu">
+            <li><a data-bind="logout">Logout</a></li>
+          </ul>
+      </ul>
+
+      <form class="navbar-form navbar-right nav-form">
+        <input class="form-control login-input" type="text" placeholder="username"
                data-bind="value: username"></input>
-        <input class="login-input input-group" type="password"
+        <input class="form-control login-input" type="password"
                placeholder="password" data-bind="value: password"></input>
-        <input class="login-input btn btn-default" type="submit" value="Submit"
-               data-bind="click: login"></input>
+        <input class="btn btn-default login-input" type="submit" value="Submit"
+               data-bind="foo"></input>
       </form>
     </nav>
     <div class="container main">
@@ -73,7 +85,7 @@
               Priority:
 
               <div class="input-group">
-                <select class="selectpicker tsk-input" data-bind="options: priorities,
+                <select class="selectpicker" data-bind="options: priorities,
                                                                   optionsText: 'name',
                                                                   value:
                                                                   selectedPriority"></select>
@@ -82,7 +94,7 @@
               Assignees:
 
               <div class="input-group">
-                <select class="tsk-input" multiple data-live-search="true"
+                <select multiple data-live-search="true"
                         data-bind="selectPicker: selectedUsers,
                                    optionsText: 'name',
                                    optionsValue:'id',
@@ -93,7 +105,7 @@
               Task Type:
 
               <div class="input-group">
-                <select class="selectpicker tsk-input" data-bind="options: taskTypes,
+                <select class="selectpicker" data-bind="options: taskTypes,
                                                                   optionsText: 'name',
                                                                   value: selectedType"></select>
               </div>
@@ -101,7 +113,7 @@
                 Reference Task:
 
                 <div class="input-group">
-                  <select class="selectpicker tsk-input" data-bind="options: filterStory,
+                  <select class="selectpicker" data-bind="options: filterStory,
                                                                     optionsText: 'title',
                                                                     value:
                                                                     selectedStory"></select>
@@ -111,7 +123,7 @@
               Projects:
 
               <div class="input-group">
-                <select class="selectpicker tsk-input" data-bind="selectPicker: selectedProject,
+                <select class="selectpicker" data-bind="selectPicker: selectedProject,
                                                                   optionsText: 'title',
                                                                   selectPickerOptions: { optionsArray: projects } ">
                 </select>
@@ -129,14 +141,14 @@
 
         <div class="col-md-4 col-sm-6 todo">
           <p class="tasks-header">To Do</p>
-          <div class="dropbox" data-bind="foreach: filterTodo">
+          <div data-bind="foreach: filterTodo">
             {% include '_task_data.html' %}
           </div>
         </div>
 
         <div class="col-md-4 col-sm-6 in-progress">
           <p class="tasks-header">In Progress</p>
-          <div class="dropbox" data-bind="foreach: filterInProgress">
+          <div data-bind="foreach: filterInProgress">
             {% include '_task_data.html' %}
           </div>
         </div>
