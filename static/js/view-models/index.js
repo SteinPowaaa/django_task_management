@@ -5,11 +5,24 @@ function Task(data) {
   this.status = ko.observable(data.status || "");
   this.priority = ko.observable(data.priority || "");
   this.creator = data.creator || "";
-  this.assignees = ko.observable(data.assignees || "");
+  this.assignees = ko.observableArray(data.assignees || []);
   this.taskType = ko.observable(data.task_type || "");
   this.project = ko.observable(data.project || "");
-  this.refTask = ko.observable(data.ref_task || "");
+  this.refTask = ko.observable(data.ref_task || null);
 }
+
+Task.prototype.normalize = function () {
+  return {
+    "title": this.title(),
+    "description": this.description(),
+    "status": this.status().value,
+    "priority": this.priority().value,
+    "assignees": this.assignees(),
+    "task_type": this.taskType().value,
+    "project": this.project().id,
+    "ref_task": this.refTask() ? this.refTask().normalize() : null
+  };
+};
 
 function Project(data) {
   this.id = data.id;
@@ -44,17 +57,13 @@ function TaskViewModel() {
   self.loginUrl = '/api/login';
   self.logoutUrl = '/api/logout';
   self.projectsUrl = 'api/projects/';
+
   self.tasks = ko.observableArray([]);
   self.users = ko.observableArray([]);
-  self.selectedUsers = ko.observableArray([]);
-  self.taskTitle = ko.observable();
-  self.taskDescription = ko.observable();
-  self.selectedStatus = ko.observable();
-  self.selectedPriority = ko.observable();
-  self.selectedType = ko.observable();
-  self.selectedStory = ko.observable(null);
+
+  self.task = new Task({});
+
   self.projects = ko.observableArray();
-  self.selectedProject = ko.observable();
   self.currentProject = ko.observable(1);
   self.toggle = ko.observable(false);
   self.username = ko.observable();
@@ -141,22 +150,10 @@ function TaskViewModel() {
     self.populateTasks();
   };
 
-  self._normalizeTask = function () {
-    return {
-      "title": self.taskTitle(),
-      "description": self.taskDescription(),
-      "status": self.selectedStatus().value,
-      "priority": self.selectedPriority().value,
-      "assignees": self.selectedUsers(),
-      "task_type": self.selectedType().value,
-      "project": self.selectedProject().id,
-      "ref_task": self.selectedStory()
-    };
-  };
-
   self.createTask = function () {
-    var task = self._normalizeTask();
-    $.post(self.tasksUrl, task).then(function (data) {
+    var taskJSON = self.task.normalize();
+    $.post(self.tasksUrl, taskJSON).then(function (data) {
+      debugger
       self.tasks.push(new Task(data));
     });
   };
@@ -168,7 +165,6 @@ function TaskViewModel() {
     });
   };
 
-  // modify data to be in JSON
   self.removeTask = function (task) {
     self.deleteTask(task).then(function () {
         self.tasks.remove(task);
@@ -288,7 +284,7 @@ ko.bindingHandlers.borderColorPicker = {
   }
 };
 
-ko.bindingHandlers.foo = {
+ko.bindingHandlers.login = {
   init: function(element, valueAccessor, allBindings, viewModel,
                  bindingContext){
     $(element).click(function(e) {
@@ -297,7 +293,7 @@ ko.bindingHandlers.foo = {
         "username": viewModel.username(),
         "password": viewModel.password()
       };
-      $.post(viewModel.loginUrl, data).then(function (data) {
+      $.post(viewModel.loginUrl, data).then(function (data, _, xhr) {
         $(".login-alert").html('<div class="alert alert-success">Successfully' +
                                ' logged-in</div>');
         setTimeout(function() {

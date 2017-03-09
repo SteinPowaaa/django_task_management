@@ -25,10 +25,10 @@
 
     <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
       <div class="navbar-header">
-          <button type="button" class="btn btn-default navbar-btn btn-nav" data-toggle="modal"
-             data-target="#taskModal">CreateTask</button>
-          <button type="button" class="btn btn-default navbar-btn btn-nav"
-                  data-bind="click: toggleLayout">Projects</button>
+        <button type="button" class="btn btn-default navbar-btn btn-nav" data-toggle="modal"
+                data-target="#taskModal">CreateTask</button>
+        <button type="button" class="btn btn-default navbar-btn btn-nav"
+                data-bind="click: toggleLayout">Projects</button>
       </div>
 
       <ul class="nav navbar-nav navbar-right logged-in" style="display: none;">
@@ -37,9 +37,9 @@
             <span data-bind="text: username"></span>
             <span class="glyphicon glyphicon-user"></span>
             <span class="glyphicon glyphicon-chevron-down"></span>
-          <ul class="dropdown-menu">
-            <li><a data-bind="logout">Logout</a></li>
-          </ul>
+            <ul class="dropdown-menu">
+              <li><a data-bind="logout">Logout</a></li>
+            </ul>
       </ul>
 
       <form class="navbar-form navbar-right nav-form">
@@ -48,12 +48,12 @@
         <input class="form-control login-input" type="password"
                placeholder="password" data-bind="value: password"></input>
         <input class="btn btn-default login-input" type="submit" value="Submit"
-               data-bind="foo"></input>
+               data-bind="login"></input>
       </form>
     </nav>
     <div class="container main">
 
-    <!-- Modal -->
+      <!-- Modal -->
       <div class="modal fade" id="taskModal" role="dialog">
         <div class="modal-dialog">
 
@@ -66,12 +66,12 @@
             <div class="modal-body">
               Title:
               <div>
-                <input class="form-control" type="text" data-bind="value: taskTitle">
+                <input class="form-control" type="text" data-bind="value: task.title">
               </div>
 
               Description:
               <div>
-                <input class="form-control" type="text" data-bind="value: taskDescription">
+                <input class="form-control" type="text" data-bind="value: task.description">
               </div>
 
               Status:
@@ -79,23 +79,23 @@
               <div class="input-group">
                 <select class="selectpicker" data-bind="options: statuses,
                                                         optionsText: 'name',
-                                                        value: selectedStatus"></select>
+                                                        value: task.status"></select>
               </div>
 
               Priority:
 
               <div class="input-group">
                 <select class="selectpicker" data-bind="options: priorities,
-                                                                  optionsText: 'name',
-                                                                  value:
-                                                                  selectedPriority"></select>
+                                                        optionsText: 'name',
+                                                        value:
+                                                        task.priority"></select>
               </div>
 
               Assignees:
 
               <div class="input-group">
                 <select multiple data-live-search="true"
-                        data-bind="selectPicker: selectedUsers,
+                        data-bind="selectPicker: task.assignees,
                                    optionsText: 'name',
                                    optionsValue:'id',
                                    selectPickerOptions: { optionsArray: users }">
@@ -106,26 +106,25 @@
 
               <div class="input-group">
                 <select class="selectpicker" data-bind="options: taskTypes,
-                                                                  optionsText: 'name',
-                                                                  value: selectedType"></select>
+                                                        optionsText: 'name',
+                                                        value: task.taskType"></select>
               </div>
-              <div data-bind="visible: selectedType().value === 'sub-task'">
+              <div data-bind="visible: task.taskType().value === 'sub-task'">
                 Reference Task:
 
                 <div class="input-group">
                   <select class="selectpicker" data-bind="options: filterStory,
-                                                                    optionsText: 'title',
-                                                                    value:
-                                                                    selectedStory"></select>
+                                                          optionsText: 'title',
+                                                          value: task.refTask"></select>
                 </div>
               </div>
 
               Projects:
 
               <div class="input-group">
-                <select class="selectpicker" data-bind="selectPicker: selectedProject,
-                                                                  optionsText: 'title',
-                                                                  selectPickerOptions: { optionsArray: projects } ">
+                <select class="selectpicker" data-bind="selectPicker: task.project,
+                                                        optionsText: 'title',
+                                                        selectPickerOptions: { optionsArray: projects } ">
                 </select>
               </div>
 

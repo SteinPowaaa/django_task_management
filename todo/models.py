@@ -61,6 +61,10 @@ class Task(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     ref_task = models.ForeignKey('self', null=True, blank=True)
 
+    location = models.CharField(max_length=50, blank=True)
+    estimation = models.DateField(blank=True)
+    forecast = models.BooleanField(blank=True)
+
 
 class Project(models.Model):
     title = models.CharField(max_length=50)

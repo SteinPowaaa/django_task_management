@@ -1,4 +1,3 @@
-import pdb
 from django.contrib.auth import get_user_model
 
 from rest_framework import viewsets
@@ -15,7 +14,18 @@ class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
+    def list(self, request, project_pk=None):
+        queryset = self.queryset.filter(project=project_pk)
+        serializer = TaskSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None, project_pk=None):
+        queryset = self.queryset.get(pk=pk, project=project_pk)
+        serializer = TaskSerializer(queryset)
+        return Response(serializer.data)
+
     def create(self, request, *args, **kwargs):
+        # import pdb;pdb.set_trace()
         copy_data = request.data.copy()
         copy_data['creator'] = request.user.pk
         assignee_ids = request.data.getlist('assignees[]', [])

@@ -1,13 +1,16 @@
 from django.conf.urls import url, include
 
-from rest_framework.routers import DefaultRouter
+from rest_framework_nested import routers
 
 from todo.api import views
 
-router = DefaultRouter()
-router.register(r'tasks', views.TaskViewSet)
+router = routers.SimpleRouter()
 router.register(r'projects', views.ProjectViewSet)
 
+tasks_router = routers.NestedSimpleRouter(router, r'projects', lookup='project')
+tasks_router.register(r'tasks', views.TaskViewSet)
+
 urlpatterns = [
-    url(r'^', include(router.urls))
+    url(r'^', include(router.urls)),
+    url(r'^', include(tasks_router.urls)),
 ]
