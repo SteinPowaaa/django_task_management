@@ -10,7 +10,7 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     assignees = UserSerializer(many=True, read_only=True)
-    #creator = UserSerializer()
+    creator = UserSerializer(read_only=True)
 
 
 class ProjectSerializer(serializers.ModelSerializer):

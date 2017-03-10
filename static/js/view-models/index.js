@@ -50,9 +50,24 @@ function TaskType(value, name) {
   this.name = name;
 }
 
+// {% with 0000 as dumbId %}
+
+// var Urls = function () {
+//   var self = this;
+//   self.tasksListUrl = "{% url 'tasks-list' dumbId %}";
+
+//   self.getTasksListUrl = function (projectId) {
+//     return self.tasksListUrl.replace('{{dumbId}}', projectId);
+//   };
+
+//   return self;
+// };
+
+// Urls.getTasksListUrl(3);
+
 function TaskViewModel() {
   var self = this;
-  self.tasksUrl = '/api/tasks/';
+  self.tasksUrl = '/api/' + 'projects/' + 1  +'/tasks/';
   self.usersUrl = '/api/users/';
   self.loginUrl = '/api/login';
   self.logoutUrl = '/api/logout';
@@ -69,18 +84,18 @@ function TaskViewModel() {
   self.username = ko.observable();
   self.password = ko.observable();
 
-  function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-  }
-  $.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-      var csrftoken = Cookies.get('csrftoken');
-      if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-      }
-    }
-  });
+  // function csrfSafeMethod(method) {
+  //   // these HTTP methods do not require CSRF protection
+  //   return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  // }
+  // $.ajaxSetup({
+  //   beforeSend: function(xhr, settings) {
+  //     var csrftoken = Cookies.get('csrftoken');
+  //     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+  //       xhr.setRequestHeader("X-CSRFToken", csrftoken);
+  //     }
+  //   }
+  // });
 
   self.taskTypes = ko.observableArray([
     new TaskType('story', 'Story'),
@@ -153,7 +168,6 @@ function TaskViewModel() {
   self.createTask = function () {
     var taskJSON = self.task.normalize();
     $.post(self.tasksUrl, taskJSON).then(function (data) {
-      debugger
       self.tasks.push(new Task(data));
     });
   };

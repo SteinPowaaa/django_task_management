@@ -1,3 +1,5 @@
+from corsheaders.defaults import default_headers
+
 """
 Django settings for nemeproject project.
 
@@ -149,11 +151,16 @@ TEMPLATES = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
+CORS_ALLOW_HEADERS = default_headers + (
+    '',
+)
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'accounts.api.csrfexemptauthentication.CsrfExemptSessionAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ]
 }

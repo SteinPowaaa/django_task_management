@@ -25,9 +25,8 @@ class TaskViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
-        # import pdb;pdb.set_trace()
         copy_data = request.data.copy()
-        copy_data['creator'] = request.user.pk
+        copy_data['creator'] = request.user.id
         assignee_ids = request.data.getlist('assignees[]', [])
         serializer = self.get_serializer(data=copy_data)
         serializer.is_valid(raise_exception=True)
@@ -36,6 +35,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         assignees = list(map(lambda user_id: User.objects.get(id=user_id),
                              assignee_ids))
+        assignees = User.objects.filter(id__in=assignee_ids)
 
         serializer.instance.assignees = assignees
 
@@ -43,10 +43,6 @@ class TaskViewSet(viewsets.ModelViewSet):
         return Response(serializer.data,
                         status=status.HTTP_201_CREATED,
                         headers=headers)
-
-    def get_queryset(self):
-        user = self.request.user
-        return Task.objects.filter(assignees=user)
 
 
 class ProjectViewSet(viewsets.ModelViewSet):

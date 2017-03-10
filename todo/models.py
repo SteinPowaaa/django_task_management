@@ -22,23 +22,6 @@ class Task(models.Model):
         (PRIORITY_MEDIUM, 'Medium'),
         (PRIORITY_LOW, 'Low')
     )
-    title = models.CharField(max_length=50)
-    description = models.CharField(max_length=1024, blank=True)
-
-    status = models.CharField(
-        max_length=30,
-        choices=STATUS_CHOICES,
-        default=STATUS_TODO
-    )
-
-    priority = models.CharField(
-        max_length=30,
-        choices=PRIORITY_CHOICES,
-        default=PRIORITY_LOW
-    )
-
-    creator = models.ForeignKey(User, related_name="task_creator")
-    assignees = models.ManyToManyField(User, related_name="task_assignees")
 
     TYPE_STORY = 'story'
     TYPE_BUG = 'bug'
@@ -52,17 +35,35 @@ class Task(models.Model):
         (TYPE_SUB_TASK, 'Sub Task')
     )
 
+    status = models.CharField(
+        max_length=30,
+        choices=STATUS_CHOICES,
+        default=STATUS_TODO
+    )
+
+    priority = models.CharField(
+        max_length=30,
+        choices=PRIORITY_CHOICES,
+        default=PRIORITY_LOW
+    )
+
     task_type = models.CharField(
         max_length=30,
         choices=TYPE_CHOICES,
         default=TYPE_IMPROVEMENT
     )
 
+    title = models.CharField(max_length=50)
+    description = models.CharField(max_length=1024, blank=True)
+
+    creator = models.ForeignKey(User, related_name="task_creator")
+    assignees = models.ManyToManyField(User, related_name="task_assignees")
+
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     ref_task = models.ForeignKey('self', null=True, blank=True)
 
-    location = models.CharField(max_length=50, blank=True)
-    estimation = models.DateField(blank=True)
+    location = models.CharField(max_length=50, blank=True, null=True)
+    estimation = models.DateField(blank=True, null=True)
     forecast = models.BooleanField(blank=True)
 
 
