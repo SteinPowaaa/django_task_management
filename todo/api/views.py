@@ -26,15 +26,14 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         copy_data = request.data.copy()
-        copy_data['creator'] = request.user.id
+        copy_data['creator'] = request.user.pk
         assignee_ids = request.data.getlist('assignees[]', [])
         serializer = self.get_serializer(data=copy_data)
         serializer.is_valid(raise_exception=True)
 
         self.perform_create(serializer)
 
-        assignees = list(map(lambda user_id: User.objects.get(id=user_id),
-                             assignee_ids))
+        # http://stackoverflow.com/questions/37511421/add-an-object-by-id-in-a-manytomany-relation-in-django
         assignees = User.objects.filter(id__in=assignee_ids)
 
         serializer.instance.assignees = assignees

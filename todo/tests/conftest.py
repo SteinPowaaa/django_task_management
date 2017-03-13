@@ -1,14 +1,45 @@
 import pytest
 
-from django.conf import settings
+from django.contrib.auth.models import User
+# from django.conf import settings
+
 from todo.models import Task, Project
 
 from model_mommy import mommy
 
-@pytest.fixture
-def user():
-    return mommy.make(settings.AUTH_USER_MODEL)
 
 @pytest.fixture
-def project():
-    pass
+def user():
+    # user = mommy.make(
+    #     settings.AUTH_USER_MODEL,
+    #     username='admin'
+    # )
+    # user.set_password('password123')
+    # return user
+    return User.objects.create_user(username='admin', password='password123')
+
+
+@pytest.fixture
+def project_one():
+    return mommy.make(Project)
+
+
+@pytest.fixture
+def project_two():
+    return mommy.make(Project)
+
+
+@pytest.fixture
+def task_one():
+    return mommy.make(
+        Task,
+        project_id=1
+                      )
+
+
+@pytest.fixture
+def task_two():
+    return mommy.make(
+        Task,
+        project_id=1
+    )
