@@ -1,12 +1,13 @@
-from django.contrib.auth.models import User
 from django.contrib.auth import login as django_login, \
-    logout as django_logout, authenticate
+    logout as django_logout, authenticate, get_user_model
 
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 from accounts.api.serializers import LoginSerializer, UserSerializer
+
+User = get_user_model()
 
 
 @api_view(['POST'])

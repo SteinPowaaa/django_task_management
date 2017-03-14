@@ -12,7 +12,6 @@ class TaskSerializer(serializers.ModelSerializer):
     assignees = UserSerializer(many=True, read_only=True)
 
 
-
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
