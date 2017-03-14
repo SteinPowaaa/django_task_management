@@ -7,87 +7,88 @@ from django.test import Client
 from rest_framework import status
 
 
+@pytest.mark.django_db
 class TestTodo:
-    # @pytest.mark.django_db
-    # @classmethod
-    # def setup_class(self):
-    #     self.c = Client()
-    # # force_login(user)
-    #     self.c.login(username='admin', password='password123')
+    @pytest.fixture(autouse=True)
+    def setup_login(self, user):
+        self.c = Client()
+        self.c.force_login(user)
 
-    @pytest.mark.django_db
-    def test_todo__get_projects(self, user, project_one, project_two):
-        c = Client()
-        c.login(username='admin', password='password123')
+    def test_todo__get_projects(self, project_one, project_two):
         url = reverse('project-list')
-        response = c.get(url)
+        response = self.c.get(url)
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == 2
 
-    @pytest.mark.django_db
-    def test_todo__delete_project(self, user, project_one, project_two):
-        c = Client()
-        c.login(username='admin', password='password123')
+    def test_todo__delete_project(self, project_one):
         url = reverse('project-detail', args=[1])
-        response = c.delete(url)
+        response = self.c.delete(url)
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
-    @pytest.mark.django_db
-    def test_todo__edit_project(self, user, project_one, project_two):
-        c = Client()
-        c.login(username='admin', password='password123')
+    def test_todo__edit_project(self, project_one):
         url = reverse('project-detail', args=[1])
         data = {'id': 1, 'title': 'test_title', 'description': 'test_desc'}
-        response = c.put(url, json.dumps(data), content_type='application/json')
+        response = self.c.put(url, json.dumps(data), content_type='application/json')
         assert response.status_code == status.HTTP_200_OK
         assert response.data == data
 
-    @pytest.mark.django_db
-    def test_todo__add_project(self, user, project_one, project_two):
-        c = Client()
-        c.login(username='admin', password='password123')
+    def test_todo__edit_project_invalid_data(self, project_one):
+        url = reverse('project-detail', args=[1])
+        data = {'id': 1, 'description': 'test_desc'}
+        response = self.c.put(url, json.dumps(data), content_type='application/json')
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    def test_todo__add_project(self, project_one, project_two):
         url = reverse('project-list')
         data = {'title': 'test_title', 'description': 'test_desc'}
-        response = c.post(url, data)
+        response = self.c.post(url, data)
         assert response.status_code == status.HTTP_201_CREATED
         assert len(response.data) == 3
 
-        ##################################################
+    def test_todo__add_project_invalid_data(self, project_one, project_two):
+        url = reverse('project-list')
+        data = {'description': 'test_desc'}
+        response = self.c.post(url, data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-    @pytest.mark.django_db
-    def test_todo__get_tasks(self, user, project_one, task_one, task_two):
-        c = Client()
-        c.login(username='admin', password='password123')
+        ############################## TASKS ##############################
+
+    def test_todo__get_tasks(self, project_one, task_one, task_two):
         url = reverse('task-list', args=[1])
-        response = c.get(url)
+        response = self.c.get(url)
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == 2
 
-    @pytest.mark.django_db
-    def test_todo__delete_task(self, user, project_one, task_one, task_two):
-        c = Client()
-        c.login(username='admin', password='password123')
+    def test_todo__delete_task(self, project_one, task_one):
         url = reverse('task-detail', args=[1, 1])
-        response = c.delete(url)
+        response = self.c.delete(url)
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
-    @pytest.mark.django_db
-    def test_todo__edit_task(self, user, project_one, task_one, task_two):
-        c = Client()
-        c.login(username='admin', password='password123')
+    def test_todo__edit_task(self, project_one, task_one):
         url = reverse('task-detail', args=[1, 1])
         data = {
             'id': 1, 'title': 'test_title',
             'project': 1, 'creator': 1
         }
-        response = c.put(url, json.dumps(data), content_type='application/json')
+        response = self.c.put(url, json.dumps(data), content_type='application/json')
         assert response.status_code == status.HTTP_200_OK
 
-    @pytest.mark.django_db
-    def test_todo__add_task(self, user, project_one, task_one, task_two):
-        c = Client()
-        c.login(username='admin', password='password123')
+    def test_todo__edit_task_invalid_data(self, project_one, task_one):
+        url = reverse('task-detail', args=[1, 1])
+        data = {
+            'id': 1, 'project': 1, 'creator': 1
+        }
+        response = self.c.put(url, json.dumps(data), content_type='application/json')
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    def test_todo__add_task(self, project_one):
         url = reverse('task-list', args=[1])
         data = {'title': 'test_title', 'project': 1}
-        response = c.post(url, data)
+        response = self.c.post(url, data)
         assert response.status_code == status.HTTP_201_CREATED
+
+    def test_todo__add_task_invalid_data(self, project_one):
+        url = reverse('task-list', args=[1])
+        data = {'project': 1}
+        response = self.c.post(url, data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST

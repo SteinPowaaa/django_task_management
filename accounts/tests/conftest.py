@@ -1,15 +1,8 @@
 import pytest
 
-from django.conf import settings
+from django.contrib.auth.models import User
 
 
-# model_mommy
-
-@pytest.fixture()
+@pytest.fixture
 def user():
-	return model_mommy.make(settings.AUTH_USER_MODEL, username='test-user')
-
-
-@pytest.fixture()
-def user2():
-	return model_mommy.make(settings.AUTH_USER_MODEL, username='test-user-2')
+    return User.objects.create_user(username='admin', password='password123')
