@@ -8,6 +8,7 @@
   line-height: 5px;
   margin-top: 5px;
   margin-left: 5px;
+  margin-top: 13px;
 }
 .login-input {
   height: 30px;
@@ -71,7 +72,7 @@
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 1;
+  z-index: 1000;
   top: 0;
   left: 0;
   background-color: #000000;
@@ -93,9 +94,15 @@
 }
 .overlay .closebtn {
   position: absolute;
+  top: 5px;
+  right: 15px;
+  font-size: 40px;
+}
+.overlay .editbtn {
+  position: absolute;
   top: 20px;
-  right: 45px;
-  font-size: 60px;
+  left: 15px;
+  font-size: 30px;
 }
 .overlay-content {
   position: relative;

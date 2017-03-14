@@ -80,7 +80,8 @@ function TaskViewModel() {
 
   self.projects = ko.observableArray();
   self.currentProject = ko.observable(1);
-  self.toggle = ko.observable(false);
+  self.toggleProject = ko.observable(false);
+  self.toggleMenu = ko.observable(false);
   self.username = ko.observable();
   self.password = ko.observable();
 
@@ -228,7 +229,11 @@ function TaskViewModel() {
   };
 
   self.toggleLayout = function () {
-    self.toggle(!self.toggle());
+    self.toggleProject(!self.toggleProject());
+  };
+
+  self.toggleSidebar = function () {
+    self.toggleMenu(!self.toggleMenu());
   };
 
   self.pickProject = function (project) {
@@ -286,7 +291,7 @@ ko.bindingHandlers.selectPicker = {
      }
 };
 
-ko.bindingHandlers.borderColorPicker = {
+ko.bindingHandlers.backgroundColorPicker = {
   init: function(element, valueAccessor, allBindings, viewModel,
                  bindingContext){
     priority = valueAccessor()();

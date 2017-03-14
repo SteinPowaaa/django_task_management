@@ -1,0 +1,8 @@
+<div class="overlay"
+     data-bind="style: { width: toggleProject() ? '100%' : '0%' }">
+  <a class="closebtn" data-bind="click: toggleLayout">×</a>
+  <div class="overlay-content" data-bind="foreach: projects">
+    <a data-bind="text: title, click: function(project) { $root.pickProject(project),
+                  $root.toggleLayout() }"></a>
+  </div>
+</div>

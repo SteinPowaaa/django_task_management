@@ -1,0 +1,82 @@
+<!-- Modal -->
+<div class="modal fade" id="taskModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Create Task</h4>
+      </div>
+      <div class="modal-body">
+        Title:
+        <div>
+          <input class="form-control" type="text" data-bind="value: task.title">
+        </div>
+
+        Description:
+        <div>
+          <input class="form-control" type="text" data-bind="value: task.description">
+        </div>
+
+        Status:
+
+        <div class="input-group">
+          <select class="selectpicker" data-bind="options: statuses,
+                                                  optionsText: 'name',
+                                                  value: task.status"></select>
+        </div>
+
+        Priority:
+
+        <div class="input-group">
+          <select class="selectpicker" data-bind="options: priorities,
+                                                  optionsText: 'name',
+                                                  value:
+                                                  task.priority"></select>
+        </div>
+
+        Assignees:
+
+        <div class="input-group">
+          <select multiple data-live-search="true"
+                  data-bind="selectPicker: task.assignees,
+                             optionsText: 'name',
+                             optionsValue:'id',
+                             selectPickerOptions: { optionsArray: users }">
+          </select>
+        </div>
+
+        Task Type:
+
+        <div class="input-group">
+          <select class="selectpicker" data-bind="options: taskTypes,
+                                                  optionsText: 'name',
+                                                  value: task.taskType"></select>
+        </div>
+        <div data-bind="visible: task.taskType().value === 'sub-task'">
+          Reference Task:
+
+          <div class="input-group">
+            <select class="selectpicker" data-bind="options: filterStory,
+                                                    optionsText: 'title',
+                                                    value: task.refTask"></select>
+          </div>
+        </div>
+
+        Projects:
+
+        <div class="input-group">
+          <select class="selectpicker" data-bind="selectPicker: task.project,
+                                                  optionsText: 'title',
+                                                  selectPickerOptions: { optionsArray: projects } ">
+          </select>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <input class="btn btn-default" type="submit" value="Submit" data-bind="click: createTask" data-dismiss="modal">
+      </div>
+    </div>
+  </div>
+</div>

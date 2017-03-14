@@ -23,118 +23,11 @@
   </head>
   <body>
 
-    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-      <div class="navbar-header">
-        <button type="button" class="btn btn-default navbar-btn btn-nav" data-toggle="modal"
-                data-target="#taskModal">CreateTask</button>
-        <button type="button" class="btn btn-default navbar-btn btn-nav"
-                data-bind="click: toggleLayout">Projects</button>
-      </div>
+    {% include '_navbar.html' %}
 
-      <ul class="nav navbar-nav navbar-right logged-in" style="display: none;">
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown">
-            <span data-bind="text: username"></span>
-            <span class="glyphicon glyphicon-user"></span>
-            <span class="glyphicon glyphicon-chevron-down"></span>
-            <ul class="dropdown-menu">
-              <li><a data-bind="logout">Logout</a></li>
-            </ul>
-      </ul>
-
-      <form class="navbar-form navbar-right nav-form">
-        <input class="form-control login-input" type="text" placeholder="username"
-               data-bind="value: username"></input>
-        <input class="form-control login-input" type="password"
-               placeholder="password" data-bind="value: password"></input>
-        <input class="btn btn-default login-input" type="submit" value="Submit"
-               data-bind="login"></input>
-      </form>
-    </nav>
     <div class="container main">
 
-      <!-- Modal -->
-      <div class="modal fade" id="taskModal" role="dialog">
-        <div class="modal-dialog">
-
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Create Task</h4>
-            </div>
-            <div class="modal-body">
-              Title:
-              <div>
-                <input class="form-control" type="text" data-bind="value: task.title">
-              </div>
-
-              Description:
-              <div>
-                <input class="form-control" type="text" data-bind="value: task.description">
-              </div>
-
-              Status:
-
-              <div class="input-group">
-                <select class="selectpicker" data-bind="options: statuses,
-                                                        optionsText: 'name',
-                                                        value: task.status"></select>
-              </div>
-
-              Priority:
-
-              <div class="input-group">
-                <select class="selectpicker" data-bind="options: priorities,
-                                                        optionsText: 'name',
-                                                        value:
-                                                        task.priority"></select>
-              </div>
-
-              Assignees:
-
-              <div class="input-group">
-                <select multiple data-live-search="true"
-                        data-bind="selectPicker: task.assignees,
-                                   optionsText: 'name',
-                                   optionsValue:'id',
-                                   selectPickerOptions: { optionsArray: users }">
-                </select>
-              </div>
-
-              Task Type:
-
-              <div class="input-group">
-                <select class="selectpicker" data-bind="options: taskTypes,
-                                                        optionsText: 'name',
-                                                        value: task.taskType"></select>
-              </div>
-              <div data-bind="visible: task.taskType().value === 'sub-task'">
-                Reference Task:
-
-                <div class="input-group">
-                  <select class="selectpicker" data-bind="options: filterStory,
-                                                          optionsText: 'title',
-                                                          value: task.refTask"></select>
-                </div>
-              </div>
-
-              Projects:
-
-              <div class="input-group">
-                <select class="selectpicker" data-bind="selectPicker: task.project,
-                                                        optionsText: 'title',
-                                                        selectPickerOptions: { optionsArray: projects } ">
-                </select>
-              </div>
-
-            </div>
-            <div class="modal-footer">
-              <input class="btn btn-default" type="submit" value="Submit" data-bind="click: createTask" data-dismiss="modal">
-            </div>
-          </div>
-        </div>
-      </div>
+      {% include '_task_modal.html' %}
 
       <div class="row">
 
@@ -163,14 +56,7 @@
 
     </div>
 
-    <div id="projectLayout" class="overlay"
-         data-bind="style: { width: toggle() ? '100%' : '0%' }">
-      <a class="closebtn" data-bind="click: toggleLayout">×</a>
-      <div class="overlay-content" data-bind="foreach: projects">
-        <a data-bind="text: title, click: function(project) { $root.pickProject(project),
-                      $root.toggleLayout() }"></a>
-      </div>
-    </div>
+    {% include '_project_overlay.html' %}
 
     <center><div class="login-alert"></div></center>
 
