@@ -32,22 +32,23 @@
       <div class="row">
 
         <div class="col-md-4 col-sm-6 todo">
-          <p class="tasks-header">To Do</p>
-          <div data-bind="foreach: filterTodo">
+          <p class="tsk-header">To Do</p>
+          <div data-bind="foreach: filterTodo,
+                          dropZone: { accepts: 'tasks', drop: changeStatusTodo }" >
             {% include '_task_data.html' %}
           </div>
         </div>
 
         <div class="col-md-4 col-sm-6 in-progress">
-          <p class="tasks-header">In Progress</p>
+          <p class="tsk-header">In Progress</p>
           <div data-bind="foreach: filterInProgress">
             {% include '_task_data.html' %}
           </div>
         </div>
 
-        <div class="col-md-4 col-sm-6 done">
-          <p class="tasks-header">Done</p>
-          <div class="dropbox" data-bind="foreach: filterDone">
+        <div class="col-md-4 col-sm-6 completed">
+          <p class="tsk-header">Completed</p>
+          <div class="dropbox" data-bind="foreach: filterCompleted">
             {% include '_task_data.html' %}
           </div>
         </div>
@@ -57,6 +58,7 @@
     </div>
 
     {% include '_project_overlay.html' %}
+    {% include '_task_overlay.html' %}
 
     <center><div class="login-alert"></div></center>
 
@@ -71,5 +73,6 @@
         crossorigin="anonymous"></script>
     {% csrf_token %}
     <script src="{% static 'js/view-models/index.js' %}"></script>
+    <script src="{% static 'js/view-models/knockout.dragdrop.js' %}"></script>
   </body>
 </html>

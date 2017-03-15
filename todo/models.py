@@ -68,5 +68,6 @@ class Task(models.Model):
 
 
 class Project(models.Model):
+    # add foreign key User
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=1024, blank=True)

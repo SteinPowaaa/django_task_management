@@ -108,7 +108,7 @@ function TaskViewModel() {
   self.statuses = ko.observableArray([
     new Status('todo', 'Todo'),
     new Status('in-progress', 'In Progress'),
-    new Status('done', 'Done')
+    new Status('completed', 'Completed')
   ]);
 
   self.priorities = ko.observableArray([
@@ -212,9 +212,9 @@ function TaskViewModel() {
     });
   });
 
-  self.filterDone = ko.computed(function () {
+  self.filterCompleted = ko.computed(function () {
     return self.filterProject().filter(function (task) {
-      return task.status() === 'done';
+      return task.status() === 'completed';
     });
   });
 
@@ -225,7 +225,7 @@ function TaskViewModel() {
   });
 
   self.changeStatus = function (task) {
-    task.status() === 'todo' ? task.status('in-progress') : task.status('done');
+    task.status() === 'todo' ? task.status('in-progress') : task.status('completed');
   };
 
   self.toggleLayout = function () {

@@ -1,18 +1,21 @@
-<div class="task-container" data-bind="backgroundColorPicker: priority">
-  <div class="tsk-heading">Title:</div>
-  <div class="tsk-output" data-bind="text: title"></div>
-  <div class="tsk-heading">Description:</div>
-  <div class="tsk-output" data-bind="text: description"></div>
-  <div class="tsk-heading">Assignees:</div>
+<div class="tsk-container" data-bind="backgroundColorPicker: priority,
+                                      click: $root.toggleSidebar,
+                                      dragZone: { name: 'tasks' }">
+  <div class="tsk-title" data-bind="text: title" style="float: left"></div>
   <div data-bind="foreach: assignees">
-    <div class="tsk-output" data-bind="text: username"></div>
+    <img class="img-rounded tsk-output" style="float:right" data-bind="attr: { src: avatar_thumbnail }"></img>
   </div>
-  <div class="tsk-heading" data-bind="visible: refTask">Reference Task:</div>
-  <div class="tsk-output" data-bind="visible: refTask, text: title"></div>
-  <div class="tsk-heading">Creator:</div>
-  <div class="tsk-output" data-bind="text: creator.username"></div>
-
-  <button class="btn btn-default btn-delete" data-bind="click:
-                                                        $parent.removeTask">delete</button>
-  <button class="btn btn-default btn-change" data-bind="click: $parent.changeStatus">change</button>
+  <a class="tsk-btn">✎</a>
+  <a class="tsk-btn" data-bind="click: $parent.removeTask, clickBubble: false">×</a>
 </div>
+
+<!-- <div class="tsk-heading">Description:</div>
+     <div class="tsk-output" data-bind="text: description"></div>
+     <div class="tsk-heading" data-bind="visible: refTask">Reference Task:</div>
+     <div class="tsk-output" data-bind="visible: refTask, text: title"></div>
+     <div class="tsk-heading">Creator:</div>
+     <div class="tsk-output" data-bind="text: creator.username"></div>
+     <button class="btn btn-default btn-delete" data-bind="click:
+     $parent.removeTask">delete</button>
+     <button class="btn btn-default btn-change" data-bind="click: $parent.changeStatus">change</button>
+   -->
