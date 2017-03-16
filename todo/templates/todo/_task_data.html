@@ -1,5 +1,5 @@
 <div class="tsk-container" data-bind="backgroundColorPicker: priority,
-                                      click: $root.toggleSidebar,
+                                      click: function(task) { $root.toggleSidebar(); $root.selectItem(task) },
                                       dragZone: { name: 'tasks' }">
   <div class="tsk-title" data-bind="text: title" style="float: left"></div>
   <div data-bind="foreach: assignees">

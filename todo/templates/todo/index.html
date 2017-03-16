@@ -29,26 +29,25 @@
 
       {% include '_task_modal.html' %}
 
-      <div class="row">
-
         <div class="col-md-4 col-sm-6 todo">
           <p class="tsk-header">To Do</p>
-          <div data-bind="foreach: filterTodo,
-                          dropZone: { accepts: 'tasks', drop: changeStatusTodo }" >
+          <div class="tsk-wrapper" style="min-height:60px;" data-bind="foreach: filterTodo,
+                                                   dropZone: { accepts: 'tasks', drop: changeStatusTodo }">
             {% include '_task_data.html' %}
           </div>
         </div>
 
         <div class="col-md-4 col-sm-6 in-progress">
           <p class="tsk-header">In Progress</p>
-          <div data-bind="foreach: filterInProgress">
+          <div class="tsk-wrapper" data-bind="foreach: filterInProgress,
+                          dropZone: { accepts: 'tasks', drop: changeStatusInProgress }">
             {% include '_task_data.html' %}
           </div>
         </div>
 
         <div class="col-md-4 col-sm-6 completed">
           <p class="tsk-header">Completed</p>
-          <div class="dropbox" data-bind="foreach: filterCompleted">
+          <div class="tsk-wrapper" data-bind="foreach: filterCompleted, dropZone: { accepts: 'tasks', drop: changeStatusCompleted }">
             {% include '_task_data.html' %}
           </div>
         </div>
@@ -57,16 +56,16 @@
 
     </div>
 
+    <center><div class="login-alert"></div></center>
+
     {% include '_project_overlay.html' %}
     {% include '_task_overlay.html' %}
-
-    <center><div class="login-alert"></div></center>
 
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.min.js">
     </script>
     <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js"></script>
+        src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
     <script
         src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="

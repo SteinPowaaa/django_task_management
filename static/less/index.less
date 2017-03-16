@@ -1,3 +1,8 @@
+.logged-in {
+  display: none;
+  margin-right: 5px;
+}
+
 .btn-nav-general {
   height: 30px;
   line-height: 5px;
@@ -26,6 +31,10 @@
   }
 }
 
+.tsk-wrapper {
+  min-height: 60px
+}
+
 .tsk-container {
   //border-style: solid;
   //border-width: 2px;
@@ -40,6 +49,17 @@
     transform: scale(1.05, 1.05);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
+}
+
+.tsk-heading {
+  display:inline-block;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-right: 5px;
+}
+
+.tsk-heading-txt {
+  display:inline-block
 }
 
 .tsk-output {
@@ -146,24 +166,10 @@
     z-index: 1000;
     top: 0;
     left: 0;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0, 0.9);
+    background-color: rgb(255, 255, 255);
+    border: rgba(0,0,0, 0.3);
     overflow-x: hidden;
     transition: 0.5s;
-
-    a {
-      padding: 8px;
-      text-decoration: none;
-      font-size: 36px;
-      color: #818181;
-      display: block;
-      transition: 0.3s;
-
-      &:hover,
-      &:focus {
-        color: #f1f1f1;
-      }
-    }
 
     .closebtn {
       position: absolute;
@@ -178,4 +184,26 @@
       left: 15px;
       font-size: 30px;
     }
+}
+
+.overlay-content-task {
+  position: relative;
+  top: 10%;
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.line {
+  display:table;
+  white-space: nowrap;
+  color: gray;
+
+  &:before,
+  &:after {
+    background: linear-gradient(to bottom, gray, white) no-repeat center / 98% .25em;
+    content: '';
+    display: table-cell;
+    width: 50%;
+  }
 }

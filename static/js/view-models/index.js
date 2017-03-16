@@ -78,6 +78,8 @@ function TaskViewModel() {
 
   self.task = new Task({});
 
+  self.selectedItem = ko.observable();
+
   self.projects = ko.observableArray();
   self.currentProject = ko.observable(1);
   self.toggleProject = ko.observable(false);
@@ -224,8 +226,16 @@ function TaskViewModel() {
     });
   });
 
-  self.changeStatus = function (task) {
-    task.status() === 'todo' ? task.status('in-progress') : task.status('completed');
+  self.changeStatusTodo = function (task) {
+    task.status('todo');
+  };
+
+  self.changeStatusInProgress = function (task) {
+    task.status('in-progress');
+  };
+
+  self.changeStatusCompleted = function (task) {
+    task.status('completed');
   };
 
   self.toggleLayout = function () {
@@ -238,6 +248,10 @@ function TaskViewModel() {
 
   self.pickProject = function (project) {
     self.currentProject(project.id);
+  };
+
+  self.selectItem = function (task) {
+    self.selectedItem(task);
   };
 }
 
@@ -295,7 +309,7 @@ ko.bindingHandlers.backgroundColorPicker = {
   init: function(element, valueAccessor, allBindings, viewModel,
                  bindingContext){
     priority = valueAccessor()();
-    var color = {'low': '#6fd5d8',
+    var color = {'low': '#91c05b',
                  'medium': '#faaa7a',
                  'high': '#f76b6f'}[priority];
 
@@ -343,4 +357,6 @@ ko.bindingHandlers.logout = {
   }
 };
 
-ko.applyBindings(new TaskViewModel());
+$(function () {
+  ko.applyBindings(new TaskViewModel());
+});
