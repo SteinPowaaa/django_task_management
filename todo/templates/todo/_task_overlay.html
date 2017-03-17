@@ -1,42 +1,44 @@
-<div class="overlay-task" data-bind="style: { width: toggleMenu() ? '300px' :
-  '0%', borderStyle: toggleMenu() ? 'solid' : 'none' }">
+<div class="overlay-task" data-bind="style: { left: toggleMenu() ? '0px' :
+  '-300px'}">
   <a class="closebtn" data-bind="click: $root.toggleSidebar">×</a>
   <a class="editbtn">✎</a>
   <div class="overlay-content-task">
+
     <p class="line">Details</p>
-    <div>
-      <p class="tsk-heading">Title: </p><div class="tsk-heading-txt"
-                                             data-bind="text:$root.selectedItem() &&
-                                                        $root.selectedItem().title"></div>
-    </div>
+    <div class="tsk-group">
+      <div>
+        <p class="tsk-heading">Title: </p><div class="tsk-heading-txt"
+                                               data-bind="text:$root.selectedItem() &&
+                                                          $root.selectedItem().title"></div>
+      </div>
 
-    <div>
-      <p class="tsk-heading">Description: </p><div class="tsk-heading-txt"
-                                                   data-bind="text: $root.selectedItem() &&
-                                                              $root.selectedItem().description"></div>
-    </div>
+      <div>
+        <p class="tsk-heading">Description: </p><div class="tsk-heading-txt"
+                                                     data-bind="text: $root.selectedItem() &&
+                                                                $root.selectedItem().description"></div>
+      </div>
 
-    <div>
-    <p class="tsk-heading">Status: </p><div class="tsk-heading-txt"
-                                            data-bind="text: $root.selectedItem() &&
-                                                       $root.selectedItem().status"></div>
-    </div>
+      <div>
+        <p class="tsk-heading">Status: </p><div class="tsk-heading-txt"
+                                                data-bind="text: $root.selectedItem() &&
+                                                           $root.selectedItem().status"></div>
+      </div>
 
-    <div>
-    <p class="tsk-heading">Priority: </p><div class="tsk-heading-txt"
-                                              data-bind="text: $root.selectedItem() &&
-                                                         $root.selectedItem().priority"></div>
+      <div>
+        <p class="tsk-heading">Priority: </p><div class="tsk-heading-txt"
+                                                  data-bind="text: $root.selectedItem() &&
+                                                             $root.selectedItem().priority"></div>
+      </div>
     </div>
-
     <div class="line">Assignees</div>
     <!-- ko if: $root.selectedItem() -->
-    <div data-bind="foreach: $root.selectedItem().assignees">
-      <p class="tsk-heading">Creator: </p><div class="tsk-heading-txt"
-                                               data-bind="attr: { src:
-                                                          avatar_thumbnail }"></div>
-      <div class="tsk-heading-txt" data-bind="text: $root.selectedItem() &&
-                                              $root.selectedItem()."></div>
-      <!-- /ko -->
+    <div class="tsk-group" data-bind="foreach: $root.selectedItem().assignees">
+      <div>
+        <img class="img-rounded tsk-heading" style="margin: 5px;"
+             data-bind="attr: { src: avatar_thumbnail }"></img>
+        <div class="tsk-heading-txt" data-bind="text: username"></div>
+      </div>
     </div>
+    <!-- /ko -->
   </div>
 </div>

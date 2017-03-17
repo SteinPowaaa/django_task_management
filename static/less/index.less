@@ -1,3 +1,9 @@
+.anchor-general {
+  color: black;
+  cursor: pointer;
+  text-decoration: none;
+}
+
 .logged-in {
   display: none;
   margin-right: 5px;
@@ -15,6 +21,12 @@
   margin-top: 13px;
 }
 
+.login-alert {
+  position: fixed;
+  text-align: center;
+  width: 100%;
+}
+
 .login-input {
   .btn-nav-general;
   display: inline;
@@ -22,6 +34,7 @@
 }
 
 .tsk-btn {
+  .anchor-general;
   float: right;
   margin: 5px;
   font-size: 20px;
@@ -29,6 +42,10 @@
   &:hover{
     text-decoration: none;
   }
+}
+
+.tsk-group {
+  margin-left: 10px;
 }
 
 .tsk-wrapper {
@@ -51,6 +68,10 @@
   }
 }
 
+.tsk-header {
+  text-align: center;
+}
+
 .tsk-heading {
   display:inline-block;
   font-weight: bold;
@@ -59,7 +80,8 @@
 }
 
 .tsk-heading-txt {
-  display:inline-block
+  display:inline-block;
+  margin-right: 10px;
 }
 
 .tsk-output {
@@ -69,7 +91,7 @@
 .tsk-title {
   margin: 5px;
   word-wrap: break-word;
-  width: 200px;
+  width: auto;
 }
 
 .tsk-header {
@@ -160,22 +182,24 @@
 }
 
 .overlay-task {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    background-color: rgb(255, 255, 255);
-    border: rgba(0,0,0, 0.3);
-    overflow-x: hidden;
-    transition: 0.5s;
+  left: -300px;
+  height: 100%;
+  width: 300px;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  background-color: rgb(255, 255, 255);
+  border: solid rgba(0,0,0, 0.3);
+  overflow-x: hidden;
+  transition: 0.5s;
 
     .closebtn {
       position: absolute;
       top: 5px;
       right: 15px;
       font-size: 40px;
+      .anchor-general;
     }
 
     .editbtn {
@@ -183,6 +207,7 @@
       top: 20px;
       left: 15px;
       font-size: 30px;
+      .anchor-general;
     }
 }
 
@@ -190,7 +215,7 @@
   position: relative;
   top: 10%;
   width: 100%;
-  text-align: center;
+  text-align: justify;
   margin-top: 30px;
 }
 

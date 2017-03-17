@@ -13,13 +13,15 @@ function Task(data) {
 
 Task.prototype.normalize = function () {
   return {
+    "id": this.id,
     "title": this.title(),
     "description": this.description(),
-    "status": this.status().value,
-    "priority": this.priority().value,
+    "status": this.status(),
+    "priority": this.priority(),
+    "creator": this.creator,
     "assignees": this.assignees(),
-    "task_type": this.taskType().value,
-    "project": this.project().id,
+    "task_type": this.taskType(),
+    "project": this.project(),
     "ref_task": this.refTask() ? this.refTask().normalize() : null
   };
 };
@@ -67,7 +69,8 @@ function TaskType(value, name) {
 
 function TaskViewModel() {
   var self = this;
-  self.tasksUrl = '/api/' + 'projects/' + 1  +'/tasks/';
+  self.currentProject = ko.observable(1);
+  self.tasksUrl = '/api/' + 'projects/' + self.currentProject()  +'/tasks/';
   self.usersUrl = '/api/users/';
   self.loginUrl = '/api/login';
   self.logoutUrl = '/api/logout';
@@ -76,12 +79,12 @@ function TaskViewModel() {
   self.tasks = ko.observableArray([]);
   self.users = ko.observableArray([]);
 
-  self.task = new Task({});
+  self.task = ko.observable(new Task({}));
 
   self.selectedItem = ko.observable();
 
   self.projects = ko.observableArray();
-  self.currentProject = ko.observable(1);
+
   self.toggleProject = ko.observable(false);
   self.toggleMenu = ko.observable(false);
   self.username = ko.observable();
@@ -119,9 +122,9 @@ function TaskViewModel() {
     new Priority('high', 'High')
   ]);
 
-  self.init = (function () {
+  self.init = function () {
     self.populate();
-  });
+  };
 
   self.populateTasks = function () {
     $.getJSON(self.tasksUrl).then(function (data) {
@@ -169,7 +172,7 @@ function TaskViewModel() {
   };
 
   self.createTask = function () {
-    var taskJSON = self.task.normalize();
+    var taskJSON = self.task().normalize();
     $.post(self.tasksUrl, taskJSON).then(function (data) {
       self.tasks.push(new Task(data));
     });
@@ -189,10 +192,10 @@ function TaskViewModel() {
   };
 
   self.updateTask = function (task) {
-    $.ajax({
-      url: self.tasksUrl + task.id,
+    return $.ajax({
+      url: self.tasksUrl + task.id + '/',
       type: 'PUT',
-      data: task
+      data: task.normalize()
     });
   };
 
@@ -227,15 +230,21 @@ function TaskViewModel() {
   });
 
   self.changeStatusTodo = function (task) {
-    task.status('todo');
+    self.updateTask(task).then(function () {
+      task.status('todo');
+    });
   };
 
   self.changeStatusInProgress = function (task) {
-    task.status('in-progress');
+    self.updateTask(task).then(function () {
+      task.status('in-progress');
+    });
   };
 
   self.changeStatusCompleted = function (task) {
-    task.status('completed');
+    self.updateTask(task).then(function () {
+      task.status('completed');
+    });
   };
 
   self.toggleLayout = function () {
@@ -253,6 +262,12 @@ function TaskViewModel() {
   self.selectItem = function (task) {
     self.selectedItem(task);
   };
+
+  self.setTask = function (task) {
+    self.selectedItem(task);
+  };
+
+  self.init();
 }
 
 ko.bindingHandlers.selectPicker = {

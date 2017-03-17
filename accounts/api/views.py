@@ -38,3 +38,8 @@ def logout(request):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+@api_view(['GET'])
+def current(request):
+    return request.user
