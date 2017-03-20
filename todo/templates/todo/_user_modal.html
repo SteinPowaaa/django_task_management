@@ -1,0 +1,29 @@
+<!-- Modal -->
+<div class="modal fade" id="userModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h4 class="modal-title">User Properties</h4>
+      </div>
+      <div class="modal-body">
+        Title:
+        <div>
+          <input class="form-control" type="text" data-bind="value: project().title">
+        </div>
+
+        Description:
+        <div>
+          <input class="form-control" type="text" data-bind="value: project().description">
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <input class="btn btn-default" type="submit" value="Submit"
+               data-bind="click: submitProject" data-dismiss="modal">
+      </div>
+    </div>
+  </div>
+</div>

@@ -27,10 +27,18 @@ Task.prototype.normalize = function () {
 };
 
 function Project(data) {
-  this.id = data.id;
-  this.title = ko.observable(data.title);
-  this.description = ko.observable(data.description);
+  this.id = data.id || "";
+  this.title = ko.observable(data.title || "");
+  this.description = ko.observable(data.description || "");
 }
+
+Project.prototype.normalize = function () {
+  return {
+    "id": this.id,
+    "title": this.title(),
+    "description": this.description()
+  };
+};
 
 function User(data) {
   this.id = data.id;
@@ -75,13 +83,13 @@ function TaskViewModel() {
   self.loginUrl = '/api/login';
   self.logoutUrl = '/api/logout';
   self.projectsUrl = 'api/projects/';
+  self.currentUserUrl = 'api/current-user/';
 
   self.tasks = ko.observableArray([]);
   self.users = ko.observableArray([]);
 
   self.task = ko.observable(new Task({}));
-
-  self.selectedItem = ko.observable();
+  self.project = ko.observable(new Project({}));
 
   self.projects = ko.observableArray();
 
@@ -171,6 +179,43 @@ function TaskViewModel() {
     self.populateTasks();
   };
 
+  self.createProject = function () {
+    var projectJSON = self.project().normalize();
+    $.post(self.projectsUrl, projectJSON).then(function (data) {
+      self.projects.push(new Project(data));
+    });
+  };
+
+  self.updateProject = function () {
+    var project = self.project().normalize();
+    return $.ajax({
+      url: self.projectsUrl + project.id + '/',
+      type: 'PUT',
+      data: project
+    });
+  };
+
+  self.submitProject = function () {
+    if (self.project().id === '') {
+      self.createProject();
+    } else {
+      self.updateProject();
+    }
+  };
+
+  self.deleteProject = function (project) {
+    return $.ajax({
+      url: self.projectsUrl + project.id,
+      type: 'DELETE'
+    });
+  };
+
+  self.removeProject = function (project) {
+    self.deleteProject(project).then(function () {
+        self.projects.remove(project);
+    });
+  };
+
   self.createTask = function () {
     var taskJSON = self.task().normalize();
     $.post(self.tasksUrl, taskJSON).then(function (data) {
@@ -191,12 +236,21 @@ function TaskViewModel() {
     });
   };
 
-  self.updateTask = function (task) {
+  self.updateTask = function () {
+    var task = self.task().normalize();
     return $.ajax({
       url: self.tasksUrl + task.id + '/',
       type: 'PUT',
-      data: task.normalize()
+      data: task
     });
+  };
+
+  self.submitTask = function () {
+    if (self.task().id === '') {
+      self.createTask();
+    } else {
+      self.updateTask();
+    }
   };
 
   self.filterProject = ko.computed(function () {
@@ -260,14 +314,8 @@ function TaskViewModel() {
   };
 
   self.selectItem = function (task) {
-    self.selectedItem(task);
+    self.task(task);
   };
-
-  self.setTask = function (task) {
-    self.selectedItem(task);
-  };
-
-  self.init();
 }
 
 ko.bindingHandlers.selectPicker = {
@@ -368,6 +416,38 @@ ko.bindingHandlers.logout = {
         $('.logged-in').hide();
         $('.nav-form').show();
       });
+    });
+  }
+};
+
+ko.bindingHandlers.getCurrent = {
+  init: function(element, valueAccessor, allBindings, viewModel,
+                 bindingContext){
+    $(document).ready(function(){
+      $.get(viewModel.currentUserUrl).then(function (data){
+        viewModel.username(data.details.username);
+        $('.nav-form').hide();
+        $('.logged-in').show();
+        viewModel.init();
+      });
+    });
+  }
+};
+
+ko.bindingHandlers.openTaskModal = {
+  init: function(element, valueAccessor, allBindings, viewModel,
+                 bindingContext){
+    $(element).click(function () {
+      $('#taskModal').modal('show');
+    });
+  }
+};
+
+ko.bindingHandlers.openProjectModal = {
+  init: function(element, valueAccessor, allBindings, viewModel,
+                 bindingContext){
+    $(element).click(function () {
+      $('#projectModal').modal('show');
     });
   }
 };

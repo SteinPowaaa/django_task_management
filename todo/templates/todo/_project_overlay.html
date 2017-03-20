@@ -2,7 +2,12 @@
      data-bind="style: { width: toggleProject() ? '100%' : '0%' }">
   <a class="closebtn" data-bind="click: toggleLayout">×</a>
   <div class="overlay-content" data-bind="foreach: projects">
-    <a data-bind="text: title, click: function(project) { $root.pickProject(project),
-                  $root.toggleLayout() }"></a>
+    <div>
+      <a data-bind="text: title, click: function(project) { $root.pickProject(project),
+                    $root.toggleLayout() }"></a>
+      <a data-bind="click: function(project){ $root.project(project), $root.toggleLayout() },
+                    clickBubble: false, openModal">✎</a>
+      <a data-bind="click: $root.removeProject">×</a>
+    </div>
   </div>
 </div>

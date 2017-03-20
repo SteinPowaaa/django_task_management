@@ -8,7 +8,7 @@ router = DefaultRouter()
 router.register(r'users', views.UserViewSet)
 
 urlpatterns = [
-    url(r'^current', views.login),
+    url(r'^current-user', views.current_user),
     url(r'^login', views.login),
     url(r'^logout', views.logout),
     url(r'^', include(router.urls))

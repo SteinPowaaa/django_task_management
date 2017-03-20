@@ -8,31 +8,31 @@
     <div class="tsk-group">
       <div>
         <p class="tsk-heading">Title: </p><div class="tsk-heading-txt"
-                                               data-bind="text:$root.selectedItem() &&
-                                                          $root.selectedItem().title"></div>
+                                               data-bind="text:$root.task() &&
+                                                          $root.task().title"></div>
       </div>
 
       <div>
         <p class="tsk-heading">Description: </p><div class="tsk-heading-txt"
-                                                     data-bind="text: $root.selectedItem() &&
-                                                                $root.selectedItem().description"></div>
+                                                     data-bind="text: $root.task() &&
+                                                                $root.task().description"></div>
       </div>
 
       <div>
         <p class="tsk-heading">Status: </p><div class="tsk-heading-txt"
-                                                data-bind="text: $root.selectedItem() &&
-                                                           $root.selectedItem().status"></div>
+                                                data-bind="text: $root.task() &&
+                                                           $root.task().status"></div>
       </div>
 
       <div>
         <p class="tsk-heading">Priority: </p><div class="tsk-heading-txt"
-                                                  data-bind="text: $root.selectedItem() &&
-                                                             $root.selectedItem().priority"></div>
+                                                  data-bind="text: $root.task() &&
+                                                             $root.task().priority"></div>
       </div>
     </div>
     <div class="line">Assignees</div>
-    <!-- ko if: $root.selectedItem() -->
-    <div class="tsk-group" data-bind="foreach: $root.selectedItem().assignees">
+    <!-- ko if: $root.task() -->
+    <div class="tsk-group" data-bind="foreach: $root.task().assignees">
       <div>
         <img class="img-rounded tsk-heading" style="margin: 5px;"
              data-bind="attr: { src: avatar_thumbnail }"></img>

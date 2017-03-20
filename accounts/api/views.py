@@ -40,6 +40,19 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
+@api_view(['POST'])
+@permission_classes([])
+def register(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    email = request.data.get('email', '')
+    user, _ = User.objects.get_or_create(username=username, email=email)
+    user.set_password(password)
+    user.save()
+    return Response({'details': 'OK'}, status=status.HTTP_201_CREATED)
+
+
 @api_view(['GET'])
-def current(request):
-    return request.user
+def current_user(request):
+    serializer = UserSerializer(request.user)
+    return Response({'details': serializer.data}, status=status.HTTP_200_OK)
