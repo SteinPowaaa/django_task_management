@@ -77,8 +77,9 @@ function TaskType(value, name) {
 
 function TaskViewModel() {
   var self = this;
-  self.currentProject = ko.observable(1);
-  self.tasksUrl = '/api/' + 'projects/' + self.currentProject()  +'/tasks/';
+  self.project = ko.observable(new Project({ "id": 1 }));
+  self.projects = ko.observableArray([]);
+  self.tasksUrl = '/api/' + 'projects/' + self.project().id  +'/tasks/';
   self.usersUrl = '/api/users/';
   self.loginUrl = '/api/login';
   self.logoutUrl = '/api/logout';
@@ -89,14 +90,16 @@ function TaskViewModel() {
   self.users = ko.observableArray([]);
 
   self.task = ko.observable(new Task({}));
-  self.project = ko.observable(new Project({}));
-
-  self.projects = ko.observableArray();
 
   self.toggleProject = ko.observable(false);
   self.toggleMenu = ko.observable(false);
+
+  self.currentProject = ko.observable(new Project({"id": 1}));
+  self.currentUser = ko.observable();
+
   self.username = ko.observable();
   self.password = ko.observable();
+  self.email = ko.observable();
 
   // function csrfSafeMethod(method) {
   //   // these HTTP methods do not require CSRF protection
@@ -216,6 +219,26 @@ function TaskViewModel() {
     });
   };
 
+  self.clearData = function () {
+    self.username(null);
+    self.email(null);
+    self.password(null);
+  };
+
+  self.createUser = function () {
+    var userJSON = {
+      "username": self.username(),
+      "email": self.email(),
+      "password": self.password()
+    };
+
+    $.post(self.usersUrl, userJSON).then(function (data) {
+      self.users.push(new User(data));
+    });
+
+    self.clearData();
+  };
+
   self.createTask = function () {
     var taskJSON = self.task().normalize();
     $.post(self.tasksUrl, taskJSON).then(function (data) {
@@ -255,7 +278,7 @@ function TaskViewModel() {
 
   self.filterProject = ko.computed(function () {
     return self.tasks().filter(function (task) {
-      return task.project() === self.currentProject();
+      return task.project() === self.currentProject().id;
     });
   });
 
@@ -284,21 +307,18 @@ function TaskViewModel() {
   });
 
   self.changeStatusTodo = function (task) {
-    self.updateTask(task).then(function () {
-      task.status('todo');
-    });
+    task.status('todo');
+    self.updateTask(task);
   };
 
   self.changeStatusInProgress = function (task) {
-    self.updateTask(task).then(function () {
-      task.status('in-progress');
-    });
+    task.status('in-progress');
+    self.updateTask(task);
   };
 
   self.changeStatusCompleted = function (task) {
-    self.updateTask(task).then(function () {
-      task.status('completed');
-    });
+    task.status('completed');
+    self.updateTask(task);
   };
 
   self.toggleLayout = function () {
@@ -310,10 +330,10 @@ function TaskViewModel() {
   };
 
   self.pickProject = function (project) {
-    self.currentProject(project.id);
+    self.project(project);
   };
 
-  self.selectItem = function (task) {
+  self.pickTask = function (task) {
     self.task(task);
   };
 }
@@ -390,6 +410,8 @@ ko.bindingHandlers.login = {
         "password": viewModel.password()
       };
       $.post(viewModel.loginUrl, data).then(function (data, _, xhr) {
+        viewModel.clearData();
+
         $(".login-alert").html('<div class="alert alert-success">Successfully' +
                                ' logged-in</div>');
         setTimeout(function() {
@@ -398,7 +420,7 @@ ko.bindingHandlers.login = {
           });
         }, 1000);
 
-        viewModel.username(data.username);
+        viewModel.currentUser(data.username);
 
         $('.nav-form').hide();
         $('.logged-in').show();
@@ -434,21 +456,27 @@ ko.bindingHandlers.getCurrent = {
   }
 };
 
-ko.bindingHandlers.openTaskModal = {
+ko.bindingHandlers.openModal = {
   init: function(element, valueAccessor, allBindings, viewModel,
                  bindingContext){
-    $(element).click(function () {
+    $('.create-project').click(function () {
+      $('#projectModal').modal('show');
+    });
+
+    $('.create-task').click(function () {
       $('#taskModal').modal('show');
+    });
+
+    $('.create-user').click(function () {
+      $('#userModal').modal('show');
     });
   }
 };
 
-ko.bindingHandlers.openProjectModal = {
+ko.bindingHandlers.setTask = {
   init: function(element, valueAccessor, allBindings, viewModel,
                  bindingContext){
-    $(element).click(function () {
-      $('#projectModal').modal('show');
-    });
+    bindingContext.$root.task(viewModel);
   }
 };
 

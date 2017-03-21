@@ -56,8 +56,10 @@ class Task(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=1024, blank=True)
 
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="task_creator")
-    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="task_assignees")
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                related_name="task_creator")
+    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL,
+                                       related_name="task_assignees")
 
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     ref_task = models.ForeignKey('self', null=True, blank=True)

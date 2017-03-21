@@ -56,15 +56,15 @@
                                                   value: task().taskType,
                                                   optionsValue: 'value'"></select>
         </div>
-        <!-- <div data-bind="visible: task.taskType().value === 'sub-task'">
-             Reference Task:
+        <div data-bind="visible: task().taskType === 'story'">
+          Reference Task:
 
-             <div class="input-group">
-             <select class="selectpicker" data-bind="options: filterStory,
-             optionsText: 'title',
-             value: task.refTask"></select>
-             </div>
-             </div> -->
+          <div class="input-group">
+            <select class="selectpicker" data-bind="options: filterStory,
+                                                    optionsText: 'title',
+                                                    value: task().refTask"></select>
+          </div>
+        </div>
 
         Projects:
 

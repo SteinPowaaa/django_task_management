@@ -1,8 +1,8 @@
-<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+<nav class="navbar navbar-inverse navbar-static-top anchor-general" role="navigation">
   <ul class="nav navbar-nav navbar-right logged-in">
     <li class="dropdown">
       <a class="dropdown-toggle" data-toggle="dropdown">
-        <span data-bind="text: username"></span>
+        <span data-bind="text: currentUser"></span>
         <span class="glyphicon glyphicon-user"></span>
         <span class="glyphicon glyphicon-chevron-down"></span>
         <ul class="dropdown-menu">
@@ -10,33 +10,21 @@
         </ul>
   </ul>
 
-  <ul class="nav navbar-nav navbar-left logged-in">
+  <ul class="nav navbar-nav navbar-left">
     <li class="dropdown">
       <a class="dropdown-toggle" data-toggle="dropdown">
         <span class="glyphicon glyphicon-menu-hamburger"></span>
-        <ul class="dropdown-menu">
-          <li><a data-bind="logout">Create Task</a></li>
-          <li><a data-bind="logout">Create Project</a></li>
-          <li><a data-bind="logout">Create User</a></li>
+        <ul class="dropdown-menu" data-bind="openModal">
+          <li><a class="create-task" data-bind="click: pickTask(new Task({}))">Create Task</a></li>
+          <li><a class="create-project" data-bind="click: pickProject(new Project({}))">Create Project</a></li>
+          <li><a class="create-user">Create User</a></li>
         </ul>
+        <li><a data-bind="click: toggleLayout">Projects</a></li>
   </ul>
-
-  <div class="navbar-header">
-    <button type="button" class="btn btn-default navbar-btn btn-nav"
-            data-bind="click: function(){task(new Task({}))}, openTaskModal">Create Task</button>
-    <button type="button" class="btn btn-default navbar-btn btn-nav"
-            data-bind="click: toggleLayout">Projects</button>
-    <button type="button" class="btn btn-default navbar-btn btn-nav"
-            data-bind="click: function(){project(new Project({}))},
-                       openProjectModal">Create Project</button>
-    <button type="button" class="btn btn-default navbar-btn btn-nav"
-            data-bind="click: function(){project(new Project({}))},
-                       openRegisterModal">Create User</button>
-  </div>
 
   <form class="navbar-form navbar-right nav-form">
     <input class="form-control login-input" type="text" placeholder="username"
-           data-bind="value: username"></input>
+           data-bind="value: currentUser"></input>
     <input class="form-control login-input" type="password"
            placeholder="password" data-bind="value: password"></input>
     <input class="btn btn-default login-input" type="submit" value="Submit"

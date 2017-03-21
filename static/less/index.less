@@ -124,52 +124,53 @@
 }
 
 .overlay {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0, 0.9);
-    overflow-x: hidden;
-    transition: 0.5s;
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0, 0.9);
+  overflow-x: hidden;
+  transition: 0.5s;
 
-    a {
-      padding: 8px;
-      text-decoration: none;
-      font-size: 36px;
-      color: #818181;
-      display: inline-block;
-      transition: 0.3s;
+  a {
+    .anchor-general;
+    padding: 8px;
+    text-decoration: none;
+    font-size: 36px;
+    color: #818181;
+    display: inline-block;
+    transition: 0.3s;
 
-      &:hover,
-      &:focus {
-        color: #f1f1f1;
-      }
+    &:hover,
+    &:focus {
+      color: #f1f1f1;
     }
+  }
 
-    .closebtn {
-      position: absolute;
-      top: 5px;
-      right: 15px;
-      font-size: 40px;
-    }
+  .closebtn {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    font-size: 40px;
+  }
 
-    .editbtn {
-      position: absolute;
-      top: 20px;
-      left: 15px;
-      font-size: 30px;
-    }
+  .editbtn {
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    font-size: 30px;
+  }
 }
 
 .overlay-content {
-    position: relative;
-    top: 25%;
-    width: 100%;
-    text-align: center;
-    margin-top: 30px;
+  position: relative;
+  top: 25%;
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
 }
 
 @media screen and (max-height: 450px) {
@@ -184,7 +185,7 @@
 .overlay-task {
   left: -300px;
   height: 100%;
-  width: 300px;
+  width: 0;
   position: fixed;
   z-index: 1000;
   top: 0;
@@ -194,21 +195,21 @@
   overflow-x: hidden;
   transition: 0.5s;
 
-    .closebtn {
-      position: absolute;
-      top: 5px;
-      right: 15px;
-      font-size: 40px;
-      .anchor-general;
-    }
+  .closebtn {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    font-size: 40px;
+    .anchor-general;
+  }
 
-    .editbtn {
-      position: absolute;
-      top: 20px;
-      left: 15px;
-      font-size: 30px;
-      .anchor-general;
-    }
+  .editbtn {
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    font-size: 30px;
+    .anchor-general;
+  }
 }
 
 .overlay-content-task {
