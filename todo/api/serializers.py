@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from todo.models import Task, Project
+from todo.models import Task, Project, Sprint
 from accounts.api.serializers import UserSerializer
 
 
@@ -15,4 +15,10 @@ class TaskSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
+        fields = '__all__'
+
+
+class SprintSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sprint
         fields = '__all__'

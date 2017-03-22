@@ -4,25 +4,32 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 
-from todo.models import Task, Project
-from todo.api.serializers import TaskSerializer, ProjectSerializer
+from django_filters import rest_framework as filters
+
+from todo.models import Task, Project, Sprint
+from todo.api.serializers import TaskSerializer, ProjectSerializer, \
+    SprintSerializer
 
 User = get_user_model()
+
+
+class TaskFilter(filters.FilterSet):
+    # Not working
+    class Meta:
+        model = Task
+        fields = ['project__id']
+
+
+class SprintFilter(filters.FilterSet):
+    class Meta:
+        model = Sprint
+        fields = ['project']
 
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-
-    def list(self, request, project_pk=None):
-        queryset = self.queryset.filter(project=project_pk)
-        serializer = TaskSerializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def retrieve(self, request, pk=None, project_pk=None):
-        queryset = self.queryset.get(pk=pk, project=project_pk)
-        serializer = TaskSerializer(queryset)
-        return Response(serializer.data)
+    filter_class = TaskFilter
 
     def create(self, request, *args, **kwargs):
         copy_data = request.data.copy()
@@ -47,3 +54,9 @@ class TaskViewSet(viewsets.ModelViewSet):
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+
+
+class SprintViewSet(viewsets.ModelViewSet):
+    queryset = Sprint.objects.all()
+    serializer_class = SprintSerializer
+    filter_class = SprintFilter

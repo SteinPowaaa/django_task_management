@@ -19,12 +19,14 @@
           <li><a class="create-project" data-bind="click: pickProject(new Project({}))">Create Project</a></li>
           <li><a class="create-user">Create User</a></li>
         </ul>
-        <li><a data-bind="click: toggleLayout">Projects</a></li>
+        <li><a data-bind="click: toggleSprintLayout">Manage</a></li>
+        <li><a data-bind="click: toggleProjectLayout">Projects</a></li>
+        <li><a data-bind="click: toggleSprintLayout">Sprints</a></li>
   </ul>
 
   <form class="navbar-form navbar-right nav-form">
     <input class="form-control login-input" type="text" placeholder="username"
-           data-bind="value: currentUser"></input>
+           data-bind="value: username"></input>
     <input class="form-control login-input" type="password"
            placeholder="password" data-bind="value: password"></input>
     <input class="btn btn-default login-input" type="submit" value="Submit"

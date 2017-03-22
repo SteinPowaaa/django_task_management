@@ -32,6 +32,12 @@ function Project(data) {
   this.description = ko.observable(data.description || "");
 }
 
+function Sprint(data) {
+  this.id = data.id || "";
+  this.title = ko.observable(data.title || "");
+  this.description = ko.observable(data.description || "");
+}
+
 Project.prototype.normalize = function () {
   return {
     "id": this.id,
@@ -77,29 +83,33 @@ function TaskType(value, name) {
 
 function TaskViewModel() {
   var self = this;
+  self.sprint = ko.observable(new Sprint({ "id": 1 }));
+  self.sprints = ko.observableArray([]);
+  self.currentSprint = ko.observable(new Sprint({"id": 1}));
+
   self.project = ko.observable(new Project({ "id": 1 }));
   self.projects = ko.observableArray([]);
-  self.tasksUrl = '/api/' + 'projects/' + self.project().id  +'/tasks/';
+  self.currentProject = ko.observable(new Project({"id": 1}));
+
+  self.task = ko.observable(new Task({}));
+  self.tasks = ko.observableArray([]);
+
+  self.currentUser = ko.observable();
+  self.users = ko.observableArray([]);
+
+  self.toggleProject = ko.observable(false);
+  self.toggleSprint = ko.observable(false);
+  self.toggleMenu = ko.observable(false);
+
+  self.username = ko.observable();
+  self.password = ko.observable();
+  self.email = ko.observable();
+
   self.usersUrl = '/api/users/';
   self.loginUrl = '/api/login';
   self.logoutUrl = '/api/logout';
   self.projectsUrl = 'api/projects/';
   self.currentUserUrl = 'api/current-user/';
-
-  self.tasks = ko.observableArray([]);
-  self.users = ko.observableArray([]);
-
-  self.task = ko.observable(new Task({}));
-
-  self.toggleProject = ko.observable(false);
-  self.toggleMenu = ko.observable(false);
-
-  self.currentProject = ko.observable(new Project({"id": 1}));
-  self.currentUser = ko.observable();
-
-  self.username = ko.observable();
-  self.password = ko.observable();
-  self.email = ko.observable();
 
   // function csrfSafeMethod(method) {
   //   // these HTTP methods do not require CSRF protection
@@ -138,7 +148,7 @@ function TaskViewModel() {
   };
 
   self.populateTasks = function () {
-    $.getJSON(self.tasksUrl).then(function (data) {
+    $.getJSON(self.tasksUrl()).then(function (data) {
       self._populateTasks(data);
     });
   };
@@ -176,10 +186,24 @@ function TaskViewModel() {
     });
   };
 
+  // self.populateSprints = function () {
+  //   $.getJSON(self.sprintsUrl).then(function (data) {
+  //     self._populateSprints(data);
+  //   });
+  // };
+
+  // self._populateSprints = function (data) {
+  //   sprints = data.map(function (sprintData) {
+  //     return new Sprint(sprintData);
+  //   });
+  //   self.sprints(sprints);
+  // };
+
   self.populate = function () {
     self.populateProjects();
     self.populateAssignees();
     self.populateTasks();
+    // self.populateSprints();
   };
 
   self.createProject = function () {
@@ -219,6 +243,43 @@ function TaskViewModel() {
     });
   };
 
+  self.createSprint = function () {
+    var sprintJSON = self.sprint().normalize();
+    $.post(self.sprintsUrl, sprintJSON).then(function (data) {
+      self.sprints.push(new Sprint(data));
+    });
+  };
+
+  self.updateSprint = function () {
+    var sprint = self.sprint().normalize();
+    return $.ajax({
+      url: self.sprintsUrl + sprint.id + '/',
+      type: 'PUT',
+      data: sprint
+    });
+  };
+
+  self.submitSprint = function () {
+    if (self.sprint().id === '') {
+      self.createSprint();
+    } else {
+      self.updateSprint();
+    }
+  };
+
+  self.deleteSprint = function (sprint) {
+    return $.ajax({
+      url: self.sprintsUrl + sprint.id,
+      type: 'DELETE'
+    });
+  };
+
+  self.removeSprint = function (sprint) {
+    self.deleteSprint(sprint).then(function () {
+        self.projects.remove(sprint);
+    });
+  };
+
   self.clearData = function () {
     self.username(null);
     self.email(null);
@@ -239,16 +300,24 @@ function TaskViewModel() {
     self.clearData();
   };
 
+  self.tasksUrl = ko.computed(function () {
+    return '/api/projects/' + self.currentProject().id  +'/tasks/';
+  });
+
+  self.sprintsUrl = ko.computed(function () {
+    return '/api/projects/' + self.currentProject().id  +'/sprints/';
+  });
+
   self.createTask = function () {
     var taskJSON = self.task().normalize();
-    $.post(self.tasksUrl, taskJSON).then(function (data) {
+    $.post(self.tasksUrl(), taskJSON).then(function (data) {
       self.tasks.push(new Task(data));
     });
   };
 
   self.deleteTask = function (task) {
     return $.ajax({
-      url: self.tasksUrl + task.id,
+      url: self.tasksUrl() + task.id,
       type: 'DELETE'
     });
   };
@@ -262,7 +331,7 @@ function TaskViewModel() {
   self.updateTask = function () {
     var task = self.task().normalize();
     return $.ajax({
-      url: self.tasksUrl + task.id + '/',
+      url: self.tasksUrl() + task.id + '/',
       type: 'PUT',
       data: task
     });
@@ -321,8 +390,12 @@ function TaskViewModel() {
     self.updateTask(task);
   };
 
-  self.toggleLayout = function () {
+  self.toggleProjectLayout = function () {
     self.toggleProject(!self.toggleProject());
+  };
+
+  self.toggleSprintLayout = function () {
+    self.toggleSprint(!self.toggleSprint());
   };
 
   self.toggleSidebar = function () {
@@ -331,6 +404,10 @@ function TaskViewModel() {
 
   self.pickProject = function (project) {
     self.project(project);
+  };
+
+  self.pickSprint = function (sprint) {
+    self.sprint(sprint);
   };
 
   self.pickTask = function (task) {

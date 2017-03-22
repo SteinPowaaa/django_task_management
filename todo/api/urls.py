@@ -9,6 +9,7 @@ router.register(r'projects', views.ProjectViewSet)
 
 tasks_router = routers.NestedSimpleRouter(router, r'projects', lookup='project')
 tasks_router.register(r'tasks', views.TaskViewSet)
+tasks_router.register(r'sprints', views.SprintViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
