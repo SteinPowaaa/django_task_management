@@ -97,8 +97,6 @@ function TaskViewModel() {
   self.currentUser = ko.observable();
   self.users = ko.observableArray([]);
 
-  self.toggleProject = ko.observable(false);
-  self.toggleSprint = ko.observable(false);
   self.toggleMenu = ko.observable(false);
 
   self.username = ko.observable();
@@ -147,6 +145,30 @@ function TaskViewModel() {
     self.populate();
   };
 
+  self.populate = function () {
+    self.populateUsers();
+    self.populateProjects().then(function () {
+      if (self.projects().length !== 0) {
+        self.currentProject(self.projects()[0]);
+        self.populateTasks();
+        // self.populateSprints();
+      }
+    });
+  };
+
+  self.populateProjects = function () {
+    return $.getJSON(self.projectsUrl).then(function (data) {
+      self._populateProjects(data);
+    });
+  };
+
+  self._populateProjects = function (data) {
+    projects = data.map(function (projectData) {
+      return new Project(projectData);
+    });
+    self.projects(projects);
+  };
+
   self.populateTasks = function () {
     $.getJSON(self.tasksUrl()).then(function (data) {
       self._populateTasks(data);
@@ -160,30 +182,17 @@ function TaskViewModel() {
     self.tasks(tasks);
   };
 
+  self.populateUsers = function () {
+    return $.getJSON(self.usersUrl).then(function (data) {
+      self._populateUsers(data);
+    });
+  };
+
   self._populateUsers = function (data) {
     users = data.map(function (userData) {
       return new User(userData);
     });
     self.users(users);
-  };
-
-  self.populateAssignees = function () {
-    $.getJSON(self.usersUrl).then(function (data) {
-      self._populateUsers(data);
-    });
-  };
-
-  self._populateProjects = function (data) {
-    projects = data.map(function (projectData) {
-      return new Project(projectData);
-    });
-    self.projects(projects);
-  };
-
-  self.populateProjects = function () {
-    $.getJSON(self.projectsUrl).then(function (data) {
-      self._populateProjects(data);
-    });
   };
 
   // self.populateSprints = function () {
@@ -198,13 +207,6 @@ function TaskViewModel() {
   //   });
   //   self.sprints(sprints);
   // };
-
-  self.populate = function () {
-    self.populateProjects();
-    self.populateAssignees();
-    self.populateTasks();
-    // self.populateSprints();
-  };
 
   self.createProject = function () {
     var projectJSON = self.project().normalize();
@@ -301,7 +303,7 @@ function TaskViewModel() {
   };
 
   self.tasksUrl = ko.computed(function () {
-    return '/api/projects/' + self.currentProject().id  +'/tasks/';
+    return '/api/projects/' + self.currentProject().id +'/tasks/';
   });
 
   self.sprintsUrl = ko.computed(function () {
@@ -390,16 +392,14 @@ function TaskViewModel() {
     self.updateTask(task);
   };
 
-  self.toggleProjectLayout = function () {
-    self.toggleProject(!self.toggleProject());
-  };
-
-  self.toggleSprintLayout = function () {
-    self.toggleSprint(!self.toggleSprint());
-  };
-
   self.toggleSidebar = function () {
     self.toggleMenu(!self.toggleMenu());
+  };
+
+  self.selectProject = function (project) {
+    self.currentProject(project);
+    self.populateTasks();
+    //self.populateSprints();
   };
 
   self.pickProject = function (project) {
@@ -414,148 +414,6 @@ function TaskViewModel() {
     self.task(task);
   };
 }
-
-ko.bindingHandlers.selectPicker = {
-     init: function (element, valueAccessor, allBindingsAccessor) {
-         if ($(element).is('select')) {
-             if (ko.isObservable(valueAccessor())) {
-                 if ($(element).prop('multiple') && $.isArray(ko.utils.unwrapObservable(valueAccessor()))) {
-                     // in the case of a multiple select where the valueAccessor() is an observableArray, call the default Knockout selectedOptions binding
-                     ko.bindingHandlers.selectedOptions.init(element, valueAccessor, allBindingsAccessor);
-                 } else {
-                     // regular select and observable so call the default value binding
-                     ko.bindingHandlers.value.init(element, valueAccessor, allBindingsAccessor);
-                 }
-             }
-             $(element).addClass('selectpicker').selectpicker();
-         }
-     },
-     update: function (element, valueAccessor, allBindingsAccessor) {
-         if ($(element).is('select')) {
-             var selectPickerOptions = allBindingsAccessor().selectPickerOptions;
-             if (typeof selectPickerOptions !== 'undefined' && selectPickerOptions !== null) {
-                 var options = selectPickerOptions.optionsArray,
-                     optionsText = selectPickerOptions.optionsText,
-                     optionsValue = selectPickerOptions.optionsValue,
-                     optionsCaption = selectPickerOptions.optionsCaption,
-                     isDisabled = selectPickerOptions.disabledCondition || false,
-                     resetOnDisabled = selectPickerOptions.resetOnDisabled || false;
-                 if (ko.utils.unwrapObservable(options).length > 0) {
-                     // call the default Knockout options binding
-                     ko.bindingHandlers.options.update(element, options, allBindingsAccessor);
-                 }
-                 if (isDisabled && resetOnDisabled) {
-                     // the dropdown is disabled and we need to reset it to its first option
-                     $(element).selectpicker('val', $(element).children('option:first').val());
-                 }
-                 $(element).prop('disabled', isDisabled);
-             }
-             if (ko.isObservable(valueAccessor())) {
-                 if ($(element).prop('multiple') && $.isArray(ko.utils.unwrapObservable(valueAccessor()))) {
-                     // in the case of a multiple select where the valueAccessor() is an observableArray, call the default Knockout selectedOptions binding
-                     ko.bindingHandlers.selectedOptions.update(element, valueAccessor);
-                 } else {
-                     // call the default Knockout value binding
-                     ko.bindingHandlers.value.update(element, valueAccessor);
-                 }
-             }
-
-             $(element).selectpicker('refresh');
-         }
-     }
-};
-
-ko.bindingHandlers.backgroundColorPicker = {
-  init: function(element, valueAccessor, allBindings, viewModel,
-                 bindingContext){
-    priority = valueAccessor()();
-    var color = {'low': '#91c05b',
-                 'medium': '#faaa7a',
-                 'high': '#f76b6f'}[priority];
-
-    $(element).css('background-color', color);
-  }
-};
-
-ko.bindingHandlers.login = {
-  init: function(element, valueAccessor, allBindings, viewModel,
-                 bindingContext){
-    $(element).click(function(e) {
-      e.preventDefault();
-      var data = {
-        "username": viewModel.username(),
-        "password": viewModel.password()
-      };
-      $.post(viewModel.loginUrl, data).then(function (data, _, xhr) {
-        viewModel.clearData();
-
-        $(".login-alert").html('<div class="alert alert-success">Successfully' +
-                               ' logged-in</div>');
-        setTimeout(function() {
-          $(".alert").fadeTo(500, 0).slideUp(500, function(){
-            $(this).remove();
-          });
-        }, 1000);
-
-        viewModel.currentUser(data.username);
-
-        $('.nav-form').hide();
-        $('.logged-in').show();
-        viewModel.init();
-      });
-    });
-  }
-};
-
-ko.bindingHandlers.logout = {
-  init: function(element, valueAccessor, allBindings, viewModel,
-                 bindingContext){
-    $(element).click(function () {
-      $.post(viewModel.logoutUrl).then(function (data, status) {
-        $('.logged-in').hide();
-        $('.nav-form').show();
-      });
-    });
-  }
-};
-
-ko.bindingHandlers.getCurrent = {
-  init: function(element, valueAccessor, allBindings, viewModel,
-                 bindingContext){
-    $(document).ready(function(){
-      $.get(viewModel.currentUserUrl).then(function (data){
-        viewModel.username(data.details.username);
-        $('.nav-form').hide();
-        $('.logged-in').show();
-        viewModel.init();
-      });
-    });
-  }
-};
-
-ko.bindingHandlers.openModal = {
-  init: function(element, valueAccessor, allBindings, viewModel,
-                 bindingContext){
-    $('.create-project').click(function () {
-      $('#projectModal').modal('show');
-    });
-
-    $('.create-task').click(function () {
-      $('#taskModal').modal('show');
-    });
-
-    $('.create-user').click(function () {
-      $('#userModal').modal('show');
-    });
-  }
-};
-
-ko.bindingHandlers.setTask = {
-  init: function(element, valueAccessor, allBindings, viewModel,
-                 bindingContext){
-    bindingContext.$root.task(viewModel);
-  }
-};
 
 $(function () {
   ko.applyBindings(new TaskViewModel());

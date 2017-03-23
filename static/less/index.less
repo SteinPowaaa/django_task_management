@@ -4,6 +4,8 @@
   text-decoration: none;
 }
 
+// Navbar
+
 .logged-in {
   display: none;
   margin-right: 5px;
@@ -15,11 +17,11 @@
   margin-top: 5px;
 }
 
-.btn-nav {
-  .btn-nav-general;
-  margin-left: 5px;
-  margin-top: 13px;
-}
+// .btn-nav {
+//   .btn-nav-general;
+//   margin-left: 5px;
+//   margin-top: 13px;
+// }
 
 .login-alert {
   position: fixed;
@@ -33,19 +35,23 @@
   margin-right: 5px;
 }
 
+// Tasks
+
 .tsk-btn {
   .anchor-general;
   float: right;
-  margin: 5px;
-  font-size: 20px;
+  margin-left: 5px;
+  margin-top: 10px;
+  font-size: 15px;
 
   &:hover{
     text-decoration: none;
+    opacity: 0.7;
   }
 }
 
-.tsk-group {
-  margin-left: 10px;
+.tsk-header {
+  text-align: center;
 }
 
 .tsk-wrapper {
@@ -53,11 +59,8 @@
 }
 
 .tsk-container {
-  //border-style: solid;
-  //border-width: 2px;
-  //border-color: #9e6df9;
   margin: 10px;
-  border-radius: 3px;
+  border-radius: 2px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
   overflow: hidden;
@@ -66,10 +69,6 @@
     transform: scale(1.05, 1.05);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
-}
-
-.tsk-header {
-  text-align: center;
 }
 
 .tsk-heading {
@@ -100,86 +99,33 @@
   font-weight: bold;
 }
 
-.btn-general {
-  border-radius: 3px;
-  padding: 0;
-  line-height: 10px;
-  height: 30px;
-}
+// .btn-general {
+//   border-radius: 2px;
+//   padding: 0;
+//   line-height: 10px;
+//   height: 30px;
+// }
 
-.btn-tsk {
-  .btn-general;
-  width: 80px;
-  margin: 5px;
-}
+// .btn-tsk {
+//   .btn-general;
+//   width: 80px;
+//   margin: 5px;
+// }
 
-.btn-delete {
-  .btn-tsk;
-  float: left;
-}
+// .btn-delete {
+//   .btn-tsk;
+//   float: left;
+// }
 
-.btn-change {
-  .btn-tsk;
-  float: right;
-}
+// .btn-change {
+//   .btn-tsk;
+//   float: right;
+// }
 
-.overlay {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  left: 0;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0, 0.9);
-  overflow-x: hidden;
-  transition: 0.5s;
+// Task Overlay
 
-  a {
-    .anchor-general;
-    padding: 8px;
-    text-decoration: none;
-    font-size: 36px;
-    color: #818181;
-    display: inline-block;
-    transition: 0.3s;
-
-    &:hover,
-    &:focus {
-      color: #f1f1f1;
-    }
-  }
-
-  .closebtn {
-    position: absolute;
-    top: 5px;
-    right: 15px;
-    font-size: 40px;
-  }
-
-  .editbtn {
-    position: absolute;
-    top: 20px;
-    left: 15px;
-    font-size: 30px;
-  }
-}
-
-.overlay-content {
-  position: relative;
-  top: 25%;
-  width: 100%;
-  text-align: center;
-  margin-top: 30px;
-}
-
-@media screen and (max-height: 450px) {
-  .overlay a {font-size: 20px}
-  .overlay .closebtn {
-    font-size: 40px;
-    top: 15px;
-    right: 35px;
-  }
+.tsk-group {
+  margin-left: 10px;
 }
 
 .overlay-task {
@@ -191,15 +137,16 @@
   top: 0;
   left: 0;
   background-color: rgb(255, 255, 255);
-  border: solid rgba(0,0,0, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
   overflow-x: hidden;
   transition: 0.5s;
 
   .closebtn {
     position: absolute;
-    top: 5px;
+    top: 20px;
     right: 15px;
-    font-size: 40px;
+    font-size: 15px;
     .anchor-general;
   }
 
@@ -207,9 +154,13 @@
     position: absolute;
     top: 20px;
     left: 15px;
-    font-size: 30px;
+    font-size: 15px;
     .anchor-general;
   }
+    a:hover,
+    a:focus {
+      opacity: 0.7;
+    }
 }
 
 .overlay-content-task {
@@ -227,14 +178,16 @@
 
   &:before,
   &:after {
-    background: linear-gradient(to bottom, gray, white) no-repeat center / 98% .25em;
+    background: linear-gradient(to bottom, #f6f8f8, #d1d6d6) no-repeat center / 98% .25em;
     content: '';
     display: table-cell;
     width: 50%;
   }
 }
 
-.overlay-manager {
+// Manager
+
+.manager {
   height: 100%;
   width: 100%;
   position: fixed;
@@ -249,52 +202,37 @@
     .anchor-general;
     padding: 8px;
     text-decoration: none;
-    font-size: 36px;
-    color: #818181;
+    font-size: 30px;
+    color: black;
     display: inline-block;
     transition: 0.3s;
 
     &:hover,
     &:focus {
-      color: #f1f1f1;
+      opacity: 0.7;
     }
   }
 
   .closebtn {
     position: absolute;
-    top: 5px;
     right: 15px;
-    font-size: 40px;
-  }
-
-  .editbtn {
-    position: absolute;
-    top: 20px;
-    left: 15px;
     font-size: 30px;
   }
 }
 
-.overlay-manager-sidebar {
-  background-color: rgb(246, 248, 248);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  position: relative;
-  border-radius: 2px;
-  min-width: 300px;
-  text-align: center;
-}
-
-.overlay-manager-main {
+.manager-main {
   background-color: rgb(246, 248, 248);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   position: relative;
   border-radius: 2px;
   text-align: center;
+  margin: 10px;
+  height: 50%;
 }
 
 @media screen and (max-height: 450px) {
-  .overlay a {font-size: 20px}
-  .overlay .closebtn {
+  .manager a {font-size: 20px}
+  .manager .closebtn {
     font-size: 40px;
     top: 15px;
     right: 35px;
@@ -303,11 +241,14 @@
 
 .manager-content-wrapper {
   width: 100%;
-  height: 100%;
+  height: 90%;
+  margin-left: 0;
+  margin-right: 0;
 }
 
-.overlay-manager-element-wrapper {
+.manager-element-wrapper {
   margin-top: 75px;
-  margin-left: 5px;
-
+  padding-right: 0px;
+  padding-left: 0px;
+  height: 100%;
 }

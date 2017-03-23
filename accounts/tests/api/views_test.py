@@ -36,3 +36,10 @@ class TestAccounts:
         response = self.c.post('/api/logout/', {'username': 'admin',
                                                 'password': 'password123'})
         assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_accounts__register(self, user):
+        self.c = Client()
+        self.c.login(username='admin', password='password123')
+        response = self.c.post('/api/logout/', {'username': 'admin',
+                                                'password': 'password123'})
+        assert response.status_code == status.HTTP_202_ACCEPTED

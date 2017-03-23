@@ -33,8 +33,8 @@
 
         <div class="col-md-4 col-sm-6 todo">
           <p class="tsk-header">To Do</p>
-          <div class="tsk-wrapper" style="min-height:60px;" data-bind="foreach: filterTodo,
-                                                   dropZone: { accepts: 'tasks', drop: changeStatusTodo }">
+          <div class="tsk-wrapper" data-bind="foreach: filterTodo,
+                                              dropZone: { accepts: 'tasks', drop: changeStatusTodo }">
             {% include '_task_data.html' %}
           </div>
         </div>
@@ -62,7 +62,6 @@
     <div class="login-alert"></div>
 
     {% include '_manager_overlay.html' %}
-    {% include '_project_overlay.html' %}
     {% include '_task_overlay.html' %}
 
     <script
@@ -77,5 +76,6 @@
     {% csrf_token %}
     <script src="{% static 'js/view-models/index.js' %}"></script>
     <script src="{% static 'js/view-models/knockout.dragdrop.js' %}"></script>
+    <script src="{% static 'js/view-models/custombindings.js' %}"></script>
   </body>
 </html>
