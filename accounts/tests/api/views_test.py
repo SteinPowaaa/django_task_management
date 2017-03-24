@@ -37,6 +37,7 @@ class TestAccounts:
                                                 'password': 'password123'})
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
+    # TODO: REGISTER TESTS
     def test_accounts__register(self, user):
         self.c = Client()
         self.c.login(username='admin', password='password123')

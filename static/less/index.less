@@ -200,9 +200,9 @@
 
   a {
     .anchor-general;
-    padding: 8px;
+    padding: 4px;
     text-decoration: none;
-    font-size: 30px;
+    font-size: 15px;
     color: black;
     display: inline-block;
     transition: 0.3s;
@@ -215,6 +215,7 @@
 
   .closebtn {
     position: absolute;
+    top: 15px;
     right: 15px;
     font-size: 30px;
   }
@@ -228,16 +229,23 @@
   text-align: center;
   margin: 10px;
   height: 50%;
+  overflow: auto;
 }
 
 @media screen and (max-height: 450px) {
-  .manager a {font-size: 20px}
+  .manager a {font-size: 15px}
   .manager .closebtn {
-    font-size: 40px;
+    font-size: 30px;
     top: 15px;
     right: 35px;
   }
 }
+
+.manager-main-header {
+  text-align: left;
+  padding: 5px 0 5px 12px;
+}
+
 
 .manager-content-wrapper {
   width: 100%;
@@ -251,4 +259,51 @@
   padding-right: 0px;
   padding-left: 0px;
   height: 100%;
+}
+
+.manager-prj-wrapper{
+  .tsk-container;
+  text-align: left;
+
+  &:hover {
+    transform: scale(1.03, 1.03);
+  }
+}
+
+.manager-content {
+  display: inline-block;
+  margin: 10px 0 10px 10px;
+  padding: 0;
+}
+
+.manager-icon {
+  float: right;
+
+}
+
+.manager-prj-header {
+  display: inline-block;
+}
+
+// Jquery classes
+
+.accordion {
+  .ui-state-default {
+    border: none;
+    background: initial;
+  }
+
+  .ui-state-active {
+    border: none;
+    background: #f6f8f8;
+    color: initial;
+  }
+
+  .ui-accordion-content {
+    overflow: initial;
+  }
+
+  .ui-accordion-header {
+    backgrount: #f6f8f8;
+  }
 }
