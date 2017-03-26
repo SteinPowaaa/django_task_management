@@ -132,34 +132,3 @@ ko.bindingHandlers.openModal = {
     });
   }
 };
-
-ko.bindingHandlers.accordion = {
-  init: function(element, valueAccessor) {
-    $(element).accordion({
-      header: '.accordion',
-      active: false,
-      collapsible: true,
-      icons: false
-    });
-  }
-};
-
-ko.bindingHandlers.accordionTwo = {
-    init: function(element, valueAccessor) {
-        var options = valueAccessor() || {};
-        setTimeout(function() {
-            $(element).accordion(options);
-        }, 0);
-
-        //handle disposal (if KO removes by the template binding)
-          ko.utils.domNodeDisposal.addDisposeCallback(element, function(){
-              $(element).accordion("destroy");
-          });
-    },
-    update: function(element, valueAccessor) {
-      var options = valueAccessor() || {};
-      if(typeof $(element).data("ui-accordion") != "undefined"){
-        $(element).accordion("destroy").accordion(options);
-      }
-    }
-};

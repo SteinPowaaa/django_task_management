@@ -11,35 +11,46 @@
           <h2>Projects</h2>
         </div>
 
-        <div class="accordion" data-bind="foreach: projects, accordion">
-          <div class="accordion" data-bind="accordion">
-            <div class="manager-prj-wrapper">
-              <div class="manager-content accordion">
+        <div data-bind="foreach: projects">
+            <div class="manager-prj-wrapper accordion">
+              <div class="manager-content accordion-item">
                 <div class="manager-prj-header" data-bind="text: title"></div>
                 <a class="glyphicon glyphicon-pencil manager-icon create-project"
                    data-bind="openModal"></a><!-- $root.pickProject(project) -->
                 <a class="glyphicon glyphicon-remove manager-icon"
                    data-bind="click: $root.removeProject"></a>
-              </div>
-              <div>
-                <span class="manager-content" data-bind="text: description"</span>
+                <div class="accordion-item-content">
+                    <span class="manager-content" data-bind="text: description"</span>
+                </div>
               </div>
             </div>
-          </div>
         </div>
 
       </div>
 
-        <div class="manager-main" data-bind="foreach: projects">
-          <div>
-            <a data-bind="text: title, click: function(project) { $root.pickProject(project),
-                          $root.toggleProjectLayout() }"></a>
-            <a class="create-project"
-               data-bind="click: function(project){ $root.pickProject(project),
-                          $root.toggleProjectLayout() }, openModal">✎</a>
-            <a data-bind="click: $root.removeProject">×</a>
+      <div class="manager-main">
+          <div class="manager-main-header">
+              <h2>Sprints</h2>
           </div>
-        </div>
+
+          <div class="accordion" data-bind="foreach: projects, accordion">
+              <div class="accordion" data-bind="accordion">
+                  <div class="manager-prj-wrapper">
+                      <div class="manager-content accordion">
+                          <div class="manager-prj-header" data-bind="text: title"></div>
+                          <a class="glyphicon glyphicon-pencil manager-icon create-project"
+                             data-bind="openModal"></a><!-- $root.pickProject(project) -->
+                          <a class="glyphicon glyphicon-remove manager-icon"
+                             data-bind="click: $root.removeProject"></a>
+                      </div>
+                      <div>
+                          <span class="manager-content" data-bind="text: description"</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+      </div>
 
     </div>
 

@@ -255,7 +255,7 @@
 }
 
 .manager-element-wrapper {
-  margin-top: 75px;
+  margin-top: 50px;
   padding-right: 0px;
   padding-left: 0px;
   height: 100%;
@@ -274,6 +274,7 @@
   display: inline-block;
   margin: 10px 0 10px 10px;
   padding: 0;
+  width: 95%;
 }
 
 .manager-icon {
@@ -285,25 +286,15 @@
   display: inline-block;
 }
 
-// Jquery classes
+// accordion
+.accordion:hover .accordion-item:hover .accordion-item-content,
+.accordion .accordion-item--default .accordion-item-content {
+    height: 3em;
+}
 
-.accordion {
-  .ui-state-default {
-    border: none;
-    background: initial;
-  }
-
-  .ui-state-active {
-    border: none;
-    background: #f6f8f8;
-    color: initial;
-  }
-
-  .ui-accordion-content {
-    overflow: initial;
-  }
-
-  .ui-accordion-header {
-    backgrount: #f6f8f8;
-  }
+.accordion-item-content,
+.accordion:hover .accordion-item-content {
+    height: 0;
+    overflow: hidden;
+    transition: height .25s;
 }
