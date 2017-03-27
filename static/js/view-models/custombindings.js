@@ -48,7 +48,7 @@ ko.bindingHandlers.selectPicker = {
      }
 };
 
-ko.bindingHandlers.backgroundColorPicker = {
+ko.bindingHandlers.borderColorPicker = {
   init: function(element, valueAccessor, allBindings, viewModel,
                  bindingContext){
     priority = valueAccessor()();
@@ -56,7 +56,10 @@ ko.bindingHandlers.backgroundColorPicker = {
                  'medium': '#faaa7a',
                  'high': '#f76b6f'}[priority];
 
-    $(element).css('background-color', color);
+    $(element).css({
+      'border-left': 'solid 10px',
+      'border-color': color
+    });
   }
 };
 
@@ -108,6 +111,7 @@ ko.bindingHandlers.getCurrent = {
     $(document).ready(function(){
       $.get(viewModel.currentUserUrl).then(function (data){
         viewModel.currentUser(data.details);
+        viewModel.clearData();
         $('.nav-form').hide();
         $('.logged-in').show();
         viewModel.init();
@@ -119,16 +123,8 @@ ko.bindingHandlers.getCurrent = {
 ko.bindingHandlers.openModal = {
   init: function(element, valueAccessor, allBindings, viewModel,
                  bindingContext){
-    $('.create-project').click(function () {
-      $('#projectModal').modal('show');
-    });
-
-    $('.create-task').click(function () {
-      $('#taskModal').modal('show');
-    });
-
-    $('.create-user').click(function () {
-      $('#userModal').modal('show');
+    $(element).click(function () {
+      $('#' + valueAccessor() + 'Modal').modal('show');
     });
   }
 };

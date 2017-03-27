@@ -381,7 +381,8 @@
 
     ko.utils.extend(ko.bindingHandlers, {
         dropZone: {
-            init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+          init: function (element, valueAccessor, allBindingsAccessor,
+                          viewModel, bindingContext) {
                 var options = ko.utils.unwrapObservable(valueAccessor());
                 var accepts = getAcceptedDragZones(options);
 
@@ -414,7 +415,8 @@
         },
 
         dragEvents: {
-            init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+          init: function (element, valueAccessor, allBindingsAccessor,
+                          viewModel, bindingContext) {
                 var options = ko.utils.unwrapObservable(valueAccessor());
                 var accepts = getAcceptedDragZones(options);
 

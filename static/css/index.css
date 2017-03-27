@@ -3,6 +3,19 @@
   cursor: pointer;
   text-decoration: none;
 }
+#my-file-selector {
+  display: none;
+}
+.modal-close {
+  float: right;
+  font-size: 15px;
+  color: black;
+  border: 0;
+  background: 0 0;
+}
+.modal-close:hover {
+  opacity: 0.7;
+}
 .logged-in {
   display: none;
   margin-right: 5px;
@@ -59,6 +72,7 @@
   font-weight: bold;
   font-size: 1.2em;
   margin-right: 5px;
+  border-radius: 2px;
 }
 .tsk-heading-txt {
   display: inline-block;
@@ -66,6 +80,8 @@
 }
 .tsk-output {
   margin: 5px;
+  border-radius: 2px;
+  float: right;
 }
 .tsk-title {
   margin: 5px;
@@ -87,7 +103,6 @@
   position: fixed;
   z-index: 1000;
   top: 0;
-  left: 0;
   background-color: #ffffff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   border-radius: 2px;
@@ -140,7 +155,7 @@
   width: 100%;
   position: fixed;
   z-index: 1000;
-  top: 0;
+  top: -100%;
   left: 0;
   background-color: #e1e2dd;
   overflow-x: hidden;
@@ -228,20 +243,11 @@
 .manager-prj-header {
   display: inline-block;
 }
-.accordion .ui-state-default {
-  border: none;
-  background: initial;
-}
-.accordion .ui-state-active {
-  border: none;
-  background: #f6f8f8;
-  color: initial;
-}
-.accordion .ui-accordion-content {
-  overflow: initial;
-}
-.accordion .ui-accordion-header {
-  backgrount: #f6f8f8;
+.manager-header {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 30px;
 }
 .accordion:hover .accordion-item:hover .accordion-item-content,
 .accordion .accordion-item--default .accordion-item-content {

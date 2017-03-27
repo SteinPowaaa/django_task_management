@@ -2,7 +2,7 @@
 {% load static %}
 <html lang="en">
   <head>
-    <title>ToDo</title>
+    <title>Minimal TMS</title>
     <script
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -38,32 +38,33 @@
       {% include '_task_modal.html' %}
       {% include '_project_modal.html' %}
       {% include '_user_modal.html' %}
+      {% include '_sprint_modal.html' %}
 
-        <div class="col-md-4 col-sm-6 todo">
-          <p class="tsk-header">To Do</p>
-          <div class="tsk-wrapper" data-bind="foreach: filterTodo,
-                                              dropZone: { accepts: 'tasks', drop: changeStatusTodo }">
-            {% include '_task_data.html' %}
-          </div>
+      <div class="col-md-4 col-sm-6 todo">
+        <p class="tsk-header">To Do</p>
+        <div class="tsk-wrapper" data-bind="foreach: filterTodo,
+                                            dropZone: { accepts: 'tasks', drop: changeStatusTodo }">
+          {% include '_task_data.html' %}
         </div>
-
-        <div class="col-md-4 col-sm-6 in-progress">
-          <p class="tsk-header">In Progress</p>
-          <div class="tsk-wrapper" data-bind="foreach: filterInProgress,
-                          dropZone: { accepts: 'tasks', drop: changeStatusInProgress }">
-            {% include '_task_data.html' %}
-          </div>
-        </div>
-
-        <div class="col-md-4 col-sm-6 completed">
-          <p class="tsk-header">Completed</p>
-          <div class="tsk-wrapper" data-bind="foreach: filterCompleted,
-          dropZone: { accepts: 'tasks', drop: changeStatusCompleted }">
-            {% include '_task_data.html' %}
-          </div>
-        </div>
-
       </div>
+
+      <div class="col-md-4 col-sm-6 in-progress">
+        <p class="tsk-header">In Progress</p>
+        <div class="tsk-wrapper" data-bind="foreach: filterInProgress,
+                                            dropZone: { accepts: 'tasks', drop: changeStatusInProgress }">
+          {% include '_task_data.html' %}
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-6 completed">
+        <p class="tsk-header">Completed</p>
+        <div class="tsk-wrapper" data-bind="foreach: filterCompleted,
+                                            dropZone: { accepts: 'tasks', drop: changeStatusCompleted }">
+          {% include '_task_data.html' %}
+        </div>
+      </div>
+
+    </div>
 
     </div>
 

@@ -15,27 +15,42 @@
       <a class="dropdown-toggle" data-toggle="dropdown">
         <span class="glyphicon glyphicon-plus-sign"></span>
       </a>
-        <ul class="dropdown-menu" data-bind="openModal">
-          <li><a class="create-task" data-bind="click: pickTask(new Task({}))">Create Task</a></li>
-          <li><a class="create-project" data-bind="click: pickProject(new Project({}))">Create Project</a></li>
-          <li><a class="create-user">Create User</a></li>
+        <ul class="dropdown-menu">
+          <li><a data-bind="click: pickTask(new Task({})),
+                            openModal: 'task'">Create Task</a></li>
+          <li><a data-bind="click: pickProject(new Project({})),
+                            openModal: 'project'">Create Project</a></li>
+          <li><a data-bind="click: pickSprint(new Sprint({})),
+                            openModal: 'sprint'">Create Sprint</a></li>
+          <li><a data-bind="openModal: 'user'">Create User</a></li>
         </ul>
     </li>
 
-    <li class="dropdown">
+    <li class="dropdown" data-bind="visible: projects().length > 0">
       <a class="dropdown-toggle" data-toggle="dropdown">
         <span data-bind="text: currentProject().title"></span>
         <span class="glyphicon glyphicon-chevron-down"></span>
       </a>
-      <ul class="dropdown-menu" data-bind="openModal">
+      <ul class="dropdown-menu">
         <li data-bind="foreach: projects">
           <a data-bind="click: $root.selectProject, text: title"></a>
         </li>
       </ul>
     </li>
 
-    <li><a>Sprints</a></li>
-    <li><a>Manage</a></li>
+    <li class="dropdown" data-bind="visible: sprints().length > 0">
+      <a class="dropdown-toggle" data-toggle="dropdown">
+        <span data-bind="text: currentSprint().title"></span>
+        <span class="glyphicon glyphicon-chevron-down"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li data-bind="foreach: sprints">
+          <a data-bind="click: $root.selectSprint, text: title"></a>
+        </li>
+      </ul>
+    </li>
+
+    <li><a data-bind="click: toggleManager">Manage</a></li>
   </ul>
 
   <form class="navbar-form navbar-right nav-form">

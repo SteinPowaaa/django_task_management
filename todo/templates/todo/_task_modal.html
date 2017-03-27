@@ -5,7 +5,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="glyphicon glyphicon-remove modal-close" data-dismiss="modal"></button>
         <h4 class="modal-title">Task Properties</h4>
       </div>
       <div class="modal-body">
@@ -75,6 +75,24 @@
                                                   selectPickerOptions: { optionsArray: projects }">
           </select>
         </div>
+
+        Sprints:
+
+        <div class="input-group">
+          <select class="selectpicker" data-bind="selectPicker: task().sprint,
+                                                  optionsText: 'title',
+                                                  optionsValue: 'id',
+                                                  selectPickerOptions: { optionsArray: sprints }">
+          </select>
+        </div>
+
+        Avatar:
+        <!-- Fix this -->
+        <label class="btn btn-default input-group" for="my-file-selector">
+          <input id="my-file-selector" type="file" onchange="$('#upload-file-info').html($(this).val());">
+          Upload
+        </label>
+        <span class='label label-info' id="upload-file-info"></span>
 
       </div>
       <div class="modal-footer">

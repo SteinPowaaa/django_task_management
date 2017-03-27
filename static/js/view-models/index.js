@@ -9,6 +9,7 @@ function Task(data) {
   this.taskType = ko.observable(data.task_type || "");
   this.project = ko.observable(data.project || "");
   this.refTask = ko.observable(data.ref_task || null);
+  this.sprint = ko.observable(data.sprint || null);
 }
 
 Task.prototype.normalize = function () {
@@ -22,7 +23,8 @@ Task.prototype.normalize = function () {
     "assignees": this.assignees(),
     "task_type": this.taskType(),
     "project": this.project(),
-    "ref_task": this.refTask() ? this.refTask().normalize() : null
+    "ref_task": this.refTask() ? this.refTask().normalize() : null,
+    "sprint": this.sprint()
   };
 };
 
@@ -97,7 +99,8 @@ function TaskViewModel() {
   self.currentUser = ko.observable();
   self.users = ko.observableArray([]);
 
-  self.toggleMenu = ko.observable(false);
+  self._toggleMenu = ko.observable(false);
+  self._toggleManager = ko.observable(false);
 
   self.username = ko.observable();
   self.password = ko.observable();
@@ -148,10 +151,14 @@ function TaskViewModel() {
   self.populate = function () {
     self.populateUsers();
     self.populateProjects().then(function () {
-      if (self.projects().length !== 0) {
+      if (self.projects().length > 0) {
         self.currentProject(self.projects()[0]);
         self.populateTasks();
-        // self.populateSprints();
+        self.populateSprints().then(function () {
+          if (self.sprints().length > 0) {
+            self.currentSprint(self.sprints()[0]);
+          }
+        });
       }
     });
   };
@@ -195,18 +202,18 @@ function TaskViewModel() {
     self.users(users);
   };
 
-  // self.populateSprints = function () {
-  //   $.getJSON(self.sprintsUrl).then(function (data) {
-  //     self._populateSprints(data);
-  //   });
-  // };
+  self.populateSprints = function () {
+    return $.getJSON(self.sprintsUrl()).then(function (data) {
+      self._populateSprints(data);
+    });
+  };
 
-  // self._populateSprints = function (data) {
-  //   sprints = data.map(function (sprintData) {
-  //     return new Sprint(sprintData);
-  //   });
-  //   self.sprints(sprints);
-  // };
+  self._populateSprints = function (data) {
+    sprints = data.map(function (sprintData) {
+      return new Sprint(sprintData);
+    });
+    self.sprints(sprints);
+  };
 
   self.createProject = function () {
     var projectJSON = self.project().normalize();
@@ -282,34 +289,6 @@ function TaskViewModel() {
     });
   };
 
-  self.clearData = function () {
-    self.username(null);
-    self.email(null);
-    self.password(null);
-  };
-
-  self.createUser = function () {
-    var userJSON = {
-      "username": self.username(),
-      "email": self.email(),
-      "password": self.password()
-    };
-
-    $.post(self.usersUrl, userJSON).then(function (data) {
-      self.users.push(new User(data));
-    });
-
-    self.clearData();
-  };
-
-  self.tasksUrl = ko.computed(function () {
-    return '/api/projects/' + self.currentProject().id +'/tasks/';
-  });
-
-  self.sprintsUrl = ko.computed(function () {
-    return '/api/projects/' + self.currentProject().id  +'/sprints/';
-  });
-
   self.createTask = function () {
     var taskJSON = self.task().normalize();
     $.post(self.tasksUrl(), taskJSON).then(function (data) {
@@ -347,26 +326,60 @@ function TaskViewModel() {
     }
   };
 
+  self.clearData = function () {
+    self.username(null);
+    self.email(null);
+    self.password(null);
+  };
+
+  self.createUser = function () {
+    var userJSON = {
+      "username": self.username(),
+      "email": self.email(),
+      "password": self.password()
+    };
+
+    $.post(self.usersUrl, userJSON).then(function (data) {
+      self.users.push(new User(data));
+    });
+
+    self.clearData();
+  };
+
+  self.tasksUrl = ko.computed(function () {
+    return '/api/projects/' + self.currentProject().id +'/tasks/';
+  });
+
+  self.sprintsUrl = ko.computed(function () {
+    return '/api/projects/' + self.currentProject().id  +'/sprints/';
+  });
+
   self.filterProject = ko.computed(function () {
     return self.tasks().filter(function (task) {
       return task.project() === self.currentProject().id;
     });
   });
 
-  self.filterTodo = ko.computed(function () {
+  self.filterSprint = ko.computed(function () {
     return self.filterProject().filter(function (task) {
+      return task.sprint() === self.currentSprint().id;
+    });
+  });
+
+  self.filterTodo = ko.computed(function () {
+    return self.filterSprint().filter(function (task) {
       return task.status() === 'todo';
     });
   });
 
   self.filterInProgress = ko.computed(function () {
-    return self.filterProject().filter(function (task) {
+    return self.filterSprint().filter(function (task) {
       return task.status() === 'in-progress';
     });
   });
 
   self.filterCompleted = ko.computed(function () {
-    return self.filterProject().filter(function (task) {
+    return self.filterSprint().filter(function (task) {
       return task.status() === 'completed';
     });
   });
@@ -392,14 +405,26 @@ function TaskViewModel() {
     self.updateTask(task);
   };
 
-  self.toggleSidebar = function () {
-    self.toggleMenu(!self.toggleMenu());
+  self.toggleMenu = function () {
+    self._toggleMenu(!self._toggleMenu());
+  };
+
+  self.toggleManager = function () {
+    self._toggleManager(!self._toggleManager());
   };
 
   self.selectProject = function (project) {
     self.currentProject(project);
     self.populateTasks();
-    //self.populateSprints();
+    self.populateSprints().then(function () {
+      if (self.sprints().length > 0) {
+        self.currentSprint(self.sprints()[0]);
+      }
+    });
+  };
+
+  self.selectSprint = function (sprint) {
+    self.currentSprint(sprint);
   };
 
   self.pickProject = function (project) {

@@ -1,7 +1,26 @@
+// Global
+
 .anchor-general {
   color: black;
   cursor: pointer;
   text-decoration: none;
+}
+
+// Modal
+
+#my-file-selector {
+  display: none;
+}
+
+.modal-close {
+  float: right;
+  font-size: 15px;
+  color: black;
+  border: 0;
+  background: 0 0;
+  &:hover {
+    opacity: 0.7;
+  }
 }
 
 // Navbar
@@ -16,12 +35,6 @@
   line-height: 5px;
   margin-top: 5px;
 }
-
-// .btn-nav {
-//   .btn-nav-general;
-//   margin-left: 5px;
-//   margin-top: 13px;
-// }
 
 .login-alert {
   position: fixed;
@@ -76,6 +89,7 @@
   font-weight: bold;
   font-size: 1.2em;
   margin-right: 5px;
+  border-radius: 2px;
 }
 
 .tsk-heading-txt {
@@ -85,6 +99,8 @@
 
 .tsk-output {
   margin: 5px;
+  border-radius: 2px;
+  float: right;
 }
 
 .tsk-title {
@@ -99,29 +115,6 @@
   font-weight: bold;
 }
 
-// .btn-general {
-//   border-radius: 2px;
-//   padding: 0;
-//   line-height: 10px;
-//   height: 30px;
-// }
-
-// .btn-tsk {
-//   .btn-general;
-//   width: 80px;
-//   margin: 5px;
-// }
-
-// .btn-delete {
-//   .btn-tsk;
-//   float: left;
-// }
-
-// .btn-change {
-//   .btn-tsk;
-//   float: right;
-// }
-
 // Task Overlay
 
 .tsk-group {
@@ -135,7 +128,6 @@
   position: fixed;
   z-index: 1000;
   top: 0;
-  left: 0;
   background-color: rgb(255, 255, 255);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   border-radius: 2px;
@@ -192,7 +184,7 @@
   width: 100%;
   position: fixed;
   z-index: 1000;
-  top: 0;
+  top: -100%;
   left: 0;
   background-color: rgb(225, 226, 221);
   overflow-x: hidden;
@@ -284,6 +276,13 @@
 
 .manager-prj-header {
   display: inline-block;
+}
+
+.manager-header {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 30px;
 }
 
 // accordion

@@ -1,15 +1,15 @@
-<div class="tsk-container" data-bind="backgroundColorPicker: priority,
+<div class="tsk-container" data-bind="borderColorPicker: priority,
                                       click: function(task){
-                                      $root.toggleSidebar(),
+                                      $root.toggleMenu(),
                                       $root.pickTask(task)
                                       }
                                       dragZone: { name: 'tasks' }">
   <div class="tsk-title" data-bind="text: title" style="float: left"></div>
   <div data-bind="foreach: assignees">
-    <img class="img-rounded tsk-output" style="float: right" data-bind="attr: { src: avatar_thumbnail }"></img>
+    <img class="tsk-output" data-bind="attr: { src: avatar_thumbnail }"></img>
   </div>
   <a class="tsk-btn create-task glyphicon glyphicon-pencil"
-     data-bind="openModal, click: $root.pickTask, clickBubble: false"></a>
+     data-bind="click: $root.pickTask, clickBubble: false, openModal: 'task'"></a>
   <a class="tsk-btn glyphicon glyphicon-remove" data-bind="click:
                                                            $root.removeTask, clickBubble: false"></a>
 </div>

@@ -1,29 +1,29 @@
 <!-- Modal -->
-<div class="modal fade" id="projectModal" role="dialog">
+<div class="modal fade" id="sprintModal" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="glyphicon glyphicon-remove modal-close" data-dismiss="modal"></button>
-        <h4 class="modal-title">Project Properties</h4>
+        <h4 class="modal-title">Sprint Properties</h4>
       </div>
       <div class="modal-body">
 
         Title:
         <div>
-          <input class="form-control" type="text" data-bind="value: project().title">
+          <input class="form-control" type="text" data-bind="value: sprint().title">
         </div>
 
         Description:
         <div>
-          <input class="form-control" type="text" data-bind="value: project().description">
+          <input class="form-control" type="text" data-bind="value: sprint().description">
         </div>
 
       </div>
       <div class="modal-footer">
         <input class="btn btn-default" type="submit" value="Submit"
-               data-bind="click: submitProject" data-dismiss="modal">
+               data-bind="click: submitSprint" data-dismiss="modal">
       </div>
     </div>
   </div>
