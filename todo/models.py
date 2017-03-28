@@ -64,8 +64,6 @@ class Task(models.Model):
     project = models.ForeignKey('Project',
                                 related_name="task_project",
                                 on_delete=models.CASCADE)
-
-    # check this relation
     sprint = models.ForeignKey('Sprint',
                                related_name='task_sprint',
                                null=True, blank=True)
@@ -85,6 +83,8 @@ class Sprint(models.Model):
     project = models.ForeignKey('Project',
                                 related_name='sprint_project',
                                 on_delete=models.CASCADE)
-    # task many-to-many?
+    tasks = models.ManyToManyField('Task',
+                                   related_name='sprint_task',
+                                   null=True, blank=True)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=1024, blank=True)

@@ -1,6 +1,6 @@
-<nav class="navbar navbar-inverse navbar-static-top anchor-general" role="navigation">
+<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
   <ul class="nav navbar-nav navbar-right logged-in">
-    <li class="dropdown">
+    <li class="dropdown anchor-general">
       <a class="dropdown-toggle" data-toggle="dropdown">
         <span data-bind="text: currentUser() && currentUser().username"></span>
         <span class="glyphicon glyphicon-user"></span>
@@ -12,7 +12,7 @@
 
   <ul class="nav navbar-nav navbar-left">
     <li class="dropdown">
-      <a class="dropdown-toggle" data-toggle="dropdown">
+      <a class="dropdown-toggle anchor-general" data-toggle="dropdown">
         <span class="glyphicon glyphicon-plus-sign"></span>
       </a>
         <ul class="dropdown-menu">
@@ -27,7 +27,7 @@
     </li>
 
     <li class="dropdown" data-bind="visible: projects().length > 0">
-      <a class="dropdown-toggle" data-toggle="dropdown">
+      <a class="dropdown-toggle anchor-general" data-toggle="dropdown">
         <span data-bind="text: currentProject().title"></span>
         <span class="glyphicon glyphicon-chevron-down"></span>
       </a>
@@ -39,18 +39,18 @@
     </li>
 
     <li class="dropdown" data-bind="visible: sprints().length > 0">
-      <a class="dropdown-toggle" data-toggle="dropdown">
+      <a class="dropdown-toggle anchor-general" data-toggle="dropdown">
         <span data-bind="text: currentSprint().title"></span>
         <span class="glyphicon glyphicon-chevron-down"></span>
       </a>
       <ul class="dropdown-menu">
         <li data-bind="foreach: sprints">
-          <a data-bind="click: $root.selectSprint, text: title"></a>
+          <a data-bind="click: $root.pickSprint, text: title"></a>
         </li>
       </ul>
     </li>
 
-    <li><a data-bind="click: toggleManager">Manage</a></li>
+    <li><a class="anchor-general" data-bind="click: toggleManager">Manage</a></li>
   </ul>
 
   <form class="navbar-form navbar-right nav-form">
@@ -58,7 +58,7 @@
            data-bind="value: username"></input>
     <input class="form-control login-input" type="password"
            placeholder="password" data-bind="value: password"></input>
-    <input class="btn btn-default login-input" type="submit" value="Submit"
+    <input class="btn btn-default login-input anchor-general" type="submit" value="Submit"
            data-bind="login"></input>
   </form>
 </nav>

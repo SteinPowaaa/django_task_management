@@ -100,6 +100,7 @@ ko.bindingHandlers.logout = {
       $.post(viewModel.logoutUrl).then(function () {
         $('.logged-in').hide();
         $('.nav-form').show();
+        viewModel.clearData();
       });
     });
   }
@@ -111,7 +112,7 @@ ko.bindingHandlers.getCurrent = {
     $(document).ready(function(){
       $.get(viewModel.currentUserUrl).then(function (data){
         viewModel.currentUser(data.details);
-        viewModel.clearData();
+        viewModel.clearCredentials();
         $('.nav-form').hide();
         $('.logged-in').show();
         viewModel.init();
@@ -126,5 +127,18 @@ ko.bindingHandlers.openModal = {
     $(element).click(function () {
       $('#' + valueAccessor() + 'Modal').modal('show');
     });
+  }
+};
+
+ko.bindingHandlers.iconPicker = {
+  init: function(element, valueAccessor, allBindings, viewModel,
+                 bindingContext){
+    var taskType = valueAccessor()();
+    var icon = {'bug': 'fa fa-bug',
+                'improvement': 'fa fa-bolt',
+                'sub-task': 'fa fa-certificate',
+                'story': 'fa fa-book'}[taskType];
+
+    $(element).addClass(icon);
   }
 };

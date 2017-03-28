@@ -10,6 +10,7 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     assignees = UserSerializer(many=True, read_only=True)
+    # sprint, creator serializer
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -22,3 +23,5 @@ class SprintSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sprint
         fields = '__all__'
+
+    # task serializer?

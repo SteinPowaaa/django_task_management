@@ -4,6 +4,9 @@
   color: black;
   cursor: pointer;
   text-decoration: none;
+  &:hover {
+    opacity: 0.7;
+  }
 }
 
 // Modal
@@ -49,6 +52,10 @@
 }
 
 // Tasks
+
+.options-selector:hover {
+  opacity: 1;
+}
 
 .tsk-btn {
   .anchor-general;
@@ -107,12 +114,18 @@
   margin: 5px;
   word-wrap: break-word;
   width: auto;
+  float: left;
 }
 
 .tsk-header {
   clear: both;
   font-size: 20px;
   font-weight: bold;
+}
+
+.tsk-icon {
+  float: left;
+  margin: 8px;
 }
 
 // Task Overlay
@@ -258,7 +271,7 @@
   text-align: left;
 
   &:hover {
-    transform: scale(1.03, 1.03);
+    transform: scale(1.02, 1.02);
   }
 }
 
@@ -276,6 +289,8 @@
 
 .manager-prj-header {
   display: inline-block;
+  word-wrap: break-word;
+  width: auto;
 }
 
 .manager-header {
@@ -285,10 +300,27 @@
   font-size: 30px;
 }
 
+.manager-heading-row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.manager-heading-text {
+  font-size: 30px;
+  padding-left: 0;
+}
+
+.manager-heading-icon {
+  text-align: right;
+  top: 10px;
+  font-size: 25px;
+}
+
 // accordion
 .accordion:hover .accordion-item:hover .accordion-item-content,
 .accordion .accordion-item--default .accordion-item-content {
-    height: 3em;
+  height: 50px;
+  overflow:auto;
 }
 
 .accordion-item-content,

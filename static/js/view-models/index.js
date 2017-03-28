@@ -38,6 +38,7 @@ function Sprint(data) {
   this.id = data.id || "";
   this.title = ko.observable(data.title || "");
   this.description = ko.observable(data.description || "");
+  this.tasks = ko.observableArray(data.tasks || []);
 }
 
 Project.prototype.normalize = function () {
@@ -93,6 +94,7 @@ function TaskViewModel() {
   self.projects = ko.observableArray([]);
   self.currentProject = ko.observable(new Project({"id": 1}));
 
+  // change name to current task
   self.task = ko.observable(new Task({}));
   self.tasks = ko.observableArray([]);
 
@@ -326,10 +328,17 @@ function TaskViewModel() {
     }
   };
 
-  self.clearData = function () {
+  self.clearCredentials = function () {
     self.username(null);
     self.email(null);
     self.password(null);
+  };
+
+  self.clearData = function () {
+    self.tasks([]);
+    self.projects([]);
+    self.sprints([]);
+    self.users([]);
   };
 
   self.createUser = function () {
@@ -343,7 +352,7 @@ function TaskViewModel() {
       self.users.push(new User(data));
     });
 
-    self.clearData();
+    self.clearCredentials();
   };
 
   self.tasksUrl = ko.computed(function () {
@@ -391,18 +400,38 @@ function TaskViewModel() {
   });
 
   self.changeStatusTodo = function (task) {
-    task.status('todo');
-    self.updateTask(task);
+    self.task(task);
+    self.task().status('todo');
+    self.updateTask();
   };
 
   self.changeStatusInProgress = function (task) {
-    task.status('in-progress');
-    self.updateTask(task);
+    self.task(task);
+    self.task().status('in-progress');
+    self.updateTask();
   };
 
   self.changeStatusCompleted = function (task) {
-    task.status('completed');
-    self.updateTask(task);
+    self.task(task);
+    self.task().status('completed');
+    self.updateTask();
+  };
+
+  self.addTaskToSprint = function (task) {
+    self.task(task);
+    self.task().sprint(self.currentSprint());
+    self.currentSprint().tasks.push(task);
+    self.updateTask();
+    self.updateSprint();
+  };
+
+  self.removeTaskFromSprint = function (task) {
+    self.task(task);
+    self.task().sprint(null);
+    var index = self.currentSprint().tasks.indexOf(task);
+    self.currentSprint().tasks.splice(index, 1);
+    self.updateTask();
+    self.updateSprint();
   };
 
   self.toggleMenu = function () {
@@ -421,10 +450,6 @@ function TaskViewModel() {
         self.currentSprint(self.sprints()[0]);
       }
     });
-  };
-
-  self.selectSprint = function (sprint) {
-    self.currentSprint(sprint);
   };
 
   self.pickProject = function (project) {

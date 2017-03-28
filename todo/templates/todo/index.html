@@ -24,7 +24,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 
     <!-- Latest compiled and minified JavaScript(bs-select) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+    <!-- Font Awesome -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- static css -->
     <link href="{% static 'css/index.css' %}" rel="stylesheet">
@@ -40,7 +44,7 @@
       {% include '_user_modal.html' %}
       {% include '_sprint_modal.html' %}
 
-      <div class="col-md-4 col-sm-6 todo">
+      <div class="col-md-4 col-sm-6">
         <p class="tsk-header">To Do</p>
         <div class="tsk-wrapper" data-bind="foreach: filterTodo,
                                             dropZone: { accepts: 'tasks', drop: changeStatusTodo }">
@@ -48,15 +52,16 @@
         </div>
       </div>
 
-      <div class="col-md-4 col-sm-6 in-progress">
+      <div class="col-md-4 col-sm-6">
         <p class="tsk-header">In Progress</p>
         <div class="tsk-wrapper" data-bind="foreach: filterInProgress,
-                                            dropZone: { accepts: 'tasks', drop: changeStatusInProgress }">
+                                            dropZone: { accepts: 'tasks', drop:
+                                            changeStatusInProgress }">
           {% include '_task_data.html' %}
         </div>
       </div>
 
-      <div class="col-md-4 col-sm-6 completed">
+      <div class="col-md-4 col-sm-6">
         <p class="tsk-header">Completed</p>
         <div class="tsk-wrapper" data-bind="foreach: filterCompleted,
                                             dropZone: { accepts: 'tasks', drop: changeStatusCompleted }">

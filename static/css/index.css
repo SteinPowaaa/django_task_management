@@ -3,6 +3,9 @@
   cursor: pointer;
   text-decoration: none;
 }
+.anchor-general:hover {
+  opacity: 0.7;
+}
 #my-file-selector {
   display: none;
 }
@@ -37,6 +40,9 @@
   display: inline;
   margin-right: 5px;
 }
+.options-selector:hover {
+  opacity: 1;
+}
 .tsk-btn {
   color: black;
   cursor: pointer;
@@ -45,6 +51,9 @@
   margin-left: 5px;
   margin-top: 10px;
   font-size: 15px;
+}
+.tsk-btn:hover {
+  opacity: 0.7;
 }
 .tsk-btn:hover {
   text-decoration: none;
@@ -87,11 +96,16 @@
   margin: 5px;
   word-wrap: break-word;
   width: auto;
+  float: left;
 }
 .tsk-header {
   clear: both;
   font-size: 20px;
   font-weight: bold;
+}
+.tsk-icon {
+  float: left;
+  margin: 8px;
 }
 .tsk-group {
   margin-left: 10px;
@@ -118,6 +132,9 @@
   cursor: pointer;
   text-decoration: none;
 }
+.overlay-task .closebtn:hover {
+  opacity: 0.7;
+}
 .overlay-task .editbtn {
   position: absolute;
   top: 20px;
@@ -126,6 +143,9 @@
   color: black;
   cursor: pointer;
   text-decoration: none;
+}
+.overlay-task .editbtn:hover {
+  opacity: 0.7;
 }
 .overlay-task a:hover,
 .overlay-task a:focus {
@@ -169,6 +189,9 @@
   color: black;
   display: inline-block;
   transition: 0.3s;
+}
+.manager a:hover {
+  opacity: 0.7;
 }
 .manager a:hover,
 .manager a:focus {
@@ -229,7 +252,7 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 .manager-prj-wrapper:hover {
-  transform: scale(1.03, 1.03);
+  transform: scale(1.02, 1.02);
 }
 .manager-content {
   display: inline-block;
@@ -242,6 +265,8 @@
 }
 .manager-prj-header {
   display: inline-block;
+  word-wrap: break-word;
+  width: auto;
 }
 .manager-header {
   position: absolute;
@@ -249,9 +274,23 @@
   left: 15px;
   font-size: 30px;
 }
+.manager-heading-row {
+  margin-right: 0;
+  margin-left: 0;
+}
+.manager-heading-text {
+  font-size: 30px;
+  padding-left: 0;
+}
+.manager-heading-icon {
+  text-align: right;
+  top: 10px;
+  font-size: 25px;
+}
 .accordion:hover .accordion-item:hover .accordion-item-content,
 .accordion .accordion-item--default .accordion-item-content {
-  height: 3em;
+  height: 50px;
+  overflow: auto;
 }
 .accordion-item-content,
 .accordion:hover .accordion-item-content {

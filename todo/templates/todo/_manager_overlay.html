@@ -1,4 +1,4 @@
-<div class="manager" style="top: -100%"> <!-- data-bind="style: { top: _toggleManager() ? '0' : '-100%' }" -->
+<div class="manager" data-bind="style: { top: _toggleManager() ? '0' : '-100%' }">
 
   <div>
     <div class="manager-header">Manage</div>
@@ -11,7 +11,14 @@
 
       <div class="manager-main">
         <div class="manager-main-header">
-          <h2>Projects</h2>
+          <div class="row manager-heading-row">
+            <div class="col-xs-6 manager-heading-text">Projects</div>
+            <div class="col-xs-6 manager-heading-icon">
+              <div class="glyphicon glyphicon-plus-sign anchor-general"
+                   data-bind="click: pickProject(new Project({})),
+                              openModal: 'project'"></div>
+            </div>
+          </div>
         </div>
 
         <div data-bind="foreach: projects">
@@ -32,9 +39,16 @@
       </div>
 
       <div class="manager-main">
-          <div class="manager-main-header">
-              <h2>Sprints</h2>
+        <div class="manager-main-header">
+          <div class="row manager-heading-row">
+            <div class="col-xs-6 manager-heading-text">Sprints</div>
+            <div class="col-xs-6 manager-heading-icon">
+              <div class="glyphicon glyphicon-plus-sign anchor-general"
+                   data-bind="click: pickSprint(new Sprint({})),
+                              openModal: 'sprint'"></div>
+            </div>
           </div>
+        </div>
 
           <div data-bind="foreach: sprints">
             <div class="manager-prj-wrapper accordion">
@@ -57,18 +71,21 @@
 
     <div class="col-md-8 col-sm-12 manager-element-wrapper">
 
-      <div class="manager-main">
+      <div class="manager-main"
+           data-bind="dropZone: { accepts: 'backlog', drop: addTaskToSprint }">
         <div class="manager-main-header">
           <h2 data-bind="text: currentSprint().title"></h2>
         </div>
 
-        <div data-bind="foreach: projects">
-          <div class="manager-prj-wrapper accordion">
+        <div data-bind="foreach: currentSprint().tasks">
+          <div class="manager-prj-wrapper accordion"
+               data-bind="borderColorPicker: priority,
+                          dragZone: { name: 'backlog' }">
             <div class="manager-content accordion-item">
               <div class="manager-prj-header" data-bind="text: title"></div>
-              <a class="glyphicon glyphicon-pencil manager-icon">
+              <a class="glyphicon glyphicon-pencil manager-icon"></a>
               <a class="glyphicon glyphicon-remove manager-icon"
-                 data-bind="click: $root.removeProject"></a>
+                 data-bind="click: $root.removeTask"></a>
               <div class="accordion-item-content">
                 <span class="manager-content" data-bind="text: description"</span>
               </div>
@@ -78,18 +95,21 @@
 
       </div>
 
-      <div class="manager-main">
+      <div class="manager-main"
+           data-bind="dropZone: { accepts: 'backlog', drop: addTaskToSprint }">
         <div class="manager-main-header">
           <h2>Backlog</h2>
         </div>
 
         <div data-bind="foreach: tasks">
-          <div class="manager-prj-wrapper accordion">
+          <div class="manager-prj-wrapper accordion"
+               data-bind="borderColorPicker: priority,
+                          dragZone: { name: 'backlog' }">
             <div class="manager-content accordion-item">
               <div class="manager-prj-header" data-bind="text: title"></div>
-              <a class="glyphicon glyphicon-pencil manager-icon">
+              <a class="glyphicon glyphicon-pencil manager-icon"></a>
               <a class="glyphicon glyphicon-remove manager-icon"
-                 data-bind="click: $root.removeProject"></a>
+                 data-bind="click: $root.removeTask"></a>
               <div class="accordion-item-content">
                 <span class="manager-content" data-bind="text: description"</span>
               </div>
