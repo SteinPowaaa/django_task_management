@@ -1,33 +1,3 @@
-function Task(data) {
-  this.id = data.id || "";
-  this.title = ko.observable(data.title || "");
-  this.description = ko.observable(data.description || "");
-  this.status = ko.observable(data.status || "");
-  this.priority = ko.observable(data.priority || "");
-  this.creator = data.creator || "";
-  this.assignees = ko.observableArray(data.assignees || []);
-  this.taskType = ko.observable(data.task_type || "");
-  this.project = ko.observable(data.project || "");
-  this.refTask = ko.observable(data.ref_task || null);
-  this.sprint = ko.observable(data.sprint || null);
-}
-
-Task.prototype.normalize = function () {
-  return {
-    "id": this.id,
-    "title": this.title(),
-    "description": this.description(),
-    "status": this.status(),
-    "priority": this.priority(),
-    "creator": this.creator,
-    "assignees": this.assignees(),
-    "task_type": this.taskType(),
-    "project": this.project(),
-    "ref_task": this.refTask() ? this.refTask().normalize() : null,
-    "sprint": this.sprint()
-  };
-};
-
 function Project(data) {
   this.id = data.id || "";
   this.title = ko.observable(data.title || "");
@@ -41,6 +11,7 @@ Project.prototype.normalize = function () {
     "description": this.description()
   };
 };
+
 
 function Sprint(data) {
   this.id = data.id || "";
@@ -58,58 +29,9 @@ Sprint.prototype.normalize = function () {
   };
 };
 
-function User(data) {
-  this.id = data.id;
-  this.name = data.username;
-}
-
-function Status(value, name) {
-  this.value = value;
-  this.name = name;
-}
-
-function Priority(value, name) {
-  this.value = value;
-  this.name = name;
-}
-
-function TaskType(value, name) {
-  this.value = value;
-  this.name = name;
-}
-
-// {% with 0000 as dumbId %}
-
-// var Urls = function () {
-//   var self = this;
-//   self.tasksListUrl = "{% url 'tasks-list' dumbId %}";
-
-//   self.getTasksListUrl = function (projectId) {
-//     return self.tasksListUrl.replace('{{dumbId}}', projectId);
-//   };
-
-//   return self;
-// };
-
-// Urls.getTasksListUrl(3);
 
 function TaskViewModel() {
   var self = this;
-  self.sprint = ko.observable(new Sprint({ "id": 1 }));
-  self.sprints = ko.observableArray([]);
-  self.currentSprint = ko.observable(new Sprint({"id": 1})); // remove initial value
-
-  self.project = ko.observable(new Project({ "id": 1 }));
-  self.projects = ko.observableArray([]);
-  self.currentProject = ko.observable(new Project({"id": 1})); // remove initial value
-
-  // change name to current task
-  self.task = ko.observable(new Task({}));
-  self.tasks = ko.observableArray([]);
-
-  self.currentUser = ko.observable();
-  self.users = ko.observableArray([]);
-
   self._toggleMenu = ko.observable(false);
   self._toggleManager = ko.observable(false);
 
@@ -135,25 +57,6 @@ function TaskViewModel() {
       }
     }
   });
-
-  self.taskTypes = ko.observableArray([
-    new TaskType('story', 'Story'),
-    new TaskType('bug', 'Bug'),
-    new TaskType('improvement', 'Improvement'),
-    new TaskType('sub-task', 'Sub Task')
-  ]);
-
-  self.statuses = ko.observableArray([
-    new Status('todo', 'Todo'),
-    new Status('in-progress', 'In Progress'),
-    new Status('completed', 'Completed')
-  ]);
-
-  self.priorities = ko.observableArray([
-    new Priority('low', 'Low'),
-    new Priority('medium', 'Medium'),
-    new Priority('high', 'High')
-  ]);
 
   self.init = function () {
     self.populate();
@@ -341,18 +244,7 @@ function TaskViewModel() {
     }
   };
 
-  self.clearCredentials = function () {
-    self.username(null);
-    self.email(null);
-    self.password(null);
-  };
 
-  self.clearData = function () {
-    self.tasks([]);
-    self.projects([]);
-    self.sprints([]);
-    self.users([]);
-  };
 
   self.createUser = function () {
     var userJSON = {

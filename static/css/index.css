@@ -289,7 +289,7 @@
 }
 .accordion:hover .accordion-item:hover .accordion-item-content,
 .accordion .accordion-item--default .accordion-item-content {
-  height: 50px;
+  height: auto;
   overflow: auto;
 }
 .accordion-item-content,

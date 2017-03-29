@@ -1,0 +1,15 @@
+{% with 0000 as dumbId %}
+<script>
+ var Urls = function () {
+     var self = this;
+     self.tasksListUrl = "{% url 'tasks-list' dumbId %}";
+
+     self.getTasksListUrl = function (projectId) {
+         return self.tasksListUrl.replace('{{dumbId}}', projectId);
+     };
+
+     return self;
+ };
+
+ Urls.getTasksListUrl(3);
+</script>
