@@ -61,12 +61,8 @@ class Task(models.Model):
     assignees = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                        related_name='task_assignees')
 
-    project = models.ForeignKey('Project',
-                                related_name="task_project",
-                                on_delete=models.CASCADE)
-    sprint = models.ForeignKey('Sprint',
-                               related_name='task_sprint',
-                               null=True, blank=True)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    sprint = models.ForeignKey('Sprint', null=True, blank=True)
     ref_task = models.ForeignKey('self', null=True, blank=True)
 
     location = models.CharField(max_length=50, blank=True, null=True)
@@ -80,11 +76,6 @@ class Project(models.Model):
 
 
 class Sprint(models.Model):
-    project = models.ForeignKey('Project',
-                                related_name='sprint_project',
-                                on_delete=models.CASCADE)
-    tasks = models.ManyToManyField('Task',
-                                   related_name='sprint_task',
-                                   null=True, blank=True)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=1024, blank=True)

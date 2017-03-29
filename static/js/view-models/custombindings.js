@@ -51,7 +51,7 @@ ko.bindingHandlers.selectPicker = {
 ko.bindingHandlers.borderColorPicker = {
   init: function(element, valueAccessor, allBindings, viewModel,
                  bindingContext){
-    priority = valueAccessor()();
+    var priority = valueAccessor()();
     var color = {'low': '#91c05b',
                  'medium': '#faaa7a',
                  'high': '#f76b6f'}[priority];

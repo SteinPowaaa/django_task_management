@@ -17,13 +17,14 @@ def user():
     #     username='admin'
     # )
     # user.set_password('password123')
+    # user.save TODO: CHECK THIS
     # return user
     return User.objects.create_user(username='admin', password='password123')
 
 
 @pytest.fixture
 def project_one():
-    return mommy.make(Project)
+    return mommy.make(Project)  # AS STRINGS
 
 
 @pytest.fixture

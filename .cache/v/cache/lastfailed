@@ -1,1 +1,5 @@
-{}
+{
+  "todo/tests/api/views_test.py::TestTodo::()::test_todo__delete_task": true,
+  "todo/tests/api/views_test.py::TestTodo::()::test_todo__edit_task": true,
+  "todo/tests/api/views_test.py::TestTodo::()::test_todo__edit_task_invalid_data": true
+}

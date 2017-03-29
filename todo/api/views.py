@@ -9,26 +9,21 @@ from django_filters import rest_framework as filters
 from todo.models import Task, Project, Sprint
 from todo.api.serializers import TaskSerializer, ProjectSerializer, \
     SprintSerializer
+from todo.api.permissions import isAssigneeOrReadOnly
 
 User = get_user_model()
 
 
 class TaskFilter(filters.FilterSet):
-    # Not working
     class Meta:
         model = Task
-        fields = ['project__id']
-
-
-class SprintFilter(filters.FilterSet):
-    class Meta:
-        model = Sprint
         fields = ['project']
 
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = (isAssigneeOrReadOnly,)
     filter_class = TaskFilter
 
     def create(self, request, *args, **kwargs):
@@ -59,4 +54,3 @@ class ProjectViewSet(viewsets.ModelViewSet):
 class SprintViewSet(viewsets.ModelViewSet):
     queryset = Sprint.objects.all()
     serializer_class = SprintSerializer
-    filter_class = SprintFilter

@@ -34,18 +34,27 @@ function Project(data) {
   this.description = ko.observable(data.description || "");
 }
 
-function Sprint(data) {
-  this.id = data.id || "";
-  this.title = ko.observable(data.title || "");
-  this.description = ko.observable(data.description || "");
-  this.tasks = ko.observableArray(data.tasks || []);
-}
-
 Project.prototype.normalize = function () {
   return {
     "id": this.id,
     "title": this.title(),
     "description": this.description()
+  };
+};
+
+function Sprint(data) {
+  this.id = data.id || "";
+  this.title = ko.observable(data.title || "");
+  this.description = ko.observable(data.description || "");
+  this.project = ko.observable(data.project || "");
+}
+
+Sprint.prototype.normalize = function () {
+  return {
+    "id": this.id,
+    "title": this.title(),
+    "description": this.description(),
+    "project": this.project()
   };
 };
 
@@ -88,11 +97,11 @@ function TaskViewModel() {
   var self = this;
   self.sprint = ko.observable(new Sprint({ "id": 1 }));
   self.sprints = ko.observableArray([]);
-  self.currentSprint = ko.observable(new Sprint({"id": 1}));
+  self.currentSprint = ko.observable(new Sprint({"id": 1})); // remove initial value
 
   self.project = ko.observable(new Project({ "id": 1 }));
   self.projects = ko.observableArray([]);
-  self.currentProject = ko.observable(new Project({"id": 1}));
+  self.currentProject = ko.observable(new Project({"id": 1})); // remove initial value
 
   // change name to current task
   self.task = ko.observable(new Task({}));
@@ -114,18 +123,18 @@ function TaskViewModel() {
   self.projectsUrl = 'api/projects/';
   self.currentUserUrl = 'api/current-user/';
 
-  // function csrfSafeMethod(method) {
-  //   // these HTTP methods do not require CSRF protection
-  //   return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-  // }
-  // $.ajaxSetup({
-  //   beforeSend: function(xhr, settings) {
-  //     var csrftoken = Cookies.get('csrftoken');
-  //     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-  //       xhr.setRequestHeader("X-CSRFToken", csrftoken);
-  //     }
-  //   }
-  // });
+  function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      var csrftoken = Cookies.get('csrftoken');
+      if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      }
+    }
+  });
 
   self.taskTypes = ko.observableArray([
     new TaskType('story', 'Story'),
@@ -153,11 +162,11 @@ function TaskViewModel() {
   self.populate = function () {
     self.populateUsers();
     self.populateProjects().then(function () {
-      if (self.projects().length > 0) {
+      if (self.projects().length) {
         self.currentProject(self.projects()[0]);
         self.populateTasks();
         self.populateSprints().then(function () {
-          if (self.sprints().length > 0) {
+          if (self.sprints().length) {
             self.currentSprint(self.sprints()[0]);
           }
         });
@@ -217,6 +226,10 @@ function TaskViewModel() {
     self.sprints(sprints);
   };
 
+  self.isEditable = ko.computed(function () {
+
+  });
+
   self.createProject = function () {
     var projectJSON = self.project().normalize();
     $.post(self.projectsUrl, projectJSON).then(function (data) {
@@ -256,7 +269,7 @@ function TaskViewModel() {
 
   self.createSprint = function () {
     var sprintJSON = self.sprint().normalize();
-    $.post(self.sprintsUrl, sprintJSON).then(function (data) {
+    $.post(self.sprintsUrl(), sprintJSON).then(function (data) {
       self.sprints.push(new Sprint(data));
     });
   };
@@ -420,7 +433,6 @@ function TaskViewModel() {
   self.addTaskToSprint = function (task) {
     self.task(task);
     self.task().sprint(self.currentSprint());
-    self.currentSprint().tasks.push(task);
     self.updateTask();
     self.updateSprint();
   };
@@ -428,8 +440,6 @@ function TaskViewModel() {
   self.removeTaskFromSprint = function (task) {
     self.task(task);
     self.task().sprint(null);
-    var index = self.currentSprint().tasks.indexOf(task);
-    self.currentSprint().tasks.splice(index, 1);
     self.updateTask();
     self.updateSprint();
   };
@@ -446,11 +456,15 @@ function TaskViewModel() {
     self.currentProject(project);
     self.populateTasks();
     self.populateSprints().then(function () {
-      if (self.sprints().length > 0) {
+      if (self.sprints().length) {
         self.currentSprint(self.sprints()[0]);
       }
     });
   };
+
+  self.selectSprint = function (sprint) {
+    self.currentSprint(sprint);
+  }
 
   self.pickProject = function (project) {
     self.project(project);

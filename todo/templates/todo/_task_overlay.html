@@ -1,7 +1,8 @@
 <div class="overlay-task" data-bind="style: { left: _toggleMenu() ? '0px' :
   '-300px'}">
   <a class="closebtn glyphicon glyphicon-remove" data-bind="click: $root.toggleMenu"></a>
-  <a class="editbtn glyphicon glyphicon-pencil"></a>
+  <a class="editbtn glyphicon glyphicon-pencil"
+     data-bind="click: $root.pickTask, openModal: 'task'"></a>
   <div class="overlay-content-task">
 
     <p class="line">Details</p>
