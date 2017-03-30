@@ -1,94 +1,146 @@
-import pytest #NOQA
+import pytest
 import json
 
 from django.urls import reverse
-from django.test import Client
 
 from rest_framework import status
 
 
 @pytest.mark.django_db
-class TestTodo:
-    @pytest.fixture(autouse=True)
-    def setup_login(self, user):
-        self.c = Client()
-        self.c.force_login(user)
-
-    def test_todo__get_projects(self, project_one, project_two):
+class TestProjects:
+    def test_project__get_projects(self, project_default, client):
         url = reverse('project-list')
-        response = self.c.get(url)
+        response = client.get(url)
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == 2
 
-    def test_todo__delete_project(self, project_one):
+    def test_project__delete_project(self, project_default, client):
         url = reverse('project-detail', args=[1])
-        response = self.c.delete(url)
+        response = client.delete(url)
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
-    def test_todo__edit_project(self, project_one):
+    def test_project__edit_project(self, project_default, client):
         url = reverse('project-detail', args=[1])
         data = {'id': 1, 'title': 'test_title', 'description': 'test_desc'}
-        response = self.c.put(url, json.dumps(data), content_type='application/json')
+        response = client.put(url, json.dumps(data), content_type='application/json')
         assert response.status_code == status.HTTP_200_OK
         assert response.data == data
 
-    def test_todo__edit_project_invalid_data(self, project_one):
+    def test_project__edit_project_invalid_data(self, project_default, client):
         url = reverse('project-detail', args=[1])
         data = {'id': 1, 'description': 'test_desc'}
-        response = self.c.put(url, json.dumps(data), content_type='application/json')
+        response = client.put(url, json.dumps(data), content_type='application/json')
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-    def test_todo__add_project(self, project_one, project_two):
+    def test_project__add_project(self, project_default, client):
         url = reverse('project-list')
         data = {'title': 'test_title', 'description': 'test_desc'}
-        response = self.c.post(url, data)
+        response = client.post(url, data)
         assert response.status_code == status.HTTP_201_CREATED
-        assert len(response.data) == 3
 
-    def test_todo__add_project_invalid_data(self, project_one, project_two):
+    def test_project__add_project_invalid_data(self, project_default, client):
         url = reverse('project-list')
         data = {'description': 'test_desc'}
-        response = self.c.post(url, data)
+        response = client.post(url, data)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-        ############################## TASKS ##############################
 
-    def test_todo__get_tasks(self, project_one, task_one, task_two):
+@pytest.mark.django_db
+class TestTask:
+    def test_task__get_tasks(self, project_default, task_default,
+                             task_with_assignee, client):
         url = reverse('task-list', args=[1])
-        response = self.c.get(url)
+        response = client.get(url)
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == 2
 
-    def test_todo__delete_task(self, project_one, task_one):
+    def test_task__delete_task(self, project_default,
+                               task_with_assignee, client):
         url = reverse('task-detail', args=[1, 1])
-        response = self.c.delete(url)
+        response = client.delete(url)
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
-    def test_todo__edit_task(self, project_one, task_one):
+    def test_task__edit_task(self, project_default, task_with_assignee, client):
         url = reverse('task-detail', args=[1, 1])
         data = {
             'id': 1, 'title': 'test_title',
             'project': 1, 'creator': 1
         }
-        response = self.c.put(url, json.dumps(data), content_type='application/json')
+        response = client.put(url, json.dumps(data), content_type='application/json')
         assert response.status_code == status.HTTP_200_OK
 
-    def test_todo__edit_task_invalid_data(self, project_one, task_one):
+    def test_task__edit_task_invalid_data(self, project_default,
+                                          task_with_assignee, client):
         url = reverse('task-detail', args=[1, 1])
         data = {
             'id': 1, 'project': 1, 'creator': 1
         }
-        response = self.c.put(url, json.dumps(data), content_type='application/json')
+        response = client.put(url, json.dumps(data), content_type='application/json')
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-    def test_todo__add_task(self, project_one):
+    def test_task__add_task(self, project_default, client):
         url = reverse('task-list', args=[1])
         data = {'title': 'test_title', 'project': 1}
-        response = self.c.post(url, data)
+        response = client.post(url, data)
         assert response.status_code == status.HTTP_201_CREATED
 
-    def test_todo__add_task_invalid_data(self, project_one):
+    def test_task__add_task_invalid_data(self, project_default, client):
         url = reverse('task-list', args=[1])
         data = {'project': 1}
-        response = self.c.post(url, data)
+        response = client.post(url, data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    def test_task__delete_task_no_permission(self, project_default, task_default, client):
+        url = reverse('task-detail', args=[1, 1])
+        response = client.delete(url)
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_task__edit_task_no_permission(self, project_default, task_default, client):
+        url = reverse('task-detail', args=[1, 1])
+        data = {
+            'id': 1, 'title': 'test_title',
+            'project': 1, 'creator': 1
+        }
+        response = client.put(url, json.dumps(data), content_type='application/json')
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+class TestSprint:
+    def test_sprint__get_sprints(self, project_default, sprint_default, client):
+        url = reverse('sprint-list', args=[1])
+        response = client.get(url)
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_sprint__delete_task(self, project_default, sprint_default, client):
+        url = reverse('sprint-detail', args=[1, 1])
+        response = client.delete(url)
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+
+    def test_sprint__edit_sprint(self, project_default, sprint_default, client):
+        url = reverse('sprint-detail', args=[1, 1])
+        data = {
+            'id': 1, 'title': 'test_title',
+            'project': 1
+        }
+        response = client.put(url, json.dumps(data), content_type='application/json')
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_sprint__edit_sprint_invalid_data(self, project_default,
+                                              sprint_default, client):
+        url = reverse('sprint-detail', args=[1, 1])
+        data = {
+            'id': 1, 'project': 1, 'creator': 1
+        }
+        response = client.put(url, json.dumps(data), content_type='application/json')
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    def test_sprint__add_sprint(self, project_default, client):
+        url = reverse('sprint-list', args=[1])
+        data = {'title': 'sprint_title', 'project': 1}
+        response = client.post(url, data)
+        assert response.status_code == status.HTTP_201_CREATED
+
+    def test_sprint__add_sprint_invalid_data(self, project_default, client):
+        url = reverse('sprint-list', args=[1])
+        data = {'project': 1}
+        response = client.post(url, data)
         assert response.status_code == status.HTTP_400_BAD_REQUEST

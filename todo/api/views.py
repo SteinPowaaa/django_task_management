@@ -26,6 +26,10 @@ class TaskViewSet(viewsets.ModelViewSet):
     permission_classes = (isAssigneeOrReadOnly,)
     filter_class = TaskFilter
 
+    def get_queryset(self):
+        project_pk = self.kwargs['project_pk']
+        return Task.objects.filter(project=project_pk)
+
     def create(self, request, *args, **kwargs):
         copy_data = request.data.copy()
         copy_data['creator'] = request.user.pk

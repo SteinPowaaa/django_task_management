@@ -8,8 +8,8 @@ router = DefaultRouter()
 router.register(r'users', views.UserViewSet)
 
 urlpatterns = [
-    url(r'^current-user', views.current_user),
-    url(r'^login', views.login),
-    url(r'^logout', views.logout),
+    url(r'^current-user', views.current_user, name="current_user"),
+    url(r'^login', views.login, name="login"),
+    url(r'^logout', views.logout, name="logout"),
     url(r'^', include(router.urls))
 ]

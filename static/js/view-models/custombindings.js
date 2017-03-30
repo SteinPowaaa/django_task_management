@@ -1,68 +1,3 @@
-ko.bindingHandlers.selectPicker = {
-     init: function (element, valueAccessor, allBindingsAccessor) {
-         if ($(element).is('select')) {
-             if (ko.isObservable(valueAccessor())) {
-                 if ($(element).prop('multiple') && $.isArray(ko.utils.unwrapObservable(valueAccessor()))) {
-                     // in the case of a multiple select where the valueAccessor() is an observableArray, call the default Knockout selectedOptions binding
-                     ko.bindingHandlers.selectedOptions.init(element, valueAccessor, allBindingsAccessor);
-                 } else {
-                     // regular select and observable so call the default value binding
-                     ko.bindingHandlers.value.init(element, valueAccessor, allBindingsAccessor);
-                 }
-             }
-             $(element).addClass('selectpicker').selectpicker();
-         }
-     },
-     update: function (element, valueAccessor, allBindingsAccessor) {
-         if ($(element).is('select')) {
-             var selectPickerOptions = allBindingsAccessor().selectPickerOptions;
-             if (typeof selectPickerOptions !== 'undefined' && selectPickerOptions !== null) {
-                 var options = selectPickerOptions.optionsArray,
-                     optionsText = selectPickerOptions.optionsText,
-                     optionsValue = selectPickerOptions.optionsValue,
-                     optionsCaption = selectPickerOptions.optionsCaption,
-                     isDisabled = selectPickerOptions.disabledCondition || false,
-                     resetOnDisabled = selectPickerOptions.resetOnDisabled || false;
-                 if (ko.utils.unwrapObservable(options).length > 0) {
-                     // call the default Knockout options binding
-                     ko.bindingHandlers.options.update(element, options, allBindingsAccessor);
-                 }
-                 if (isDisabled && resetOnDisabled) {
-                     // the dropdown is disabled and we need to reset it to its first option
-                     $(element).selectpicker('val', $(element).children('option:first').val());
-                 }
-                 $(element).prop('disabled', isDisabled);
-             }
-             if (ko.isObservable(valueAccessor())) {
-                 if ($(element).prop('multiple') && $.isArray(ko.utils.unwrapObservable(valueAccessor()))) {
-                     // in the case of a multiple select where the valueAccessor() is an observableArray, call the default Knockout selectedOptions binding
-                     ko.bindingHandlers.selectedOptions.update(element, valueAccessor);
-                 } else {
-                     // call the default Knockout value binding
-                     ko.bindingHandlers.value.update(element, valueAccessor);
-                 }
-             }
-
-             $(element).selectpicker('refresh');
-         }
-     }
-};
-
-ko.bindingHandlers.borderColorPicker = {
-  init: function(element, valueAccessor, allBindings, viewModel,
-                 bindingContext){
-    var priority = valueAccessor()();
-    var color = {'low': '#91c05b',
-                 'medium': '#faaa7a',
-                 'high': '#f76b6f'}[priority];
-
-    $(element).css({
-      'border-left': 'solid 10px',
-      'border-color': color
-    });
-  }
-};
-
 ko.bindingHandlers.login = {
   init: function(element, valueAccessor, allBindings, viewModel,
                  bindingContext){
@@ -118,27 +53,5 @@ ko.bindingHandlers.getCurrent = {
         viewModel.init();
       });
     });
-  }
-};
-
-ko.bindingHandlers.openModal = {
-  init: function(element, valueAccessor, allBindings, viewModel,
-                 bindingContext){
-    $(element).click(function () {
-      $('#' + valueAccessor() + 'Modal').modal('show');
-    });
-  }
-};
-
-ko.bindingHandlers.iconPicker = {
-  init: function(element, valueAccessor, allBindings, viewModel,
-                 bindingContext){
-    var taskType = valueAccessor()();
-    var icon = {'bug': 'fa fa-bug',
-                'improvement': 'fa fa-bolt',
-                'sub-task': 'fa fa-certificate',
-                'story': 'fa fa-book'}[taskType];
-
-    $(element).addClass(icon);
   }
 };

@@ -1,0 +1,21 @@
+.logged-in {
+  display: none;
+  margin-right: 5px;
+}
+.btn-nav-general {
+  height: 30px;
+  line-height: 5px;
+  margin-top: 5px;
+}
+.login-alert {
+  position: fixed;
+  text-align: center;
+  width: 100%;
+}
+.login-input {
+  height: 30px;
+  line-height: 5px;
+  margin-top: 5px;
+  display: inline;
+  margin-right: 5px;
+}

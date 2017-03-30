@@ -30,7 +30,7 @@ function PageViewModel() {
     };
 
     self.login = function () {
-    }
+    };
 
     self.init();
 }

@@ -1,0 +1,61 @@
+@import (reference) "global.less";
+
+.tsk-group {
+  margin-left: 10px;
+}
+
+.overlay-task {
+  left: -300px;
+  height: 100%;
+  width: 300px;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+  overflow-x: hidden;
+  transition: 0.5s;
+
+  .closebtn {
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    font-size: 15px;
+    .anchor-general;
+  }
+
+  .editbtn {
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    font-size: 15px;
+    .anchor-general;
+  }
+    a:hover,
+    a:focus {
+      opacity: 0.7;
+    }
+}
+
+.overlay-content-task {
+  position: relative;
+  top: 10%;
+  width: 100%;
+  text-align: justify;
+  margin-top: 30px;
+}
+
+.line {
+  display:table;
+  white-space: nowrap;
+  color: gray;
+
+  &:before,
+  &:after {
+    background: linear-gradient(to bottom, #f6f8f8, #d1d6d6) no-repeat center / 98% .25em;
+    content: '';
+    display: table-cell;
+    width: 50%;
+  }
+}

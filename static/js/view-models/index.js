@@ -1,35 +1,3 @@
-function Project(data) {
-  this.id = data.id || "";
-  this.title = ko.observable(data.title || "");
-  this.description = ko.observable(data.description || "");
-}
-
-Project.prototype.normalize = function () {
-  return {
-    "id": this.id,
-    "title": this.title(),
-    "description": this.description()
-  };
-};
-
-
-function Sprint(data) {
-  this.id = data.id || "";
-  this.title = ko.observable(data.title || "");
-  this.description = ko.observable(data.description || "");
-  this.project = ko.observable(data.project || "");
-}
-
-Sprint.prototype.normalize = function () {
-  return {
-    "id": this.id,
-    "title": this.title(),
-    "description": this.description(),
-    "project": this.project()
-  };
-};
-
-
 function TaskViewModel() {
   var self = this;
   self._toggleMenu = ko.observable(false);
@@ -356,7 +324,7 @@ function TaskViewModel() {
 
   self.selectSprint = function (sprint) {
     self.currentSprint(sprint);
-  }
+  };
 
   self.pickProject = function (project) {
     self.project(project);
