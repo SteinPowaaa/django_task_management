@@ -29,7 +29,8 @@
                    data-bind="click: $root.pickProject, openModal: 'project'"></a>
                 <a class="glyphicon glyphicon-remove manager-icon"
                    data-bind="click: $root.removeProject"></a>
-                <div class="accordion-item-content">
+                <div class="accordion-item-content"
+                     data-bind="css: { 'accordion-expand': $root.currentSprint() === $data}">
                     <span class="manager-content" data-bind="text: description"</span>
                 </div>
               </div>
@@ -58,7 +59,8 @@
                    data-bind="click: $root.pickSprint, openModal: 'sprint'"></a>
                 <a class="glyphicon glyphicon-remove manager-icon"
                    data-bind="click: $root.removeSprint"></a>
-                <div class="accordion-item-content">
+                <div class="accordion-item-content"
+                     data-bind="css: { 'accordion-expand': $root.currentSprint() === $data}">
                   <span class="manager-content" data-bind="text: description"</span>
                 </div>
               </div>

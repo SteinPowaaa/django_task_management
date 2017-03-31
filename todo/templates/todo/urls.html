@@ -1,11 +1,35 @@
-{% with 0000 as dumbId %}
+{% with dumbId=0000 childId=0000 %}
 <script>
  var Urls = function () {
      var self = this;
-     self.tasksListUrl = "{% url 'tasks-list' dumbId %}";
 
-     self.getTasksListUrl = function (projectId) {
-         return self.tasksListUrl.replace('{{dumbId}}', projectId);
+     self.taskListUrl = "{% url 'task-list' dumbId %}";
+     self.taskDetailUrl = "{% url 'task-list' dumbId childId %}";
+     self.projectListUrl = "{% url 'project-list' %}";
+     self.projectDetailUrl = "{% url 'project-detail' dumbId %}";
+     self.sprintListUrl = "{% url 'sprint-list' dumbId %}";
+     self.sprintDetailUrl = "{% url 'sprint-list' dumbId childId %}";
+
+     self.getTaskListUrl = function (projectId) {
+         return self.taskListUrl.replace('{{dumbId}}', projectId);
+     };
+
+     self.getSprintListUrl = function (sprintId) {
+         return self.sprintListUrl.replace('{{dumbId}}', sprintId);
+     };
+
+     self.getTaskDetailUrl = function (projectId, taskId) {
+         return self.taskListUrl.replace('{{dumbId}}', projectId)
+                    .replace('{{childId}}', taskId);
+     };
+
+     self.getSprintDetailUrl = function (projectId, sprintId) {
+         return self.taskListUrl.replace('{{dumbId}}', projectId)
+                    .replace('{{childId}}').replace(sprintId);
+     };
+
+     self.getProjectDetailUrl = function (projectId) {
+         return self.projectDetailUrl.replace('{{dumbId}}, projectId')
      };
 
      return self;

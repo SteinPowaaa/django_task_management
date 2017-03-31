@@ -7,24 +7,7 @@ function TaskViewModel() {
   self.password = ko.observable();
   self.email = ko.observable();
 
-  self.usersUrl = '/api/users/';
-  self.loginUrl = '/api/login';
-  self.logoutUrl = '/api/logout';
-  self.projectsUrl = 'api/projects/';
-  self.currentUserUrl = 'api/current-user/';
 
-  function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-  }
-  $.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-      var csrftoken = Cookies.get('csrftoken');
-      if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-      }
-    }
-  });
 
   self.init = function () {
     self.populate();
