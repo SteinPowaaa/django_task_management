@@ -1,125 +1,13 @@
 function TaskViewModel() {
-  var self = this;
-  self._toggleMenu = ko.observable(false);
-  self._toggleManager = ko.observable(false);
-
-  self.username = ko.observable();
-  self.password = ko.observable();
-  self.email = ko.observable();
 
 
 
-  self.init = function () {
-    self.populate();
-  };
 
-  self.populate = function () {
-    self.populateUsers();
-    self.populateProjects().then(function () {
-      if (self.projects().length) {
-        self.currentProject(self.projects()[0]);
-        self.populateTasks();
-        self.populateSprints().then(function () {
-          if (self.sprints().length) {
-            self.currentSprint(self.sprints()[0]);
-          }
-        });
-      }
-    });
-  };
 
-  self.populateProjects = function () {
-    return $.getJSON(self.projectsUrl).then(function (data) {
-      self._populateProjects(data);
-    });
-  };
 
-  self._populateProjects = function (data) {
-    projects = data.map(function (projectData) {
-      return new Project(projectData);
-    });
-    self.projects(projects);
-  };
 
-  self.populateTasks = function () {
-    $.getJSON(self.tasksUrl()).then(function (data) {
-      self._populateTasks(data);
-    });
-  };
 
-  self._populateTasks = function (data) {
-    tasks = data.map(function (taskData) {
-      return new Task(taskData);
-    });
-    self.tasks(tasks);
-  };
 
-  self.populateUsers = function () {
-    return $.getJSON(self.usersUrl).then(function (data) {
-      self._populateUsers(data);
-    });
-  };
-
-  self._populateUsers = function (data) {
-    users = data.map(function (userData) {
-      return new User(userData);
-    });
-    self.users(users);
-  };
-
-  self.populateSprints = function () {
-    return $.getJSON(self.sprintsUrl()).then(function (data) {
-      self._populateSprints(data);
-    });
-  };
-
-  self._populateSprints = function (data) {
-    sprints = data.map(function (sprintData) {
-      return new Sprint(sprintData);
-    });
-    self.sprints(sprints);
-  };
-
-  self.isEditable = ko.computed(function () {
-
-  });
-
-  self.createProject = function () {
-    var projectJSON = self.project().normalize();
-    $.post(self.projectsUrl, projectJSON).then(function (data) {
-      self.projects.push(new Project(data));
-    });
-  };
-
-  self.updateProject = function () {
-    var project = self.project().normalize();
-    return $.ajax({
-      url: self.projectsUrl + project.id + '/',
-      type: 'PUT',
-      data: project
-    });
-  };
-
-  self.submitProject = function () {
-    if (self.project().id === '') {
-      self.createProject();
-    } else {
-      self.updateProject();
-    }
-  };
-
-  self.deleteProject = function (project) {
-    return $.ajax({
-      url: self.projectsUrl + project.id,
-      type: 'DELETE'
-    });
-  };
-
-  self.removeProject = function (project) {
-    self.deleteProject(project).then(function () {
-        self.projects.remove(project);
-    });
-  };
 
   self.createSprint = function () {
     var sprintJSON = self.sprint().normalize();
@@ -208,6 +96,19 @@ function TaskViewModel() {
       self.users.push(new User(data));
     });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     self.clearCredentials();
   };
 
@@ -273,54 +174,14 @@ function TaskViewModel() {
     self.updateTask();
   };
 
-  self.addTaskToSprint = function (task) {
-    self.task(task);
-    self.task().sprint(self.currentSprint());
-    self.updateTask();
-    self.updateSprint();
-  };
 
-  self.removeTaskFromSprint = function (task) {
-    self.task(task);
-    self.task().sprint(null);
-    self.updateTask();
-    self.updateSprint();
-  };
 
-  self.toggleMenu = function () {
-    self._toggleMenu(!self._toggleMenu());
-  };
 
-  self.toggleManager = function () {
-    self._toggleManager(!self._toggleManager());
-  };
 
-  self.selectProject = function (project) {
-    self.currentProject(project);
-    self.populateTasks();
-    self.populateSprints().then(function () {
-      if (self.sprints().length) {
-        self.currentSprint(self.sprints()[0]);
-      }
-    });
-  };
 
-  self.selectSprint = function (sprint) {
-    self.currentSprint(sprint);
-  };
 
-  self.pickProject = function (project) {
-    self.project(project);
-  };
 
-  self.pickSprint = function (sprint) {
-    self.sprint(sprint);
-  };
 
-  self.pickTask = function (task) {
-    self.task(task);
-  };
-}
 
 $(function () {
   ko.applyBindings(new TaskViewModel());

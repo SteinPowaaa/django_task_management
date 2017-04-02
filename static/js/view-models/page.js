@@ -21,6 +21,25 @@ function PageViewModel() {
 
     // put in user
 
+    self.loadUsers = function () {
+        return $.getJSON(self.usersUrl).then(self.populateUsers);
+    };
+
+    self.populateUsers = function (data) {
+        var users = data.map(function (userData) {
+            return new User(userData);
+        });
+        self.users(users);
+    };
+
+    self.toggleMenu = function () {
+        self._toggleMenu(!self._toggleMenu());
+    };
+
+    self.toggleManager = function () {
+        self._toggleManager(!self._toggleManager());
+    };
+
 
     self.clearData = function () {
         self.tasks([]);
