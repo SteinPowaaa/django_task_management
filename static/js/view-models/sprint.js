@@ -7,7 +7,7 @@ function Sprint(data) {
     self.id = data.id || "";
     self.title = ko.observable(data.title || "");
     self.description = ko.observable(data.description || "");
-    self.project = ko.observable(data.project || "");
+    self.project = data.project || "";
   };
 
   self.normalize = function () {
@@ -17,5 +17,25 @@ function Sprint(data) {
       "description": self.description(),
       "project": self.project()
     };
+  };
+
+  self.update = function () {
+    var data = self.normalize();
+    var url = Urls.getSprintDetailUrl(self.project.id, self.id);
+
+    return $.ajax({
+      url: url,
+      type: 'PUT',
+      data: data
+    });
+  };
+
+  self.delete = function () {
+    var url = Urls.getSprintDetailUrl(self.project.id, self.id);
+
+    return $.ajax({
+      url: url,
+      type: 'DELETE'
+    });
   };
 }

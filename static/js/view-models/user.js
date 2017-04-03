@@ -10,6 +10,15 @@ function User(data) {
     self.email = ko.obserable(data.email || "");
   };
 
+  self.normalize = function () {
+    return {
+      "id": self.id(),
+      "username": self.username(),
+      "password":  self.password(),
+      "email": self.email()
+    };
+  };
+
   self.clear = function () {
     self.username("");
     self.email("");

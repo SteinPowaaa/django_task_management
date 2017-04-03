@@ -10,12 +10,22 @@
      self.sprintListUrl = "{% url 'sprint-list' dumbId %}";
      self.sprintDetailUrl = "{% url 'sprint-list' dumbId childId %}";
 
+     self.userListUrl = "{% url 'user-list' %}";
+     self.userDetailUrl = "{% url 'user-detail' dumbId %}";
+
+     self.loginUrl = "{% url 'login' %}";
+     self.logoutUrl = "{% url 'logout' %}";
+
+     self.getUserDetailUrl = function (userId) {
+         return self.userDetailUrl.replace('{{dumbId}}', userId);
+     };
+
      self.getTaskListUrl = function (projectId) {
          return self.taskListUrl.replace('{{dumbId}}', projectId);
      };
 
-     self.getSprintListUrl = function (sprintId) {
-         return self.sprintListUrl.replace('{{dumbId}}', sprintId);
+     self.getSprintListUrl = function (projectId) {
+         return self.sprintListUrl.replace('{{dumbId}}', projectId);
      };
 
      self.getTaskDetailUrl = function (projectId, taskId) {
@@ -24,16 +34,15 @@
      };
 
      self.getSprintDetailUrl = function (projectId, sprintId) {
-         return self.taskListUrl.replace('{{dumbId}}', projectId)
+         return self.taskListUrl
+                    .replace('{{dumbId}}', projectId)
                     .replace('{{childId}}').replace(sprintId);
      };
 
      self.getProjectDetailUrl = function (projectId) {
-         return self.projectDetailUrl.replace('{{dumbId}}, projectId')
+         return self.projectDetailUrl.replace('{{dumbId}}', projectId)
      };
 
      return self;
  };
-
- Urls.getTasksListUrl(3);
 </script>

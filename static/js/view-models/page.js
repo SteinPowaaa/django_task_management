@@ -1,55 +1,80 @@
 function PageViewModel() {
-    var self = this;
+  var self = this;
 
-    self.init = function () {
-        self.sprint = ko.observable(new Sprint({ "id": 1 }));
-        self.sprints = ko.observableArray([]);
-        self.currentSprint = ko.observable(new Sprint({"id": 1})); // remove initial value
+  self.init = function () {
+    self.users = ko.observableArray([]);
+    self.currentUser = ko.observable();
+    self.userForEdit = ko.observable();
 
-        self.project = ko.observable(new Project({ "id": 1 }));
-        self.projects = ko.observableArray([]);
-        self.currentProject = ko.observable(new Project({"id": 1})); // remove initial value
+    self.getCurrentUser();
+  };
 
-        // change name to current task
-        self.task = ko.observable(new Task({}));
-        // put tasks in projects and get from there
-        self.tasks = ko.observableArray([]);
+  // $('.nav-form').hide();
+  // $('.logged-in').show();
+  self.getCurrentUser = function () {
+    $.get(viewModel.currentUserUrl).then(function (data){
+      self.currentUser(new User(data));
+      self.loadUsers();
+      // load projects
+    });
+  };
 
-        self.currentUser = ko.observable();
-        self.users = ko.observableArray([]);
-    };
+  self.createUser = function () {
+    var data = self.userForEdit().normalize();
 
-    // put in user
+    $.post(Urls.userListUrl, data).then(function (data) {
+      self.users.push(new User(data));
+    });
 
-    self.loadUsers = function () {
-        return $.getJSON(self.usersUrl).then(self.populateUsers);
-    };
+    self.userForEdit().clear();
+  };
 
-    self.populateUsers = function (data) {
-        var users = data.map(function (userData) {
-            return new User(userData);
-        });
-        self.users(users);
-    };
+  self.loadUsers = function () {
+    return $.getJSON(Url.userListUrl).then(self.populateUsers);
+  };
 
-    self.toggleMenu = function () {
-        self._toggleMenu(!self._toggleMenu());
-    };
+  self.populateUsers = function (data) {
+    var users = data.map(function (userData) {
+      return new User(userData);
+    });
+    self.users(users);
+  };
 
-    self.toggleManager = function () {
-        self._toggleManager(!self._toggleManager());
-    };
+  self.toggleMenu = function () {
+    self._toggleMenu(!self._toggleMenu());
+  };
 
+  self.toggleManager = function () {
+    self._toggleManager(!self._toggleManager());
+  };
 
-    self.clearData = function () {
-        self.tasks([]);
-        self.projects([]);
-        self.sprints([]);
-        self.users([]);
-    };
+  // $(".login-alert").html('<div class="alert alert-success">Successfully' +
+  //                              ' logged-in</div>');
+  //       setTimeout(function() {
+  //         $(".alert").fadeTo(500, 0).slideUp(500, function(){
+  //           $(this).remove();
+  //         });
+  //       }, 1000);
 
-    self.login = function () {
-    };
+  //       $('.nav-form').hide();
+  //       $('.logged-in').show();
 
-    self.init();
+  self.login = function () {
+    $.post(Urls.loginUrl, self.currentUser().normalize()).then(function (data) {
+      // login=true
+      // projects.load
+      self.loadUsers();
+    });
+  };
+
+  // $('.logged-in').hide();
+  // $('.nav-form').show();
+  self.logout = function () {
+    $.post(Urls.logoutUrl).then(function () {
+      // projects.clear();
+      self.users([]);
+    });
+  };
+
+  self.init();
 }
