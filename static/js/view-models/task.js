@@ -2,7 +2,7 @@ function Task(data) {
   var self = this;
 
   self.init = function () {
-    var data = data || {};
+    data = data || {};
 
     self.id = data.id || "";
     self.title = ko.observable(data.title || "");
@@ -22,19 +22,19 @@ function Task(data) {
 
   self.normalize = function () {
     return {
-      "id": self.id,
-      "title": self.title(),
-      "description": self.description(),
-      "status": self.status(),
-      "priority": self.priority(),
-      "creator": self.creator.id,
-      "assignees": self.assignees().map(function (assigneeData) {
+      id: self.id,
+      title: self.title(),
+      description: self.description(),
+      status: self.status(),
+      priority: self.priority(),
+      creator: self.creator.id,
+      assignees: self.assignees().map(function (assigneeData) {
         return assigneeData.normalize();
       }),
-      "task_type": self.taskType(),
-      "project": self.project,
-      "ref_task": self.refTask ? self.refTask.normalize() : null,
-      "sprint": self.sprint ? self.sprint().normalize() : null
+      task_type: self.taskType(),
+      project: self.project,
+      ref_task: self.refTask ? self.refTask.normalize() : null,
+      sprint: self.sprint ? self.sprint().normalize() : null
     };
   };
 
@@ -57,9 +57,17 @@ function Task(data) {
     });
   };
 
+  self.create = function () {
+    var data = self.normalize();
+
+    $.post(Urls.getTaskListUrl(self.project.id), data).then(function (data) {
+      Arbited.publish('task.created', data);
+    });
+  };
+
   self.updateSprint = function (sprint) {
     var data = {
-      "sprint": sprint && sprint.normalize()
+      sprint: sprint && sprint.normalize()
     };
 
     var url = Urls.getTaskDetailUrl(self.project.id, self.id);

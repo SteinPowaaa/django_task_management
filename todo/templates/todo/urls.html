@@ -4,14 +4,15 @@
      var self = this;
 
      self.taskListUrl = "{% url 'task-list' dumbId %}";
-     self.taskDetailUrl = "{% url 'task-list' dumbId childId %}";
+     self.taskDetailUrl = "{% url 'task-detail' dumbId childId %}";
      self.projectListUrl = "{% url 'project-list' %}";
      self.projectDetailUrl = "{% url 'project-detail' dumbId %}";
      self.sprintListUrl = "{% url 'sprint-list' dumbId %}";
-     self.sprintDetailUrl = "{% url 'sprint-list' dumbId childId %}";
+     self.sprintDetailUrl = "{% url 'sprint-detail' dumbId childId %}";
 
      self.userListUrl = "{% url 'user-list' %}";
      self.userDetailUrl = "{% url 'user-detail' dumbId %}";
+     self.currentUserUrl = "{% url 'current_user' %}"
 
      self.loginUrl = "{% url 'login' %}";
      self.logoutUrl = "{% url 'logout' %}";
@@ -46,3 +47,4 @@
      return self;
  };
 </script>
+{% endwith %}

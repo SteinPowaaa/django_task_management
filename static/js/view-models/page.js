@@ -4,7 +4,7 @@ function PageViewModel() {
   self.init = function () {
     self.users = ko.observableArray([]);
     self.currentUser = ko.observable();
-    self.userForEdit = ko.observable();
+    self.projects = new ProjectsViewModel();
 
     self.getCurrentUser();
   };
@@ -12,25 +12,26 @@ function PageViewModel() {
   // $('.nav-form').hide();
   // $('.logged-in').show();
   self.getCurrentUser = function () {
-    $.get(viewModel.currentUserUrl).then(function (data){
-      self.currentUser(new User(data));
+    $.get(Urls().currentUserUrl).then(function (data){
+      self.currentUser(new User(data.details));
+      self.currentUser().loggedIn(true);
       self.loadUsers();
-      // load projects
+      Arbiter.publish('loggedIn');
     });
   };
 
   self.createUser = function () {
-    var data = self.userForEdit().normalize();
+    var data = self.currentUser().normalize();
 
     $.post(Urls.userListUrl, data).then(function (data) {
       self.users.push(new User(data));
     });
 
-    self.userForEdit().clear();
+    self.currentUser().clear();
   };
 
   self.loadUsers = function () {
-    return $.getJSON(Url.userListUrl).then(self.populateUsers);
+    return $.getJSON(Urls.userListUrl).then(self.populateUsers);
   };
 
   self.populateUsers = function (data) {
@@ -61,9 +62,9 @@ function PageViewModel() {
 
   self.login = function () {
     $.post(Urls.loginUrl, self.currentUser().normalize()).then(function (data) {
-      // login=true
-      // projects.load
+      self.currentUser().loggedIn(true);
       self.loadUsers();
+      Arbiter.publish('loggedIn');
     });
   };
 
@@ -71,8 +72,8 @@ function PageViewModel() {
   // $('.nav-form').show();
   self.logout = function () {
     $.post(Urls.logoutUrl).then(function () {
-      // projects.clear();
       self.users([]);
+      Arbiter.publish('loggedOut');
     });
   };
 

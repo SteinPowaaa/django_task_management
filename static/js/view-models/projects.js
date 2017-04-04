@@ -2,7 +2,7 @@ function Project(data) {
   var self = this;
 
   self.init = function (data) {
-    var data = data || {};
+    data = data || {};
 
     self.dataLoaded = ko.observable(false);
 
@@ -17,6 +17,10 @@ function Project(data) {
     self.id = data.id || "";
     self.title = ko.observable(data.title || "");
     self.description = ko.observable(data.description || "");
+
+    Arbiter.subscribe('task.created', self.addTask(data));
+    Arbiter.subscribe('task.created', self.addSprint(data));
+    // submit
   };
 
   self.load = function () {
@@ -42,7 +46,7 @@ function Project(data) {
   };
 
   self.loadSprints = function () {
-    $.getJSON(self.sprintsUrl())
+    $.getJSON(Urls.getSprintListUrl(self.id))
       .then(self.populateSprints)
       .then(self.populateDefaultSprint);
   };
@@ -60,30 +64,25 @@ function Project(data) {
   };
 
   self.update = function () {
-    var data = self.normalize();
-    var url = Urls.getProjectDetailUrl(self.id);
-
     return $.ajax({
-      url: url,
+      url: Urls.getProjectDetailUrl(self.id),
       type: 'PUT',
-      data: data
+      data: self.normalize()
     });
   };
 
   self.delete = function (project) {
-    var url = getProjectDetailUrl(project.id);
-
     return $.ajax({
-      url: url,
+      url: Urls.getProjectDetailUrl(project.id),
       type: 'DELETE'
     });
   };
 
   self.normalize = function () {
     return {
-      "id": self.id,
-      "title": self.title(),
-      "description": self.description()
+      id: self.id,
+      title: self.title(),
+      description: self.description()
     };
   };
 
@@ -103,10 +102,6 @@ function Project(data) {
     self.taskForEdit(new Task());
   };
 
-  self.selectSprint = function (sprint) {
-    self.currentSprint(sprint);
-  };
-
   self.addTaskToSprint = function (task) {
     task.updateSprint(self.currentSprint());
   };
@@ -116,21 +111,15 @@ function Project(data) {
   };
 
   self.taskTodo = ko.computed(function () {
-    return self.tasks().filter(function (task) {
-      return task.status() === 'todo';
-    });
+    self.filterStatus('todo');
   });
 
   self.tasksInProgress = ko.computed(function () {
-    return self.tasks().filter(function (task) {
-      return task.status() === 'in-progress';
-    });
+    self.filterStatus('in-progress');
   });
 
   self.tasksCompleted = ko.computed(function () {
-    return self.tasks().filter(function (task) {
-      return task.status() === 'completed';
-    });
+    self.filterStatus('completed');
   });
 
   self.filterStory = ko.computed(function () {
@@ -139,22 +128,10 @@ function Project(data) {
     });
   });
 
-  // modified in array?
-  self.submitSprint = function () {
-    if (self.sprintForEdit().id === '') {
-      self.createSprint();
-    } else {
-      self.sprintForEdit().update();
-    }
-  };
-
-  // modified in array?
-  self.submitTask = function () {
-    if (self.taskForEdit().id === '') {
-      self.createTask();
-    } else {
-      self.taskForEdit().update();
-    }
+  self.filterStatus = function (status) {
+    return self.tasks().filter(function (task) {
+      return task.status() === status;
+    });
   };
 
   self.removeSprint = function (sprint) {
@@ -169,32 +146,32 @@ function Project(data) {
     });
   };
 
-  self.createProject = function () {
-    var data = self.projectForEdit().normalize();
+  self.create = function () {
+    var data = self.normalize();
 
     $.post(Urls.projectListUrl, data).then(function (data) {
-      self.projects.push(new Project(data));
+      Arbited.publish('project.created', data);
     });
   };
 
-  self.createSprint = function () {
-    var data = self.sprintForEdit().normalize();
-
-    $.post(Urls.getSprintListUrl(self.currentProject().id), data).then(function (data) {
-      self.sprints.push(new Sprint(data));
-    });
+  self.submit = function () {
+    if (self.id) {
+      self.create();
+    } else {
+      self.update();
+    }
   };
 
-  self.createTask = function () {
-    var data = self.taskForEdit().normalize();
+  self.addTask = function (data) {
+    self.tasks.push(new Task(data));
+  };
 
-    $.post(Urls.getTaskListUrl(self.currentProject().id), data).then(function (data) {
-      self.tasks.push(new Task(data));
-    });
+  self.addSprint = function (data) {
+    self.sprints.push(new Sprint(data));
   };
 }
 
-function Projects() {
+function ProjectsViewModel() {
   self.init = function () {
     self._toggleMenu = ko.observable(false);
     self._toggleManager = ko.observable(false);
@@ -202,6 +179,10 @@ function Projects() {
     self.projects = ko.observableArray([]);
     self.currentProject = ko.observable();
     self.projectForEdit = ko.observable();
+
+    Arbiter.subscribe('project.created', self.addProject);
+    Arbiter.subscribe('loggedIn', self.load());
+    Arbiter.subscribe('loggedOut', self.clear());
 
     self.load();
   };
@@ -211,7 +192,7 @@ function Projects() {
   };
 
   self.load = function () {
-    $.getJSON(self.projectsUrl)
+    $.getJSON(Urls.projectListUrl)
       .then(self.populate)
       .then(self.populateDefault);
   };
@@ -220,11 +201,11 @@ function Projects() {
     var projects = data.map(function (projectData) {
       return new Project(projectData);
     });
+
     self.projects(projects);
   };
 
   self.populateDefault = function () {
-    // load tasks and sprints
     self.currentProject(self.projects()[0]);
   };
 
@@ -241,19 +222,14 @@ function Projects() {
     self.currentProject().load();
   };
 
-  // modified in array?
-  self.submitProject = function () {
-    if (self.projectForEdit().id === '') {
-      self.createProject();
-    } else {
-      self.projectForEdit().update();
-    }
-  };
-
   self.removeProject = function (project) {
     project.delete().then(function () {
       self.projects.remove(project);
     });
+  };
+
+  self.addProject = function (data) {
+    self.projects.push(new Project(data));
   };
 
   self.init();

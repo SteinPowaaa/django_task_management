@@ -31,56 +31,36 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- static css -->
-    <link href="{% static 'css/index.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
   </head>
-  <body class="main" data-bind="getCurrent">
+  <body class="main"> <!-- data-bind="getCurrent" -->
 
     <div>
 
       {% include '_navbar.html' %}
 
-      {% include '_task_modal.html' %}
-      {% include '_project_modal.html' %}
-      {% include '_user_modal.html' %}
-      {% include '_sprint_modal.html' %}
 
-      <div class="col-md-4 col-sm-6">
-        <p class="tsk-header">To Do</p>
-        <div class="tsk-wrapper" data-bind="foreach: filterTodo,
-                                            dropZone: { accepts: 'tasks', drop: changeStatusTodo }">
-          {% include '_task_data.html' %}
-        </div>
-      </div>
-
-      <div class="col-md-4 col-sm-6">
-        <p class="tsk-header">In Progress</p>
-        <div class="tsk-wrapper" data-bind="foreach: filterInProgress,
-                                            dropZone: { accepts: 'tasks', drop:
-                                            changeStatusInProgress }">
-          {% include '_task_data.html' %}
-        </div>
-      </div>
-
-      <div class="col-md-4 col-sm-6">
-        <p class="tsk-header">Completed</p>
-        <div class="tsk-wrapper" data-bind="foreach: filterCompleted,
-                                            dropZone: { accepts: 'tasks', drop: changeStatusCompleted }">
-          {% include '_task_data.html' %}
-        </div>
-      </div>
-
-      <div class="login-alert"></div>
-
-      {% include '_manager_overlay.html' %}
-      {% include '_task_overlay.html' %}
 
     </div>
 
+    <script>
+      $(function () {
+        var pageVM = new PageViewModel();
+        ko.applyBindings(pageVM);
+      });
+    </script>
+
+    {% include 'urls.html' %}
     {% csrf_token %}
     <script src="{% static 'js/lib/promissory-arbiter.js' %}"></script>
     <script src="{% static 'js/csrf-setter.js' %}"></script>
 
-    <script src="{% static 'js/view-models/index.js' %}"></script>
+    <script src="{% static 'js/view-models/page.js' %}"></script>
+    <script src="{% static 'js/view-models/projects.js' %}"></script>
+    <script src="{% static 'js/view-models/sprint.js' %}"></script>
+    <script src="{% static 'js/view-models/user.js' %}"></script>
+    <script src="{% static 'js/view-models/task.js' %}"></script>
+    <script src="{% static 'js/view-models/namevalue-pair.js' %}"></script>
 
     <script src="{% static 'js/bindings/knockout.dragdrop.js' %}"></script>
     <script src="{% static 'js/bindings/select-picker.js' %}"></script>

@@ -2,7 +2,7 @@ function Sprint(data) {
   var self = this;
 
   self.init = function (data) {
-    var data = data || {};
+    data = data || {};
 
     self.id = data.id || "";
     self.title = ko.observable(data.title || "");
@@ -12,10 +12,10 @@ function Sprint(data) {
 
   self.normalize = function () {
     return {
-      "id": self.id,
-      "title": self.title(),
-      "description": self.description(),
-      "project": self.project()
+      id: self.id,
+      title: self.title(),
+      description: self.description(),
+      project: self.project()
     };
   };
 
@@ -37,5 +37,21 @@ function Sprint(data) {
       url: url,
       type: 'DELETE'
     });
+  };
+
+  self.create = function () {
+    var data = self.normalize();
+
+    $.post(Urls.getSprintListUrl(self.project.id), data).then(function (data) {
+      Arbited.publish('sprint.created', data);
+    });
+  };
+
+  self.submit = function () {
+    if (self.id) {
+      self.create();
+    } else {
+      self.update();
+    }
   };
 }
