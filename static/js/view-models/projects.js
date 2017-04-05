@@ -1,7 +1,7 @@
 function Project(data) {
   var self = this;
 
-  self.init = function (data) {
+  self.init = function () {
     data = data || {};
 
     self.dataLoaded = ko.observable(false);
@@ -18,9 +18,13 @@ function Project(data) {
     self.title = ko.observable(data.title || "");
     self.description = ko.observable(data.description || "");
 
-    Arbiter.subscribe('task.created', self.addTask(data));
-    Arbiter.subscribe('task.created', self.addSprint(data));
-    // submit
+    self.taskTodo = ko.computed(self.filterStatus.bind(self, 'todo'));
+    self.tasksInProgress = ko.computed(self.filterStatus.bind(self, 'in-progress'));
+    self.tasksCompleted = ko.computed(self.filterStatus.bind(self, 'completed'));
+    self.taskStory = ko.computed(self.filterType.bind(self, 'story'));
+
+    Arbiter.subscribe('task.created', self.addTask);
+    Arbiter.subscribe('task.created', self.addSprint);
   };
 
   self.load = function () {
@@ -34,7 +38,7 @@ function Project(data) {
   };
 
   self.loadTasks = function () {
-    $.getJSON(Urls.getTaskListUrl(self.id)).then(self.populateTasks);
+    $.getJSON(Urls().getTaskListUrl(self.id)).then(self.populateTasks);
   };
 
   self.populateTasks = function (data) {
@@ -46,7 +50,7 @@ function Project(data) {
   };
 
   self.loadSprints = function () {
-    $.getJSON(Urls.getSprintListUrl(self.id))
+    $.getJSON(Urls().getSprintListUrl(self.id))
       .then(self.populateSprints)
       .then(self.populateDefaultSprint);
   };
@@ -65,7 +69,7 @@ function Project(data) {
 
   self.update = function () {
     return $.ajax({
-      url: Urls.getProjectDetailUrl(self.id),
+      url: Urls().getProjectDetailUrl(self.id),
       type: 'PUT',
       data: self.normalize()
     });
@@ -73,7 +77,7 @@ function Project(data) {
 
   self.delete = function (project) {
     return $.ajax({
-      url: Urls.getProjectDetailUrl(project.id),
+      url: Urls().getProjectDetailUrl(project.id),
       type: 'DELETE'
     });
   };
@@ -90,7 +94,7 @@ function Project(data) {
     self.sprintForEdit(sprint);
   };
 
-  self.newSprint = function (sprint) {
+  self.newSprint = function () {
     self.sprintForEdit(new Sprint());
   };
 
@@ -98,7 +102,7 @@ function Project(data) {
     self.taskForEdit(task);
   };
 
-  self.newTask = function (task) {
+  self.newTask = function () {
     self.taskForEdit(new Task());
   };
 
@@ -110,27 +114,15 @@ function Project(data) {
     task.updateSprint(null);
   };
 
-  self.taskTodo = ko.computed(function () {
-    self.filterStatus('todo');
-  });
-
-  self.tasksInProgress = ko.computed(function () {
-    self.filterStatus('in-progress');
-  });
-
-  self.tasksCompleted = ko.computed(function () {
-    self.filterStatus('completed');
-  });
-
-  self.filterStory = ko.computed(function () {
-    return self.tasks().filter(function (task) {
-      return task.taskType() === 'story';
-    });
-  });
-
   self.filterStatus = function (status) {
     return self.tasks().filter(function (task) {
       return task.status() === status;
+    });
+  };
+
+  self.filterType = function (taskType) {
+    return self.tasks().filter(function (task) {
+      return task.taskType() === taskType;
     });
   };
 
@@ -149,7 +141,7 @@ function Project(data) {
   self.create = function () {
     var data = self.normalize();
 
-    $.post(Urls.projectListUrl, data).then(function (data) {
+    $.post(Urls().projectListUrl, data).then(function (data) {
       Arbited.publish('project.created', data);
     });
   };
@@ -169,20 +161,21 @@ function Project(data) {
   self.addSprint = function (data) {
     self.sprints.push(new Sprint(data));
   };
+
+  self.init();
 }
 
 function ProjectsViewModel() {
-  self.init = function () {
-    self._toggleMenu = ko.observable(false);
-    self._toggleManager = ko.observable(false);
+  var self = this;
 
+  self.init = function () {
     self.projects = ko.observableArray([]);
     self.currentProject = ko.observable();
     self.projectForEdit = ko.observable();
 
     Arbiter.subscribe('project.created', self.addProject);
-    Arbiter.subscribe('loggedIn', self.load());
-    Arbiter.subscribe('loggedOut', self.clear());
+    Arbiter.subscribe('loggedIn', self.load);
+    Arbiter.subscribe('loggedOut', self.clear);
 
     self.load();
   };
@@ -192,7 +185,7 @@ function ProjectsViewModel() {
   };
 
   self.load = function () {
-    $.getJSON(Urls.projectListUrl)
+    $.getJSON(Urls().projectListUrl)
       .then(self.populate)
       .then(self.populateDefault);
   };
@@ -213,7 +206,7 @@ function ProjectsViewModel() {
     self.projectForEdit(project);
   };
 
-  self.newProject = function (project) {
+  self.newProject = function () {
     self.projectForEdit(new Project());
   };
 

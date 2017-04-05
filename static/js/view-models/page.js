@@ -3,35 +3,32 @@ function PageViewModel() {
 
   self.init = function () {
     self.users = ko.observableArray([]);
-    self.currentUser = ko.observable();
+    self.currentUser = ko.observable(new User());
     self.projects = new ProjectsViewModel();
 
+    self.menuToggled = ko.observable(false);
+    self.managerToggled = ko.observable(false);
+
+    Arbiter.subscribe('user.created', self.addUser);
+
     self.getCurrentUser();
+    self.loadUsers();
   };
 
   // $('.nav-form').hide();
   // $('.logged-in').show();
   self.getCurrentUser = function () {
     $.get(Urls().currentUserUrl).then(function (data){
-      self.currentUser(new User(data.details));
-      self.currentUser().loggedIn(true);
-      self.loadUsers();
-      Arbiter.publish('loggedIn');
+      self.setUserLoadData(data);
     });
   };
 
-  self.createUser = function () {
-    var data = self.currentUser().normalize();
-
-    $.post(Urls.userListUrl, data).then(function (data) {
-      self.users.push(new User(data));
-    });
-
-    self.currentUser().clear();
+  self.addUser = function (data) {
+    self.users.push(new User(data));
   };
 
   self.loadUsers = function () {
-    return $.getJSON(Urls.userListUrl).then(self.populateUsers);
+    return $.getJSON(Urls().userListUrl).then(self.populateUsers);
   };
 
   self.populateUsers = function (data) {
@@ -42,11 +39,11 @@ function PageViewModel() {
   };
 
   self.toggleMenu = function () {
-    self._toggleMenu(!self._toggleMenu());
+    self.menuToggled(!self.menuToggled());
   };
 
   self.toggleManager = function () {
-    self._toggleManager(!self._toggleManager());
+    self.managerToggled(!self.managerToggled());
   };
 
   // $(".login-alert").html('<div class="alert alert-success">Successfully' +
@@ -61,20 +58,26 @@ function PageViewModel() {
   //       $('.logged-in').show();
 
   self.login = function () {
-    $.post(Urls.loginUrl, self.currentUser().normalize()).then(function (data) {
-      self.currentUser().loggedIn(true);
-      self.loadUsers();
-      Arbiter.publish('loggedIn');
+    $.post(Urls().loginUrl, self.currentUser().normalize()).then(function (data) {
+      self.setUserLoadData(data);
     });
   };
 
   // $('.logged-in').hide();
   // $('.nav-form').show();
   self.logout = function () {
-    $.post(Urls.logoutUrl).then(function () {
+    $.post(Urls().logoutUrl).then(function () {
+      self.currentUser().clear();
       self.users([]);
       Arbiter.publish('loggedOut');
     });
+  };
+
+  self.setUserLoadData = function (data) {
+    self.currentUser(new User(data.details));
+    self.currentUser().loggedIn(true);
+    self.loadUsers();
+    Arbiter.publish('loggedIn');
   };
 
   self.init();

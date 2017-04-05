@@ -11,12 +11,12 @@
       <div class="modal-body">
         Title:
         <div>
-          <input class="form-control" type="text" data-bind="value: task().title">
+          <input class="form-control" type="text" data-bind="value: projects.currentProject().taskForEdit().title">
         </div>
 
         Description:
         <div>
-          <input class="form-control" type="text" data-bind="value: task().description">
+          <input class="form-control" type="text" data-bind="value: projects.currentProject().taskForEdit().description">
         </div>
 
         Status:
@@ -24,7 +24,7 @@
         <div class="input-group">
           <select class="selectpicker" data-bind="options: statuses,
                                                   optionsText: 'name',
-                                                  value: task().status,
+                                                  value: projects.currentProject().taskForEdit().status,
                                                   optionsValue: 'value'"></select>
         </div>
 
@@ -33,7 +33,7 @@
         <div class="input-group">
           <select class="selectpicker" data-bind="options: priorities,
                                                   optionsText: 'name',
-                                                  value: task().priority,
+                                                  value: projects.currentProject().taskForEdit().priority,
                                                   optionsValue: 'value'"></select>
         </div>
 
@@ -41,7 +41,7 @@
 
         <div class="input-group">
           <select multiple data-live-search="true"
-                  data-bind="selectPicker: task().assignees,
+                  data-bind="selectPicker: projects.currentProject().taskForEdit().assignees,
                              optionsText: 'name',
                              optionsValue:'id',
                              selectPickerOptions: { optionsArray: users }">
@@ -53,36 +53,36 @@
         <div class="input-group">
           <select class="selectpicker" data-bind="options: taskTypes,
                                                   optionsText: 'name',
-                                                  value: task().taskType,
+                                                  value: projects.currentProject().taskForEdit().taskType,
                                                   optionsValue: 'value'"></select>
         </div>
-        <div data-bind="visible: task().taskType === 'story'">
+        <div data-bind="visible: projects.currentProject().taskForEdit().taskType === 'story'">
           Reference Task:
 
           <div class="input-group">
-            <select class="selectpicker" data-bind="options: filterStory,
+            <select class="selectpicker" data-bind="options: taskStory,
                                                     optionsText: 'title',
-                                                    value: task().refTask"></select>
+                                                    value: projects.currentProject().taskForEdit().refTask"></select>
           </div>
         </div>
 
         Projects:
 
         <div class="input-group">
-          <select class="selectpicker" data-bind="selectPicker: task().project,
+          <select class="selectpicker" data-bind="selectPicker: projects.currentProject().taskForEdit().project,
                                                   optionsText: 'title',
                                                   optionsValue: 'id',
-                                                  selectPickerOptions: { optionsArray: projects }">
+                                                  selectPickerOptions: { optionsArray: projects.projects }">
           </select>
         </div>
 
         Sprints:
 
         <div class="input-group">
-          <select class="selectpicker" data-bind="selectPicker: task().sprint,
+          <select class="selectpicker" data-bind="selectPicker: projects.currentProject().taskForEdit().sprint,
                                                   optionsText: 'title',
                                                   optionsValue: 'id',
-                                                  selectPickerOptions: { optionsArray: sprints }">
+                                                  selectPickerOptions: { optionsArray: projects.sprints }">
           </select>
         </div>
 

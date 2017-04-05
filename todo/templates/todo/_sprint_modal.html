@@ -1,9 +1,11 @@
 <!-- Modal -->
-<div class="modal fade" id="sprintModal" role="dialog">
-  <div class="modal-dialog">
+<div class="modal fade" id="sprintModal" role="dialog" data-bind="with: projects">
+  <!-- ko if: currentProject -->
+  <div class="modal-dialog" data-bind="with: currentProject">
 
     <!-- Modal content-->
-    <div class="modal-content">
+    <div class="modal-content" >
+
       <div class="modal-header">
         <button type="button" class="glyphicon glyphicon-remove modal-close" data-dismiss="modal"></button>
         <h4 class="modal-title">Sprint Properties</h4>
@@ -12,17 +14,19 @@
 
         Title:
         <div>
-          <input class="form-control" type="text" data-bind="value: sprint().title">
+          <input class="form-control" type="text"
+                 data-bind="value: sprintForEdit() && sprintForEdit().title">
         </div>
 
         Description:
         <div>
-          <input class="form-control" type="text" data-bind="value: sprint().description">
+          <input class="form-control" type="text"
+                 data-bind="value: sprintForEdit() && sprintForEdit().description">
         </div>
 
         Project:
         <div class="input-group">
-          <select class="selectpicker" data-bind="selectPicker: sprint().project,
+          <select class="selectpicker" data-bind="sprintForEdit() && sprintForEdit().project,
                                                   optionsText: 'title',
                                                   optionsValue: 'id',
                                                   selectPickerOptions: {
@@ -31,10 +35,12 @@
         </div>
 
       </div>
+
       <div class="modal-footer">
         <input class="btn btn-default" type="submit" value="Submit"
-               data-bind="click: submitSprint" data-dismiss="modal">
+               data-bind="click: sprintForEdit() && sprintForEdit().submit" data-dismiss="modal">
       </div>
     </div>
   </div>
+  <!-- /ko -->
 </div>

@@ -11,23 +11,23 @@
       <div class="modal-body">
         Username:
         <div>
-          <input class="form-control" type="text" data-bind="value: username">
+          <input class="form-control" type="text" data-bind="value: currentUser().username">
         </div>
 
         Email:
         <div>
-          <input class="form-control" type="text" data-bind="value: email">
+          <input class="form-control" type="text" data-bind="value: currentUser().email">
         </div>
 
         Password:
         <div>
-          <input class="form-control" type="password" data-bind="value: password">
+          <input class="form-control" type="password" data-bind="value: currentUser().password">
         </div>
 
       </div>
       <div class="modal-footer">
         <input class="btn btn-default" type="submit" value="Submit"
-               data-bind="click: createUser" data-dismiss="modal">
+               data-bind="click: currentUser().create" data-dismiss="modal">
       </div>
     </div>
   </div>

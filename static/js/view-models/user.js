@@ -21,14 +21,21 @@ function User(data) {
     };
   };
 
+  self.create = function () {
+    var data = self.normalize();
+
+    $.post(Urls().userListUrl, data).then(function (data) {
+      Arbited.publish('user.created', data);
+    });
+
+    self.clear(); // check this
+  };
+
   self.clear = function () {
     self.username("");
     self.email("");
     self.password("");
-  };
-
-  self.clearPassword = function () {
-    self.password("");
+    self.loggedIn(false);
   };
 
   self.init();
