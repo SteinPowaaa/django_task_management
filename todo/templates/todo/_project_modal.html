@@ -1,9 +1,10 @@
 <!-- Modal -->
-<div class="modal fade" id="projectModal" role="dialog">
+<div class="modal fade" id="projectModal" role="dialog" data-bind="with: projects">
+  <!-- ko if: projectForEdit -->
   <div class="modal-dialog">
 
     <!-- Modal content-->
-    <div class="modal-content" data-bind="with: projects.projectForEdit">
+    <div class="modal-content" data-bind="with: projectForEdit">
       <div class="modal-header">
         <button type="button" class="glyphicon glyphicon-remove modal-close" data-dismiss="modal"></button>
         <h4 class="modal-title">Project Properties</h4>
@@ -27,4 +28,5 @@
       </div>
     </div>
   </div>
+  <!-- /ko -->
 </div>

@@ -15,9 +15,9 @@ function Task(data) {
     }));
     self.taskType = ko.observable(data.task_type || "");
     self.project = data.project || "";
-    self.refTask = data.ref_task ? new TaskViewModel(data.ref_task) : null;
+    self.refTask = data.ref_task ? new Task(data.ref_task) : null;
     self.sprint = data.sprint ?
-      ko.observable(new SprintViewModel(data.sprint)) : ko.observable(null);
+      ko.observable(new Sprint(data.sprint)) : ko.observable(null);
   };
 
   self.normalize = function () {
@@ -39,19 +39,15 @@ function Task(data) {
   };
 
   self.delete = function () {
-    var url = Urls.getTaskDetailUrl(self.project.id, self.id);
-
     return $.ajax({
-      url: url,
+      url: Urls().getTaskDetailUrl(self.project, self.id),
       type: 'DELETE'
     });
   };
 
   self.update = function () {
-    var url = Urls.getTaskDetailUrl(self.project.id, self.id);
-
     return $.ajax({
-      url: url,
+      url: Urls().getTaskDetailUrl(self.project, self.id),
       type: 'PUT',
       data: self.normalize()
     });
@@ -60,7 +56,7 @@ function Task(data) {
   self.create = function () {
     var data = self.normalize();
 
-    $.post(Urls.getTaskListUrl(self.project.id), data).then(function (data) {
+    $.post(Urls().getTaskListUrl(self.project), data).then(function (data) {
       Arbited.publish('task.created', data);
     });
   };
@@ -70,10 +66,8 @@ function Task(data) {
       sprint: sprint && sprint.normalize()
     };
 
-    var url = Urls.getTaskDetailUrl(self.project.id, self.id);
-
     return $.ajax({
-      url: url,
+      url: Urls().getTaskDetailUrl(self.project, self.id),
       type: 'PATCH',
       data: data
     });
@@ -84,10 +78,8 @@ function Task(data) {
       "status": status
     };
 
-    url = Urls.getTaskDetailUrl(self.project.id, self.id);
-
     return $.ajax({
-      url: url,
+      url: Urls().getTaskDetailUrl(self.project, self.id),
       type: 'PATCH',
       data: data
     });
@@ -117,4 +109,6 @@ function Task(data) {
     new nameValuePair('medium', 'Medium'),
     new nameValuePair('high', 'High')
   ]);
+
+  self.init();
 }

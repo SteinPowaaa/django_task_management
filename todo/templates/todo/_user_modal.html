@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="userModal" role="dialog">
+<div class="modal fade" id="userModal" role="dialog" data-bind="with: userForEdit">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -11,23 +11,31 @@
       <div class="modal-body">
         Username:
         <div>
-          <input class="form-control" type="text" data-bind="value: currentUser().username">
+          <input class="form-control" type="text" data-bind="value: username">
         </div>
 
         Email:
         <div>
-          <input class="form-control" type="text" data-bind="value: currentUser().email">
+          <input class="form-control" type="text" data-bind="value: email">
         </div>
 
         Password:
         <div>
-          <input class="form-control" type="password" data-bind="value: currentUser().password">
+          <input class="form-control" type="password" data-bind="value: password">
         </div>
+        <!-- Avatar:
+
+             <label class="btn btn-default input-group" for="my-file-selector">
+             <input id="my-file-selector" type="file" onchange="$('#upload-file-info').html($(this).val());">
+             Upload
+             </label>
+             <span class='label label-info' id="upload-file-info"></span>
+           -->
 
       </div>
       <div class="modal-footer">
         <input class="btn btn-default" type="submit" value="Submit"
-               data-bind="click: currentUser().create" data-dismiss="modal">
+               data-bind="click: create" data-dismiss="modal">
       </div>
     </div>
   </div>

@@ -42,7 +42,48 @@
       {% include '_project_modal.html' %}
       {% include '_user_modal.html' %}
       {% include '_sprint_modal.html' %}
+      {% include '_task_modal.html' %}
 
+      <div data-bind="with: projects">
+        <!-- ko if: currentProject -->
+        <div data-bind="with: currentProject">
+          <div class="col-md-4 col-sm-6">
+            <p class="tsk-header">To Do</p>
+            <div class="tsk-wrapper" data-bind="foreach: taskTodo">
+              <div data-bind="dropZone: { accepts: 'tasks',
+                              drop: changeStatus.bind('todo') }">
+                {% include '_task_data.html' %}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 col-sm-6">
+            <p class="tsk-header">In Progress</p>
+            <div class="tsk-wrapper" data-bind="foreach: taskInProgress">
+              <div data-bind="dropZone: { accepts: 'tasks',
+                              drop: changeStatus.bind('in-progress') }">
+                {% include '_task_data.html' %}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 col-sm-6">
+            <p class="tsk-header">Completed</p>
+            <div class="tsk-wrapper" data-bind="foreach: taskCompleted">
+              <div data-bind="dropZone: { accepts: 'tasks',
+                              drop: changeStatus.bind('completed') }">
+                {% include '_task_data.html' %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+
+      <div class="login-alert"></div>
+
+      {% include '_manager_overlay.html' %}
+      {% include '_task_overlay.html' %}
     </div>
 
     <script>

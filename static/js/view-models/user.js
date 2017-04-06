@@ -8,6 +8,7 @@ function User(data) {
     self.username = ko.observable(data.username || "");
     self.password = ko.observable(data.password || "");
     self.email = ko.observable(data.email || "");
+    self.avatar_thumbnail = ko.observable(data.avatar_thumbnail || null);
 
     self.loggedIn = ko.observable(false);
   };

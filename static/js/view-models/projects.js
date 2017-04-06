@@ -17,14 +17,14 @@ function Project(data) {
     self.id = data.id || "";
     self.title = ko.observable(data.title || "");
     self.description = ko.observable(data.description || "");
-
     self.taskTodo = ko.computed(self.filterStatus.bind(self, 'todo'));
-    self.tasksInProgress = ko.computed(self.filterStatus.bind(self, 'in-progress'));
-    self.tasksCompleted = ko.computed(self.filterStatus.bind(self, 'completed'));
+    self.taskInProgress = ko.computed(self.filterStatus.bind(self, 'in-progress'));
+    self.taskCompleted = ko.computed(self.filterStatus.bind(self, 'completed'));
     self.taskStory = ko.computed(self.filterType.bind(self, 'story'));
+    self.taskSprint = ko.computed(self.filterSprint);
 
     Arbiter.subscribe('task.created', self.addTask);
-    Arbiter.subscribe('task.created', self.addSprint);
+    Arbiter.subscribe('sprint.created', self.addSprint);
   };
 
   self.load = function () {
@@ -77,7 +77,7 @@ function Project(data) {
 
   self.delete = function (project) {
     return $.ajax({
-      url: Urls().getProjectDetailUrl(project.id),
+      url: Urls().getProjectDetailUrl(self.id),
       type: 'DELETE'
     });
   };
@@ -126,6 +126,12 @@ function Project(data) {
     });
   };
 
+  self.filterSprint = function () {
+    return self.tasks().filter(function (task) {
+      return task.sprint === self.currentSprint();
+    });
+  };
+
   self.removeSprint = function (sprint) {
     sprint.delete().then(function () {
       self.sprints.remove(sprint);
@@ -142,15 +148,15 @@ function Project(data) {
     var data = self.normalize();
 
     $.post(Urls().projectListUrl, data).then(function (data) {
-      Arbited.publish('project.created', data);
+      Arbiter.publish('project.created', data);
     });
   };
 
   self.submit = function () {
     if (self.id) {
-      self.create();
-    } else {
       self.update();
+    } else {
+      self.create();
     }
   };
 
@@ -160,6 +166,10 @@ function Project(data) {
 
   self.addSprint = function (data) {
     self.sprints.push(new Sprint(data));
+  };
+
+  self.selectSprint = function (sprint) {
+    self.currentSprint(sprint);
   };
 
   self.init();
@@ -199,7 +209,7 @@ function ProjectsViewModel() {
   };
 
   self.populateDefault = function () {
-    self.currentProject(self.projects()[0]);
+    self.selectProject(self.projects()[0]);
   };
 
   self.editProject = function (project) {

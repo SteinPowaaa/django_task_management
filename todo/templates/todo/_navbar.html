@@ -1,6 +1,6 @@
 <nav class="navbar navbar-inverse navbar-static-top" role="navigation"
      data-bind="with: projects">
-  <!-- ko if: currentProject -->
+
   <ul class="nav navbar-nav navbar-right logged-in"
       data-bind="visible: $root.currentUser() && $root.currentUser().loggedIn">
     <li class="dropdown anchor-general">
@@ -13,46 +13,41 @@
         </ul>
   </ul>
 
-  <ul class="nav navbar-nav navbar-left" data-bind="with: currentProject">
+  <ul class="nav navbar-nav navbar-left">
     <li class="dropdown">
       <a class="dropdown-toggle anchor-general" data-toggle="dropdown">
         <span class="glyphicon glyphicon-plus-sign"></span>
       </a>
       <ul class="dropdown-menu">
-        <li><a data-bind="click: newTask,
+        <li><a data-bind="visible: currentProject(),
+                          click: currentProject() && currentProject().newTask,
                           openModal: 'task'">Create Task</a></li>
-        <li><a data-bind="click: $parent.newProject,
+        <li><a data-bind="visible: $root.currentUser().loggedIn(),
+                          click: newProject,
                           openModal: 'project'">Create Project</a></li>
-        <li><a data-bind="click: newSprint,
+        <li><a data-bind="visible: currentProject(),
+                          click: currentProject() && currentProject().newSprint,
                           openModal: 'sprint'">Create Sprint</a></li>
         <li><a data-bind="visible: $root.currentUser() && !$root.currentUser().loggedIn(),
+                          click: $root.newUser,
                           openModal: 'user'">Create User</a></li>
       </ul>
     </li>
 
-    <li class="dropdown" data-bind="visible: $parent.projects().length">
+    <li class="dropdown" data-bind="visible: projects().length">
       <a class="dropdown-toggle anchor-general" data-toggle="dropdown">
-        <span data-bind="text: title"></span>
+        <span data-bind="text: currentProject() && currentProject().title"></span>
         <span class="glyphicon glyphicon-chevron-down"></span>
       </a>
       <ul class="dropdown-menu">
-        <li data-bind="foreach: $parent.projects">
+        <li data-bind="foreach: projects">
           <a data-bind="click: $parent.selectProject, text: title"></a>
         </li>
       </ul>
     </li>
 
-    <li class="dropdown" data-bind="visible: sprints().length">
-      <a class="dropdown-toggle anchor-general" data-toggle="dropdown">
-        <span data-bind="text: currentSprint() && currentSprint().title"></span>
-        <span class="glyphicon glyphicon-chevron-down"></span>
-      </a>
-      <ul class="dropdown-menu">
-        <li data-bind="foreach: sprints">
-          <a data-bind="click: currentSprint, text: title"></a>
-        </li>
-      </ul>
-    </li>
+
+
     <li><a class="anchor-general" data-bind="click: $root.toggleManager">Manage</a></li>
   </ul>
 
@@ -66,5 +61,5 @@
     <input class="btn btn-default login-input anchor-general" type="submit" value="Submit"
            data-bind="click: $root.login"></input>
   </form>
-  <!-- /ko -->
+
 </nav>

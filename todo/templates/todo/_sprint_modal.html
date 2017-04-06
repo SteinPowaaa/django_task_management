@@ -2,7 +2,7 @@
 <div class="modal fade" id="sprintModal" role="dialog" data-bind="with: projects">
   <!-- ko if: currentProject -->
   <div class="modal-dialog" data-bind="with: currentProject">
-
+    <!-- ko if: sprintForEdit -->
     <!-- Modal content-->
     <div class="modal-content" >
 
@@ -10,27 +10,27 @@
         <button type="button" class="glyphicon glyphicon-remove modal-close" data-dismiss="modal"></button>
         <h4 class="modal-title">Sprint Properties</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" data-bind="with: sprintForEdit">
 
         Title:
         <div>
           <input class="form-control" type="text"
-                 data-bind="value: sprintForEdit() && sprintForEdit().title">
+                 data-bind="value: title">
         </div>
 
         Description:
         <div>
           <input class="form-control" type="text"
-                 data-bind="value: sprintForEdit() && sprintForEdit().description">
+                 data-bind="value: description">
         </div>
 
         Project:
         <div class="input-group">
-          <select class="selectpicker" data-bind="sprintForEdit() && sprintForEdit().project,
+          <select class="selectpicker" data-bind="selectPicker: project,
                                                   optionsText: 'title',
                                                   optionsValue: 'id',
                                                   selectPickerOptions: {
-                                                  optionsArray: projects }">
+                                                  optionsArray: $parents[1].projects }">
           </select>
         </div>
 
@@ -41,6 +41,7 @@
                data-bind="click: sprintForEdit() && sprintForEdit().submit" data-dismiss="modal">
       </div>
     </div>
+    <!-- /ko -->
   </div>
   <!-- /ko -->
 </div>

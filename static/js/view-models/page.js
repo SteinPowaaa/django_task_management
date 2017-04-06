@@ -4,6 +4,8 @@ function PageViewModel() {
   self.init = function () {
     self.users = ko.observableArray([]);
     self.currentUser = ko.observable(new User());
+    self.userForEdit = ko.observable();
+
     self.projects = new ProjectsViewModel();
 
     self.menuToggled = ko.observable(false);
@@ -25,6 +27,10 @@ function PageViewModel() {
 
   self.addUser = function (data) {
     self.users.push(new User(data));
+  };
+
+  self.newUser = function () {
+    self.userForEdit(new User());
   };
 
   self.loadUsers = function () {

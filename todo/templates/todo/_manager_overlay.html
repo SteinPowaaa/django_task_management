@@ -5,7 +5,7 @@
     <a class="closebtn glyphicon glyphicon-remove" data-bind="click: toggleManager"></a>
   </div>
 
-  <div class="row manager-content-wrapper">
+  <div class="row manager-content-wrapper" data-bind="with: projects">
 
     <div class="col-md-4 col-sm-12 manager-element-wrapper">
 
@@ -15,7 +15,7 @@
             <div class="col-xs-6 manager-heading-text">Projects</div>
             <div class="col-xs-6 manager-heading-icon">
               <div class="glyphicon glyphicon-plus-sign anchor-general"
-                   data-bind="click: pickProject(new Project({})),
+                   data-bind="click: newProject,
                               openModal: 'project'"></div>
             </div>
           </div>
@@ -26,11 +26,11 @@
               <div class="manager-content accordion-item">
                 <div class="manager-prj-header" data-bind="text: title"></div>
                 <a class="glyphicon glyphicon-pencil manager-icon"
-                   data-bind="click: $root.pickProject, openModal: 'project'"></a>
+                   data-bind="click: $parent.editProject, openModal: 'project'"></a>
                 <a class="glyphicon glyphicon-remove manager-icon"
-                   data-bind="click: $root.removeProject"></a>
+                   data-bind="click: $parent.removeProject"></a>
                 <div class="accordion-item-content"
-                     data-bind="css: { 'accordion-expand': $root.currentSprint() === $data}">
+                     data-bind="css: { 'accordion-expand': $parent.currentProject() === $data}">
                     <span class="manager-content" data-bind="text: description"</span>
                 </div>
               </div>
@@ -38,14 +38,14 @@
         </div>
 
       </div>
-
-      <div class="manager-main">
+      <!-- ko if: currentProject -->
+      <div class="manager-main" data-bind="with: currentProject">
         <div class="manager-main-header">
           <div class="row manager-heading-row">
             <div class="col-xs-6 manager-heading-text">Sprints</div>
             <div class="col-xs-6 manager-heading-icon">
               <div class="glyphicon glyphicon-plus-sign anchor-general"
-                   data-bind="click: pickSprint(new Sprint({})),
+                   data-bind="click: newSprint,
                               openModal: 'sprint'"></div>
             </div>
           </div>
@@ -56,11 +56,11 @@
               <div class="manager-content accordion-item">
                 <div class="manager-prj-header" data-bind="text: title"></div>
                 <a class="glyphicon glyphicon-pencil manager-icon"
-                   data-bind="click: $root.pickSprint, openModal: 'sprint'"></a>
+                   data-bind="click: $parent.editSprint, openModal: 'sprint'"></a>
                 <a class="glyphicon glyphicon-remove manager-icon"
-                   data-bind="click: $root.removeSprint"></a>
+                   data-bind="click: $parent.removeSprint"></a>
                 <div class="accordion-item-content"
-                     data-bind="css: { 'accordion-expand': $root.currentSprint() === $data}">
+                     data-bind="css: { 'accordion-expand': $parent.currentSprint() === $data}">
                   <span class="manager-content" data-bind="text: description"</span>
                 </div>
               </div>
@@ -68,18 +68,18 @@
           </div>
 
       </div>
-
+      <!-- /ko -->
     </div>
-
-    <div class="col-md-8 col-sm-12 manager-element-wrapper">
+    <!-- ko if: currentProject -->
+    <div class="col-md-8 col-sm-12 manager-element-wrapper" data-bind="with: currentProject">
 
       <div class="manager-main"
            data-bind="dropZone: { accepts: 'backlog', drop: addTaskToSprint }">
         <div class="manager-main-header">
-          <h2 data-bind="text: currentSprint().title"></h2>
+          <h2 data-bind="text: currentSprint() && currentSprint().title"></h2>
         </div>
 
-        <div data-bind="foreach: currentSprint().tasks">
+        <div data-bind="foreach: taskSprint">
           <div class="manager-prj-wrapper accordion"
                data-bind="borderColorPicker: priority,
                           dragZone: { name: 'backlog' }">
@@ -87,7 +87,7 @@
               <div class="manager-prj-header" data-bind="text: title"></div>
               <a class="glyphicon glyphicon-pencil manager-icon"></a>
               <a class="glyphicon glyphicon-remove manager-icon"
-                 data-bind="click: $root.removeTask"></a>
+                 data-bind="click: $parent.removeTask"></a>
               <div class="accordion-item-content">
                 <span class="manager-content" data-bind="text: description"</span>
               </div>
@@ -98,7 +98,7 @@
       </div>
 
       <div class="manager-main"
-           data-bind="dropZone: { accepts: 'backlog', drop: addTaskToSprint }">
+           data-bind="dropZone: { accepts: 'backlog', drop: removeTaskFromSprint }">
         <div class="manager-main-header">
           <h2>Backlog</h2>
         </div>
@@ -110,9 +110,9 @@
             <div class="manager-content accordion-item">
               <div class="manager-prj-header" data-bind="text: title"></div>
               <a class="glyphicon glyphicon-pencil manager-icon"
-                 data-bind="click: $root.pickTask, openModal: 'task'"></a>
+                 data-bind="click: $parent.editTask, openModal: 'task'"></a>
               <a class="glyphicon glyphicon-remove manager-icon"
-                 data-bind="click: $root.removeTask"></a>
+                 data-bind="click: $parent.removeTask"></a>
               <div class="accordion-item-content">
                 <div class="manager-content" data-bind="text: description"</div>
               </div>
@@ -121,8 +121,7 @@
         </div>
 
       </div>
-
     </div>
   </div>
-
+  <!-- /ko -->
 </div>

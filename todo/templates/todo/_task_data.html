@@ -1,16 +1,18 @@
 <div class="tsk-container" data-bind="borderColorPicker: priority,
-                                      click: function(task){
+                                      click: function(task) {
                                       $root.toggleMenu(),
-                                      $root.pickTask(task)
-                                      },
+                                      $parent.editTask(task) },
                                       dragZone: { name: 'tasks' }">
   <div class="tsk-icon" title="" data-bind="iconPicker: taskType"></div>
   <div class="tsk-title" data-bind="text: title"></div>
   <div data-bind="foreach: assignees">
-    <img class="tsk-output" data-bind="attr: { src: avatar_thumbnail }"></img>
+    <!-- ko if: avatar_thumbnail -->
+    <img class="tsk-output"
+         data-bind="attr: { src: avatar_thumbnail }"></img>
+    <!-- /ko -->
   </div>
   <a class="tsk-btn create-task glyphicon glyphicon-pencil"
-     data-bind="click: $root.pickTask, clickBubble: false, openModal: 'task'"></a>
+     data-bind="click: $parents[1].editTask, clickBubble: false, openModal: 'task'"></a>
   <a class="tsk-btn glyphicon glyphicon-remove" data-bind="click:
-                                                           $root.removeTask, clickBubble: false"></a>
+                                                           $parents[1].removeTask, clickBubble: false"></a>
 </div>
