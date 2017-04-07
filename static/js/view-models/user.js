@@ -18,15 +18,15 @@ function User(data) {
       id: self.id(),
       username: self.username(),
       password:  self.password(),
-      email: self.email()
+      email: self.email(),
+      avatar_thumbnail: self.avatar_thumbnail()
     };
   };
 
   self.create = function () {
     var data = self.normalize();
-
-    $.post(Urls().userListUrl, data).then(function (data) {
-      Arbited.publish('user.created', data);
+    $.post(Urls().registerUrl, data).then(function (data) {
+      Arbiter.publish('user.created', data);
     });
 
     self.clear(); // check this

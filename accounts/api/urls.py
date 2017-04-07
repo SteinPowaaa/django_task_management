@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^current-user', views.current_user, name="current_user"),
     url(r'^login', views.login, name="login"),
     url(r'^logout', views.logout, name="logout"),
+    url(r'^register', views.register, name="register"),
     url(r'^', include(router.urls))
 ]

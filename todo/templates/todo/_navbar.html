@@ -46,7 +46,20 @@
       </ul>
     </li>
 
-
+    <!-- ko if: currentProject -->
+    <li data-bind="with: currentProject">
+        <a class="dropdown-toggle anchor-general" data-toggle="dropdown"
+           data-bind="visible: sprints().length">
+          <span data-bind="text: currentSprint() && currentSprint().title"></span>
+          <span class="glyphicon glyphicon-chevron-down"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li data-bind="foreach: sprints">
+            <a data-bind="click: $parent.selectSprint, text: title"></a>
+          </li>
+        </ul>
+    </li>
+    <!-- /ko -->
 
     <li><a class="anchor-general" data-bind="click: $root.toggleManager">Manage</a></li>
   </ul>

@@ -23,14 +23,16 @@
         <div>
           <input class="form-control" type="password" data-bind="value: password">
         </div>
-        <!-- Avatar:
 
-             <label class="btn btn-default input-group" for="my-file-selector">
-             <input id="my-file-selector" type="file" onchange="$('#upload-file-info').html($(this).val());">
-             Upload
-             </label>
-             <span class='label label-info' id="upload-file-info"></span>
-           -->
+        Avatar:
+
+        <label class="btn btn-default input-group" for="my-file-selector">
+          <input id="my-file-selector" type="file"
+                 onchange="$('#upload-file-info').html($(this).val());"
+                 data-bind="value: avatar_thumbnail">
+          Upload
+        </label>
+        <span class='label label-info' id="upload-file-info"></span>
 
       </div>
       <div class="modal-footer">

@@ -30,7 +30,6 @@ function Sprint(data) {
   };
 
   self.delete = function () {
-    debugger
     return $.ajax({
       url: Urls().getSprintDetailUrl(self.project(), self.id),
       type: 'DELETE'

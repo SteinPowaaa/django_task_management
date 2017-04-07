@@ -28,7 +28,7 @@ function Project(data) {
   };
 
   self.load = function () {
-    if (self.dataLoaded()){
+    if (self.dataLoaded()) {
       return;
     }
 
@@ -128,7 +128,7 @@ function Project(data) {
 
   self.filterSprint = function () {
     return self.tasks().filter(function (task) {
-      return task.sprint === self.currentSprint();
+      return task.sprint() === self.currentSprint().id;
     });
   };
 
@@ -172,6 +172,10 @@ function Project(data) {
     self.currentSprint(sprint);
   };
 
+  self.changeTaskStatus = function (status, task) {
+    task.changeStatus(status);
+  };
+
   self.init();
 }
 
@@ -192,6 +196,7 @@ function ProjectsViewModel() {
 
   self.clear = function () {
     self.projects([]);
+    self.currentProject(null);
   };
 
   self.load = function () {

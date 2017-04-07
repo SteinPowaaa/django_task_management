@@ -16,8 +16,7 @@ function Task(data) {
     self.taskType = ko.observable(data.task_type || "");
     self.project = data.project || "";
     self.refTask = data.ref_task ? new Task(data.ref_task) : null;
-    self.sprint = data.sprint ?
-      ko.observable(new Sprint(data.sprint)) : ko.observable(null);
+    self.sprint = ko.observable(data.sprint || null);
   };
 
   self.normalize = function () {

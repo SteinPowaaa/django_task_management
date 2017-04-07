@@ -22,24 +22,27 @@
         </div>
 
         <div data-bind="foreach: projects">
-            <div class="manager-prj-wrapper accordion">
-              <div class="manager-content accordion-item">
-                <div class="manager-prj-header" data-bind="text: title"></div>
-                <a class="glyphicon glyphicon-pencil manager-icon"
-                   data-bind="click: $parent.editProject, openModal: 'project'"></a>
-                <a class="glyphicon glyphicon-remove manager-icon"
-                   data-bind="click: $parent.removeProject"></a>
-                <div class="accordion-item-content"
-                     data-bind="css: { 'accordion-expand': $parent.currentProject() === $data}">
-                    <span class="manager-content" data-bind="text: description"</span>
-                </div>
+          <div class="manager-prj-wrapper accordion"
+               data-bind="click: $parent.selectProject">
+            <div class="manager-content accordion-item">
+              <div class="manager-prj-header" data-bind="text: title"></div>
+              <a class="glyphicon glyphicon-pencil manager-icon"
+                 data-bind="click: $parent.editProject, openModal: 'project'"></a>
+              <a class="glyphicon glyphicon-remove manager-icon"
+                 data-bind="click: $parent.removeProject"></a>
+              <div class="accordion-item-content"
+                   data-bind="css: { 'accordion-expand': $parent.currentProject() === $data}">
+                <span class="manager-content" data-bind="text: description"</span>
               </div>
             </div>
+          </div>
         </div>
 
       </div>
+      <!-- yes 1left -->
       <!-- ko if: currentProject -->
       <div class="manager-main" data-bind="with: currentProject">
+
         <div class="manager-main-header">
           <div class="row manager-heading-row">
             <div class="col-xs-6 manager-heading-text">Sprints</div>
@@ -51,21 +54,21 @@
           </div>
         </div>
 
-          <div data-bind="foreach: sprints">
-            <div class="manager-prj-wrapper accordion">
-              <div class="manager-content accordion-item">
-                <div class="manager-prj-header" data-bind="text: title"></div>
-                <a class="glyphicon glyphicon-pencil manager-icon"
-                   data-bind="click: $parent.editSprint, openModal: 'sprint'"></a>
-                <a class="glyphicon glyphicon-remove manager-icon"
-                   data-bind="click: $parent.removeSprint"></a>
-                <div class="accordion-item-content"
-                     data-bind="css: { 'accordion-expand': $parent.currentSprint() === $data}">
-                  <span class="manager-content" data-bind="text: description"</span>
-                </div>
+        <div data-bind="foreach: sprints">
+          <div class="manager-prj-wrapper accordion" data-bind="click: $parent.selectSprint">
+            <div class="manager-content accordion-item">
+              <div class="manager-prj-header" data-bind="text: title"></div>
+              <a class="glyphicon glyphicon-pencil manager-icon"
+                 data-bind="click: $parent.editSprint, openModal: 'sprint'"></a>
+              <a class="glyphicon glyphicon-remove manager-icon"
+                 data-bind="click: $parent.removeSprint"></a>
+              <div class="accordion-item-content"
+                   data-bind="css: { 'accordion-expand': $parent.currentSprint() === $data}">
+                <span class="manager-content" data-bind="text: description"</span>
               </div>
             </div>
           </div>
+        </div>
 
       </div>
       <!-- /ko -->

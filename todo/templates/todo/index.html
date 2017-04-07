@@ -49,31 +49,28 @@
         <div data-bind="with: currentProject">
           <div class="col-md-4 col-sm-6">
             <p class="tsk-header">To Do</p>
-            <div class="tsk-wrapper" data-bind="foreach: taskTodo">
-              <div data-bind="dropZone: { accepts: 'tasks',
-                              drop: changeStatus.bind('todo') }">
+            <div class="tsk-wrapper" data-bind="foreach: taskTodo, dropZone: { accepts: 'tasks',
+                                                drop:
+                                                changeTaskStatus.bind($data, 'todo') }">
                 {% include '_task_data.html' %}
-              </div>
             </div>
           </div>
 
           <div class="col-md-4 col-sm-6">
             <p class="tsk-header">In Progress</p>
-            <div class="tsk-wrapper" data-bind="foreach: taskInProgress">
-              <div data-bind="dropZone: { accepts: 'tasks',
-                              drop: changeStatus.bind('in-progress') }">
+            <div class="tsk-wrapper" data-bind="foreach: taskInProgress, dropZone: { accepts: 'tasks',
+                                                drop:
+            changeTaskStatus.bind($data, 'in-progress') }">
                 {% include '_task_data.html' %}
-              </div>
             </div>
           </div>
 
           <div class="col-md-4 col-sm-6">
             <p class="tsk-header">Completed</p>
-            <div class="tsk-wrapper" data-bind="foreach: taskCompleted">
-              <div data-bind="dropZone: { accepts: 'tasks',
-                              drop: changeStatus.bind('completed') }">
+            <div class="tsk-wrapper" data-bind="foreach: taskCompleted, dropZone: { accepts: 'tasks',
+                                                drop:
+            changeTaskStatus.bind($data, 'completed') }">
                 {% include '_task_data.html' %}
-              </div>
             </div>
           </div>
         </div>
