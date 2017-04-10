@@ -38,8 +38,8 @@ class TestAccounts:
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_accounts__register(self, user, client):
-        url = reverse('user-list')
+        url = reverse('register')
         response = client.post(url, {'username': 'stein',
                                      'password': 'password123',
                                      'email': 'stein@example.com'})
-        assert response.data['detail'] == 'ok'
+        assert response.data['details'] == 'OK'

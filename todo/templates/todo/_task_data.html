@@ -1,5 +1,8 @@
 <div class="tsk-container" data-bind="borderColorPicker: priority,
-                                      click: $root.toggleMenu(),
+                                      click: function (task){
+                                      $root.toggleMenu(),
+                                      $parent.editTask(task)
+                                      },
                                       dragZone: { name: 'tasks' }">
   <div class="tsk-icon" title="" data-bind="iconPicker: taskType"></div>
   <div class="tsk-title" data-bind="text: title"></div>
@@ -10,7 +13,7 @@
     <!-- /ko -->
   </div>
   <a class="tsk-btn create-task glyphicon glyphicon-pencil"
-     data-bind="click: $parents[1].editTask, clickBubble: false, openModal: 'task'"></a>
+     data-bind="click: $parent.editTask, clickBubble: false, openModal: 'task'"></a>
   <a class="tsk-btn glyphicon glyphicon-remove"
-     data-bind="click: $parents[1].removeTask, clickBubble: false"></a>
+     data-bind="click: $parent.removeTask, clickBubble: false"></a>
 </div>

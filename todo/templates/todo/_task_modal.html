@@ -2,47 +2,48 @@
 <div class="modal fade" id="taskModal" role="dialog" data-bind="with: projects">
   <!-- ko if: currentProject -->
   <div class="modal-dialog" data-bind="with: currentProject">
-    <!-- ko if: taskForEdit -->
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="glyphicon glyphicon-remove modal-close" data-dismiss="modal"></button>
         <h4 class="modal-title">Task Properties</h4>
       </div>
-      <div class="modal-body" data-bind="with: taskForEdit">
+      <div class="modal-body">
         Title:
         <div>
-          <input class="form-control" type="text" data-bind="value: title">
+          <input class="form-control" type="text"
+                 data-bind="value: taskForEdit() && taskForEdit().title">
         </div>
 
         Description:
         <div>
-          <input class="form-control" type="text" data-bind="value: description">
+          <input class="form-control" type="text"
+                 data-bind="value: taskForEdit() && taskForEdit().description">
         </div>
 
         Status:
 
         <div class="input-group">
-          <select class="selectpicker" data-bind="options: statuses,
-                                                  optionsText: 'name',
-                                                  value: status,
-                                                  optionsValue: 'value'"></select>
+          <select class="" data-bind="options: taskForEdit() && taskForEdit().statuses,
+                                      optionsText: 'name',
+                                      value: taskForEdit() && taskForEdit().status,
+                                      optionsValue: 'value'"></select>
         </div>
 
         Priority:
 
         <div class="input-group">
-          <select class="selectpicker" data-bind="options: priorities,
-                                                  optionsText: 'name',
-                                                  value: priority,
-                                                  optionsValue: 'value'"></select>
+          <select class="" data-bind="options: taskForEdit() && taskForEdit().priorities,
+                                      optionsText: 'name',
+                                      value: taskForEdit() && taskForEdit().priority,
+                                      optionsValue: 'value'"></select>
         </div>
 
         Assignees:
 
         <div class="input-group">
           <select multiple data-live-search="true"
-                  data-bind="selectPicker: assignees,
+                  data-bind="selectPicker: taskForEdit() && taskForEdit().assignees,
                              optionsText: 'username',
                              optionsValue:'id',
                              selectPickerOptions: { optionsArray: $root.users }">
@@ -52,48 +53,48 @@
         Task Type:
 
         <div class="input-group">
-          <select class="selectpicker" data-bind="options: taskTypes,
-                                                  optionsText: 'name',
-                                                  value: taskType,
-                                                  optionsValue: 'value'"></select>
+          <select class="" data-bind="options: taskForEdit() && taskForEdit().taskTypes,
+                                      optionsText: 'name',
+                                      value: taskForEdit() && taskForEdit().taskType,
+                                      optionsValue: 'value'"></select>
         </div>
-        <div data-bind="visible: taskType === 'story'">
+
+        <div data-bind="visible: taskForEdit() && taskForEdit().taskType() === 'story'">
           Reference Task:
 
           <div class="input-group">
-            <select class="selectpicker" data-bind="options: $root.projects.currentProject().taskStory,
-                                                    optionsText: 'title',
-                                                    value: refTask"></select>
+            <select class="" data-bind="options: $root.projects.currentProject().taskStory,
+                                        optionsText: 'title',
+                                        value: taskForEdit() && taskForEdit().refTask"></select>
           </div>
         </div>
 
         Projects:
 
         <div class="input-group">
-          <select class="selectpicker" data-bind="selectPicker: project,
-                                                  optionsText: 'title',
-                                                  optionsValue: 'id',
-                                                  selectPickerOptions: { optionsArray: $root.projects.projects }">
+          <select class="" data-bind="selectPicker: taskForEdit() && taskForEdit().project,
+                                      optionsText: 'title',
+                                      optionsValue: 'id',
+                                      selectPickerOptions: { optionsArray: $root.projects.projects }">
           </select>
         </div>
 
         Sprints:
 
         <div class="input-group">
-          <select class="selectpicker" data-bind="selectPicker: sprint,
-                                                  optionsText: 'title',
-                                                  optionsValue: 'id',
-                                                  selectPickerOptions: { optionsArray: $root.projects.currentProject().sprints }">
+          <select class="" data-bind="selectPicker: taskForEdit() && taskForEdit().sprint,
+                                      optionsText: 'title',
+                                      optionsValue: 'id',
+                                      selectPickerOptions: { optionsArray: $root.projects.currentProject().sprints }">
           </select>
         </div>
 
       </div>
       <div class="modal-footer">
         <input class="btn btn-default" type="submit" value="Submit"
-               data-bind="click: submit" data-dismiss="modal">
+               data-bind="click: taskForEdit() && taskForEdit().submit" data-dismiss="modal">
       </div>
     </div>
-    <!-- /ko -->
   </div>
   <!-- /ko -->
 </div>

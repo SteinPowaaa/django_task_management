@@ -114,8 +114,15 @@ function Project(data) {
     task.updateSprint(null);
   };
 
-  self.filterStatus = function (status) {
+  self.filterSprint = function () {
+    var current = self.currentSprint() ? self.currentSprint().id : null;
     return self.tasks().filter(function (task) {
+      return task.sprint() === current;
+    });
+  };
+
+  self.filterStatus = function (status) {
+    return self.filterSprint().filter(function (task) {
       return task.status() === status;
     });
   };
@@ -123,12 +130,6 @@ function Project(data) {
   self.filterType = function (taskType) {
     return self.tasks().filter(function (task) {
       return task.taskType() === taskType;
-    });
-  };
-
-  self.filterSprint = function () {
-    return self.tasks().filter(function (task) {
-      return task.sprint() === self.currentSprint().id;
     });
   };
 
@@ -175,6 +176,12 @@ function Project(data) {
   self.changeTaskStatus = function (status, task) {
     task.changeStatus(status);
   };
+
+  self.statuses = [
+    new nameValuePair('Todo', 'todo'),
+    new nameValuePair('In Progress', 'in-progress'),
+    new nameValuePair('Completed', 'completed')
+  ];
 
   self.init();
 }

@@ -1,4 +1,5 @@
-<div class="overlay-task" data-bind="with: projects, style: { left: menuToggled() ? '0px' : '-300px'}"
+<div class="overlay-task"
+     data-bind="with: projects, style: { left: menuToggled() ? '0px' : '-300px'}">
   <!-- ko if: currentProject -->
   <div data-bind="with: currentProject">
     <a class="closebtn glyphicon glyphicon-remove" data-bind="click: $root.toggleMenu"></a>
@@ -9,36 +10,31 @@
       <p class="line">Details</p>
       <div class="tsk-group">
         <div>
-          <p class="tsk-heading">Title: </p><div class="tsk-heading-txt"
-                                                 data-bind="text: editTask() &&
-                                                            editTask().title"></div>
+          <p class="tsk-heading">Title: </p>
+          <div class="tsk-heading-txt" data-bind="text: taskForEdit() && taskForEdit().title"></div>
         </div>
 
         <div>
-          <p class="tsk-heading">Description: </p><div class="tsk-heading-txt"
-                                                       data-bind="text: editTask() &&
-                                                                  editTask().description"></div>
+          <p class="tsk-heading">Description: </p>
+          <div class="tsk-heading-txt" data-bind="text: taskForEdit() && taskForEdit().description"></div>
         </div>
 
         <div>
-          <p class="tsk-heading">Status: </p><div class="tsk-heading-txt"
-                                                  data-bind="text: editTask() &&
-                                                             editTask().status"></div>
+          <p class="tsk-heading">Status: </p>
+          <div class="tsk-heading-txt" data-bind="text: taskForEdit() && taskForEdit().status"></div>
         </div>
 
         <div>
-          <p class="tsk-heading">Priority: </p><div class="tsk-heading-txt"
-                                                    data-bind="text: editTask() &&
-                                                               editTask().priority"></div>
+          <p class="tsk-heading">Priority: </p>
+          <div class="tsk-heading-txt" data-bind="text: taskForEdit() && taskForEdit().priority"></div>
         </div>
         <div>
-          <p class="tsk-heading">Task Type: </p><div class="tsk-heading-txt"
-                                                     data-bind="text: editTask() &&
-                                                                editTask().taskType"></div>
+          <p class="tsk-heading">Task Type: </p>
+          <div class="tsk-heading-txt" data-bind="text: taskForEdit() && taskForEdit().taskType"></div>
         </div>
       </div>
       <div class="line">Assignees</div>
-      <div class="tsk-group" data-bind="foreach: editTask() && editTask().assignees">
+      <div class="tsk-group" data-bind="foreach: taskForEdit() && taskForEdit().assignees">
         <div>
           <!-- ko if: avatar_thumbnail -->
           <img class="tsk-heading"

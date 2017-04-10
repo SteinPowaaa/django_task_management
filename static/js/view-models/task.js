@@ -7,7 +7,7 @@ function Task(data) {
     self.id = data.id || "";
     self.title = ko.observable(data.title || "");
     self.description = ko.observable(data.description || "");
-    self.status = ko.observable(data.status || "");
+    self.status = ko.protectedObservable(data.status || "");
     self.priority = ko.observable(data.priority || "");
     self.creator = data.creator || null;
     self.assignees = ko.observableArray((data.assignees || []).map(function (assigneeData) {
@@ -19,6 +19,10 @@ function Task(data) {
     self.sprint = ko.observable(data.sprint || null);
   };
 
+  self.commitAll = function () {
+    self.status.commit();
+  };
+
   self.normalize = function () {
     return {
       id: self.id,
@@ -26,14 +30,14 @@ function Task(data) {
       description: self.description(),
       status: self.status(),
       priority: self.priority(),
-      creator: self.creator.id,
+      creator: self.creator,
       assignees: self.assignees().map(function (assigneeData) {
         return assigneeData.normalize();
       }),
       task_type: self.taskType(),
       project: self.project,
       ref_task: self.refTask ? self.refTask.normalize() : null,
-      sprint: self.sprint ? self.sprint().normalize() : null
+      sprint: self.sprint() ? self.sprint() : null
     };
   };
 
@@ -54,9 +58,8 @@ function Task(data) {
 
   self.create = function () {
     var data = self.normalize();
-
     $.post(Urls().getTaskListUrl(self.project), data).then(function (data) {
-      Arbited.publish('task.created', data);
+      Arbiter.publish('task.created', data);
     });
   };
 
@@ -90,24 +93,33 @@ function Task(data) {
     });
   };
 
-  self.taskTypes = ko.observableArray([
-    new nameValuePair('story', 'Story'),
-    new nameValuePair('bug', 'Bug'),
-    new nameValuePair('improvement', 'Improvement'),
-    new nameValuePair('sub-task', 'Sub Task')
-  ]);
+  self.submit = function () {
+    self.commitAll();
+    if (self.id === '') {
+      self.create();
+    } else {
+      self.update();
+    }
+  };
 
-  self.statuses = ko.observableArray([
-    new nameValuePair('todo', 'Todo'),
-    new nameValuePair('in-progress', 'In Progress'),
-    new nameValuePair('completed', 'Completed')
-  ]);
+  self.taskTypes = [
+    new nameValuePair('Story', 'story'),
+    new nameValuePair('Bug', 'bug'),
+    new nameValuePair('Improvement', 'improvement'),
+    new nameValuePair('Sub Task', 'sub-task')
+  ];
 
-  self.priorities = ko.observableArray([
-    new nameValuePair('low', 'Low'),
-    new nameValuePair('medium', 'Medium'),
-    new nameValuePair('high', 'High')
-  ]);
+  self.statuses = [
+    new nameValuePair('Todo', 'todo'),
+    new nameValuePair('In Progress', 'in-progress'),
+    new nameValuePair('Completed', 'completed')
+  ];
+
+  self.priorities = [
+    new nameValuePair('Low', 'low'),
+    new nameValuePair('Medium', 'medium'),
+    new nameValuePair('High', 'high')
+  ];
 
   self.init();
 }

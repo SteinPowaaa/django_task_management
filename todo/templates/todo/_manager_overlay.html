@@ -39,7 +39,6 @@
         </div>
 
       </div>
-      <!-- yes 1left -->
       <!-- ko if: currentProject -->
       <div class="manager-main" data-bind="with: currentProject">
 
@@ -82,7 +81,7 @@
           <h2 data-bind="text: currentSprint() && currentSprint().title"></h2>
         </div>
 
-        <div data-bind="foreach: taskSprint">
+        <div data-bind="foreach: taskTodo"> <!-- change to taskSprint -->
           <div class="manager-prj-wrapper accordion"
                data-bind="borderColorPicker: priority,
                           dragZone: { name: 'backlog' }">

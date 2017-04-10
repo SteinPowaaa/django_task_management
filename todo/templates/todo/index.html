@@ -33,9 +33,13 @@
     <!-- static css -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
   </head>
-  <body class="main"> <!-- data-bind="getCurrent" -->
+  <body class="main">
 
     <div>
+      <div class="overlay-background"
+           data-bind="style: { width: menuToggled() ? '100%' : '0' },
+                      click: toggleMenu,
+                      disableClick"></div>
 
       {% include '_navbar.html' %}
 
@@ -94,6 +98,7 @@
     {% csrf_token %}
     <script src="{% static 'js/lib/promissory-arbiter.js' %}"></script>
     <script src="{% static 'js/csrf-setter.js' %}"></script>
+    <script src="{% static 'js/helpers.js' %}"></script>
 
     <script src="{% static 'js/view-models/page.js' %}"></script>
     <script src="{% static 'js/view-models/projects.js' %}"></script>
