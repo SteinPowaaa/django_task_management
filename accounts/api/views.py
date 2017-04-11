@@ -1,3 +1,7 @@
+import uuid
+from base64 import b64decode
+
+from django.core.files.base import ContentFile
 from django.contrib.auth import login as django_login, \
     logout as django_logout, authenticate, get_user_model
 
@@ -6,6 +10,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 from accounts.api.serializers import LoginSerializer, UserSerializer
+
+from PIL import Image
 
 User = get_user_model()
 
@@ -45,8 +51,17 @@ class UserViewSet(viewsets.ModelViewSet):
 def register(request):
     username = request.data.get('username')
     password = request.data.get('password')
+    avatar_thumbnail = request.data.get('avatar_thumbnail')
     email = request.data.get('email', '')
     user, _ = User.objects.get_or_create(username=username, email=email)
+
+    if avatar_thumbnail:
+        image_base64 = avatar_thumbnail.split('base64,', 1)
+        image_data = b64decode(image_base64[1])
+        image_name = str(uuid.uuid4())+".jpg"
+        image = ContentFile(image_data, image_name)
+        user.avatar_thumbnail = image
+
     user.set_password(password)
     user.save()
     return Response({'details': 'OK'}, status=status.HTTP_201_CREATED)

@@ -177,12 +177,6 @@ function Project(data) {
     task.changeStatus(status);
   };
 
-  self.statuses = [
-    new nameValuePair('Todo', 'todo'),
-    new nameValuePair('In Progress', 'in-progress'),
-    new nameValuePair('Completed', 'completed')
-  ];
-
   self.init();
 }
 

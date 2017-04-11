@@ -18,18 +18,31 @@ function User(data) {
       id: self.id(),
       username: self.username(),
       password:  self.password(),
-      email: self.email(),
-      avatar_thumbnail: self.avatar_thumbnail()
+      email: self.email()
+      // avatar_thumbnail: self.avatar_thumbnail()
     };
   };
 
-  self.create = function () {
+  self.save = function (event) {
     var data = self.normalize();
+    blob = event && event.target.result;
+    data.avatar_thumbnail = blob || "";
     $.post(Urls().registerUrl, data).then(function (data) {
       Arbiter.publish('user.created', data);
+      self.clear();
     });
+  };
 
-    self.clear(); // check this
+  self.create = function () {
+    var reader = new FileReader();
+    var file = document.getElementById('my-file-selector').files[0];
+
+    if (file) {
+      reader.readAsDataURL(file, 'UTF-8');
+      reader.onload = self.save;
+    } else {
+      self.save();
+    }
   };
 
   self.clear = function () {

@@ -4,8 +4,6 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 
-from django_filters import rest_framework as filters
-
 from todo.models import Task, Project, Sprint
 from todo.api.serializers import TaskSerializer, ProjectSerializer, \
     SprintSerializer
@@ -14,17 +12,10 @@ from todo.api.permissions import isAssigneeOrReadOnly
 User = get_user_model()
 
 
-class TaskFilter(filters.FilterSet):
-    class Meta:
-        model = Task
-        fields = ['project']
-
-
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = (isAssigneeOrReadOnly,)
-    filter_class = TaskFilter
 
     def get_queryset(self):
         project_pk = self.kwargs['project_pk']
@@ -58,3 +49,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 class SprintViewSet(viewsets.ModelViewSet):
     queryset = Sprint.objects.all()
     serializer_class = SprintSerializer
+
+    def get_queryset(self):
+        project_pk = self.kwargs['project_pk']
+        return Sprint.objects.filter(project=project_pk)

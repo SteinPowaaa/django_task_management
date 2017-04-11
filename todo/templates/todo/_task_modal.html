@@ -23,20 +23,23 @@
 
         Status:
 
-        <div class="input-group">
-          <select class="" data-bind="options: taskForEdit() && taskForEdit().statuses,
-                                      optionsText: 'name',
-                                      value: taskForEdit() && taskForEdit().status,
-                                      optionsValue: 'value'"></select>
+        <div class="input-group" data-bind="template: { data: taskForEdit, if: taskForEdit }">
+          <select class="selectpicker"
+                  data-bind="selectPicker: status,
+                             optionsText: 'name',
+                             optionsValue: 'value',
+                             selectPickerOptions: { optionsArray: statuses }">
+          </select>
         </div>
 
         Priority:
 
-        <div class="input-group">
-          <select class="" data-bind="options: taskForEdit() && taskForEdit().priorities,
-                                      optionsText: 'name',
-                                      value: taskForEdit() && taskForEdit().priority,
-                                      optionsValue: 'value'"></select>
+        <div class="input-group" data-bind="template: { data: taskForEdit, if: taskForEdit }">
+          <select class="selectpicker"
+                  data-bind="selectPicker: priority,
+                             optionsText: 'name',
+                             selectPickerOptions: { optionsArray: priorities },
+                             optionsValue: 'value'"></select>
         </div>
 
         Assignees:
@@ -52,20 +55,21 @@
 
         Task Type:
 
-        <div class="input-group">
-          <select class="" data-bind="options: taskForEdit() && taskForEdit().taskTypes,
-                                      optionsText: 'name',
-                                      value: taskForEdit() && taskForEdit().taskType,
-                                      optionsValue: 'value'"></select>
+        <div class="input-group" data-bind="template: { data: taskForEdit, if: taskForEdit }">
+          <select class="selectpicker"
+                  data-bind="selectPicker: taskType,
+                             optionsText: 'name',
+                             selectPickerOptions: { optionsArray: taskTypes },
+                             optionsValue: 'value'"></select>
         </div>
 
         <div data-bind="visible: taskForEdit() && taskForEdit().taskType() === 'story'">
           Reference Task:
 
-          <div class="input-group">
-            <select class="" data-bind="options: $root.projects.currentProject().taskStory,
+          <div class="input-group" data-bind="template: { data: taskForEdit, if: taskForEdit }">
+            <select class="" data-bind="selectPicker: $parent.taskStory,
                                         optionsText: 'title',
-                                        value: taskForEdit() && taskForEdit().refTask"></select>
+                                        value: refTask"></select>
           </div>
         </div>
 

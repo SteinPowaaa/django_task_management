@@ -44,4 +44,7 @@ def task_with_assignee(user):
 
 @pytest.fixture
 def sprint_default(user):
-    return mommy.make('Sprint')
+    return mommy.make(
+        'Sprint',
+        project_id=1
+    )

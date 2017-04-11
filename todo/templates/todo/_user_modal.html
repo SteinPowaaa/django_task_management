@@ -26,12 +26,17 @@
 
         Avatar:
 
-        <label class="btn btn-default input-group" for="my-file-selector">
-          <input id="my-file-selector" type="file"
+        <label class="btn btn-default input-group" for="my-file-selector"
+               enctype="multipart/form-data">
+          <form id="fileBox">
+          <input enctype="multipart/form-data" id="my-file-selector" type="file"
                  onchange="$('#upload-file-info').html($(this).val());"
+                 name="files[]"
                  data-bind="value: avatar_thumbnail">
+          </form>
           Upload
         </label>
+
         <span class='label label-info' id="upload-file-info"></span>
 
       </div>

@@ -37,9 +37,18 @@ class TestAccounts:
                                      'password': 'password123'})
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
-    def test_accounts__register(self, user, client):
+    def test_accounts__register_no_avatar(self, user, client):
         url = reverse('register')
         response = client.post(url, {'username': 'stein',
                                      'password': 'password123',
                                      'email': 'stein@example.com'})
+        assert response.data['details'] == 'OK'
+
+    def test_accounts__register_with_avatar(self, user, client):
+        url = reverse('register')
+        image = 'data:image/jpeg;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+        response = client.post(url, {'username': 'stein',
+                                     'password': 'password123',
+                                     'email': 'stein@example.com',
+                                     'avatar_thumbnail': image})
         assert response.data['details'] == 'OK'

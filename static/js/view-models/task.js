@@ -64,26 +64,29 @@ function Task(data) {
   };
 
   self.updateSprint = function (sprint) {
-    var data = {
-      sprint: sprint && sprint.normalize()
-    };
+    var data = self.normalize();
+    data.sprint = sprint && sprint.id;
 
     return $.ajax({
       url: Urls().getTaskDetailUrl(self.project, self.id),
-      type: 'PATCH',
+      type: 'PUT',
       data: data
+    }).then(function (data) {
+      self.sprint(sprint.id);
     });
   };
 
   self.updateStatus = function (status) {
-    var data = {
-      "status": status
-    };
+    var data = self.normalize();
+    data.status = status;
 
     return $.ajax({
       url: Urls().getTaskDetailUrl(self.project, self.id),
-      type: 'PATCH',
+      type: 'PUT',
       data: data
+    }).then(function (data) {
+      debugger
+      self.status(data.status);
     });
   };
 
