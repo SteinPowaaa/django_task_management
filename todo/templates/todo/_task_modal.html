@@ -24,8 +24,7 @@
         Status:
 
         <div class="input-group" data-bind="template: { data: taskForEdit, if: taskForEdit }">
-          <select class="selectpicker"
-                  data-bind="selectPicker: status,
+          <select data-bind="selectPicker: status,
                              optionsText: 'name',
                              optionsValue: 'value',
                              selectPickerOptions: { optionsArray: statuses }">
@@ -35,8 +34,7 @@
         Priority:
 
         <div class="input-group" data-bind="template: { data: taskForEdit, if: taskForEdit }">
-          <select class="selectpicker"
-                  data-bind="selectPicker: priority,
+          <select data-bind="selectPicker: priority,
                              optionsText: 'name',
                              selectPickerOptions: { optionsArray: priorities },
                              optionsValue: 'value'"></select>
@@ -44,11 +42,10 @@
 
         Assignees:
 
-        <div class="input-group">
+        <div class="input-group" data-bind="template: { data:taskForEdit, if: taskForEdit }">
           <select multiple data-live-search="true"
-                  data-bind="selectPicker: taskForEdit() && taskForEdit().assignees,
+                  data-bind="selectPicker: assignees,
                              optionsText: 'username',
-                             optionsValue:'id',
                              selectPickerOptions: { optionsArray: $root.users }">
           </select>
         </div>
@@ -56,8 +53,7 @@
         Task Type:
 
         <div class="input-group" data-bind="template: { data: taskForEdit, if: taskForEdit }">
-          <select class="selectpicker"
-                  data-bind="selectPicker: taskType,
+          <select data-bind="selectPicker: taskType,
                              optionsText: 'name',
                              selectPickerOptions: { optionsArray: taskTypes },
                              optionsValue: 'value'"></select>
@@ -67,29 +63,31 @@
           Reference Task:
 
           <div class="input-group" data-bind="template: { data: taskForEdit, if: taskForEdit }">
-            <select class="" data-bind="selectPicker: $parent.taskStory,
-                                        optionsText: 'title',
-                                        value: refTask"></select>
+            <select data-bind="selectPicker: refTask,
+                               optionsText: 'title',
+                               optionsValue: 'id',
+                               selectPickerOptions: { optionsArray: $parent.taskStory }">
+            </select>
           </div>
         </div>
 
         Projects:
 
-        <div class="input-group">
-          <select class="" data-bind="selectPicker: taskForEdit() && taskForEdit().project,
-                                      optionsText: 'title',
-                                      optionsValue: 'id',
-                                      selectPickerOptions: { optionsArray: $root.projects.projects }">
+        <div class="input-group" data-bind="template: { data: taskForEdit, if: taskForEdit }">
+          <select data-bind="selectPicker: project,
+                             optionsText: 'title',
+                             optionsValue: 'id',
+                             selectPickerOptions: { optionsArray: $parents[1].projects }">
           </select>
         </div>
 
         Sprints:
 
-        <div class="input-group">
-          <select class="" data-bind="selectPicker: taskForEdit() && taskForEdit().sprint,
-                                      optionsText: 'title',
-                                      optionsValue: 'id',
-                                      selectPickerOptions: { optionsArray: $root.projects.currentProject().sprints }">
+        <div class="input-group" data-bind="template: { data: taskForEdit, if: taskForEdit }">
+          <select data-bind="selectPicker: sprint,
+                             optionsText: 'title',
+                             optionsValue: 'id',
+                             selectPickerOptions: { optionsArray: $parent.sprints }">
           </select>
         </div>
 

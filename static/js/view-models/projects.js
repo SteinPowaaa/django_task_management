@@ -22,6 +22,7 @@ function Project(data) {
     self.taskCompleted = ko.computed(self.filterStatus.bind(self, 'completed'));
     self.taskStory = ko.computed(self.filterType.bind(self, 'story'));
     self.taskSprint = ko.computed(self.filterSprint);
+    self.taskBacklog = ko.computed(self.filterBacklog);
 
     Arbiter.subscribe('task.created', self.addTask);
     Arbiter.subscribe('sprint.created', self.addSprint);
@@ -118,6 +119,12 @@ function Project(data) {
     var current = self.currentSprint() ? self.currentSprint().id : null;
     return self.tasks().filter(function (task) {
       return task.sprint() === current;
+    });
+  };
+
+  self.filterBacklog = function () {
+    return self.tasks().filter(function (task) {
+      return task.sprint() === null;
     });
   };
 

@@ -25,8 +25,8 @@
   top: 10px;
   right: 15px;
   font-size: 15px;
-  color: black;
   cursor: pointer;
+  color: black;
   text-decoration: none;
 }
 .overlay-task .closebtn:hover {
@@ -37,8 +37,8 @@
   top: 10px;
   left: 15px;
   font-size: 15px;
-  color: black;
   cursor: pointer;
+  color: black;
   text-decoration: none;
 }
 .overlay-task .editbtn:hover {

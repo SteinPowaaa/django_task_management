@@ -1,9 +1,9 @@
 <nav class="navbar navbar-inverse navbar-static-top" role="navigation"
      data-bind="with: projects">
 
-  <ul class="nav navbar-nav navbar-right logged-in"
+  <ul class="nav navbar-nav navbar-right logged-in anchor-cursor"
       data-bind="visible: $root.currentUser() && $root.currentUser().loggedIn">
-    <li class="dropdown anchor-general">
+    <li class="dropdown">
       <a class="dropdown-toggle" data-toggle="dropdown">
         <span data-bind="text: $root.currentUser() && $root.currentUser().username"></span>
         <span class="glyphicon glyphicon-user"></span>
@@ -18,7 +18,7 @@
       <a class="dropdown-toggle anchor-general" data-toggle="dropdown">
         <span class="glyphicon glyphicon-plus-sign"></span>
       </a>
-      <ul class="dropdown-menu">
+      <ul class="dropdown-menu anchor-cursor">
         <li><a data-bind="visible: currentProject(),
                           click: currentProject() && currentProject().newTask,
                           openModal: 'task'">Create Task</a></li>
@@ -39,7 +39,7 @@
         <span data-bind="text: currentProject() && currentProject().title"></span>
         <span class="glyphicon glyphicon-chevron-down"></span>
       </a>
-      <ul class="dropdown-menu">
+      <ul class="dropdown-menu anchor-cursor">
         <li data-bind="foreach: projects">
           <a data-bind="click: $parent.selectProject, text: title"></a>
         </li>
@@ -53,7 +53,7 @@
           <span data-bind="text: currentSprint() && currentSprint().title"></span>
           <span class="glyphicon glyphicon-chevron-down"></span>
         </a>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu anchor-cursor">
           <li data-bind="foreach: sprints">
             <a data-bind="click: $parent.selectSprint, text: title"></a>
           </li>

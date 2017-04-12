@@ -1,6 +1,10 @@
-.anchor-general {
-  color: black;
+.anchor-cursor {
   cursor: pointer;
+}
+
+.anchor-general {
+  .anchor-cursor;
+  color: black;
   text-decoration: none;
   &:hover {
     opacity: 0.7;
@@ -8,7 +12,7 @@
 }
 
 .main {
-  background-color: #fbfbfb;
+  background-color: #f2f2f2;
 }
 
 .tsk-container {
@@ -17,9 +21,32 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
   overflow: hidden;
+  background: #fbfbfb;
 
   &:hover {
     transform: scale(1.05, 1.05);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
+}
+
+// scrollbar style
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgb(209, 214, 214);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+        background: rgba(209, 214, 214, 0.4);
 }

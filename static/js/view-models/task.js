@@ -14,8 +14,11 @@ function Task(data) {
       return new User(assigneeData);
     }));
     self.taskType = ko.observable(data.task_type || "");
-    self.project = data.project || "";
-    self.refTask = data.ref_task ? new Task(data.ref_task) : null;
+    self.project = ko.observable(data.project || "");
+    self.refTask = ko.observable((data.refTask || []).map(function (task) {
+      return new Task(task);
+    }));
+    //self.refTask = data.ref_task ? ko.observable(new Task(data.ref_task)) : ko.observable(null);
     self.sprint = ko.observable(data.sprint || null);
   };
 
@@ -32,25 +35,25 @@ function Task(data) {
       priority: self.priority(),
       creator: self.creator,
       assignees: self.assignees().map(function (assigneeData) {
-        return assigneeData.normalize();
+        return assigneeData.id();
       }),
       task_type: self.taskType(),
-      project: self.project,
-      ref_task: self.refTask ? self.refTask.normalize() : null,
-      sprint: self.sprint() ? self.sprint() : null
+      project: self.project(),
+      ref_task: self.refTask(),
+      sprint: self.sprint()
     };
   };
 
   self.delete = function () {
     return $.ajax({
-      url: Urls().getTaskDetailUrl(self.project, self.id),
+      url: Urls().getTaskDetailUrl(self.project(), self.id),
       type: 'DELETE'
     });
   };
 
   self.update = function () {
     return $.ajax({
-      url: Urls().getTaskDetailUrl(self.project, self.id),
+      url: Urls().getTaskDetailUrl(self.project(), self.id),
       type: 'PUT',
       data: self.normalize()
     });
@@ -58,7 +61,14 @@ function Task(data) {
 
   self.create = function () {
     var data = self.normalize();
-    $.post(Urls().getTaskListUrl(self.project), data).then(function (data) {
+
+    $.ajax({
+      type: "POST",
+      url: Urls().getTaskListUrl(self.project()),
+      data: JSON.stringify(data),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json"
+    }).then(function (data) {
       Arbiter.publish('task.created', data);
     });
   };
@@ -68,11 +78,11 @@ function Task(data) {
     data.sprint = sprint && sprint.id;
 
     return $.ajax({
-      url: Urls().getTaskDetailUrl(self.project, self.id),
+      url: Urls().getTaskDetailUrl(self.project(), self.id),
       type: 'PUT',
       data: data
     }).then(function (data) {
-      self.sprint(sprint.id);
+      self.sprint(data.sprint);
     });
   };
 
@@ -81,18 +91,16 @@ function Task(data) {
     data.status = status;
 
     return $.ajax({
-      url: Urls().getTaskDetailUrl(self.project, self.id),
+      url: Urls().getTaskDetailUrl(self.project(), self.id),
       type: 'PUT',
       data: data
-    }).then(function (data) {
-      debugger
-      self.status(data.status);
     });
   };
 
   self.changeStatus = function (status) {
-    self.updateStatus(status).then(function () {
-      self.status(status);
+    self.updateStatus(status).then(function (data) {
+      self.status(data.status);
+      self.status.commit();
     });
   };
 
@@ -105,24 +113,24 @@ function Task(data) {
     }
   };
 
-  self.taskTypes = [
+  self.taskTypes = ko.observableArray([
     new nameValuePair('Story', 'story'),
     new nameValuePair('Bug', 'bug'),
     new nameValuePair('Improvement', 'improvement'),
     new nameValuePair('Sub Task', 'sub-task')
-  ];
+  ]);
 
-  self.statuses = [
+  self.statuses = ko.observableArray([
     new nameValuePair('Todo', 'todo'),
     new nameValuePair('In Progress', 'in-progress'),
     new nameValuePair('Completed', 'completed')
-  ];
+  ]);
 
-  self.priorities = [
+  self.priorities = ko.observableArray([
     new nameValuePair('Low', 'low'),
     new nameValuePair('Medium', 'medium'),
     new nameValuePair('High', 'high')
-  ];
+  ]);
 
   self.init();
 }

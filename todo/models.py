@@ -67,7 +67,7 @@ class Task(models.Model):
 
     location = models.CharField(max_length=50, blank=True, null=True)
     estimation = models.DateField(blank=True, null=True)
-    forecast = models.BooleanField(blank=True)
+    forecast = models.NullBooleanField()
 
 
 class Project(models.Model):
