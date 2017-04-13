@@ -38,7 +38,10 @@
 
     <div>
       <div class="overlay-background"
-           data-bind="style: { width: menuToggled() ? '100%' : '0' },
+           data-bind="style: {
+                      width: menuToggled() ? '100%' : '0',
+                      backgroundColor: menuToggled() ? 'rgba(0, 0, 0, 0.1)' : 'initial'
+                      },
                       click: toggleMenu,
                       disableClick"></div>
 
@@ -51,7 +54,7 @@
 
       <div data-bind="with: projects">
         <!-- ko if: currentProject -->
-        <div data-bind="with: currentProject">
+        <div data-bind="with: currentProject" class="row">
           <div class="col-md-4 col-sm-6">
             <p class="tsk-header">To Do</p>
             <div class="tsk-wrapper" data-bind="foreach: taskTodo, dropZone: { accepts: 'tasks',

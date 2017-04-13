@@ -44,7 +44,7 @@
 
         <div class="input-group" data-bind="template: { data:taskForEdit, if: taskForEdit }">
           <select multiple data-live-search="true"
-                  data-bind="selectPicker: assignees,
+                  data-bind="selectPicker: assignees.temp,
                              optionsText: 'username',
                              selectPickerOptions: { optionsArray: $root.users }">
           </select>
@@ -59,7 +59,7 @@
                              optionsValue: 'value'"></select>
         </div>
 
-        <div data-bind="visible: taskForEdit() && taskForEdit().taskType() === 'story'">
+        <div data-bind="visible: taskForEdit() && taskForEdit().taskType() === 'sub-task'">
           Reference Task:
 
           <div class="input-group" data-bind="template: { data: taskForEdit, if: taskForEdit }">

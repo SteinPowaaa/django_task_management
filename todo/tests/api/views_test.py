@@ -78,7 +78,9 @@ class TestTask:
 
     def test_task__add_task(self, project_default, client):
         url = reverse('task-list', args=[1])
-        data = {'title': 'test_title', 'project': 1}
+        data = {'title': 'test_title',
+                'project': 1,
+                'assignees': [1]}
         response = client.post(url, data)
         assert response.status_code == status.HTTP_201_CREATED
 

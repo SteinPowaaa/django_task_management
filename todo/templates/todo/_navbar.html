@@ -61,7 +61,8 @@
     </li>
     <!-- /ko -->
 
-    <li><a class="anchor-general" data-bind="click: $root.toggleManager">Manage</a></li>
+    <li><a class="anchor-general"
+           data-bind="click: $root.toggleManager, visible: projects().length">Manage</a></li>
   </ul>
 
   <form class="navbar-form navbar-right"

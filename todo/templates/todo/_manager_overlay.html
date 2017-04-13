@@ -22,8 +22,9 @@
         </div>
 
         <div data-bind="foreach: projects">
-          <div class="manager-prj-wrapper accordion"
-               data-bind="click: $parent.selectProject">
+          <div class="manager-prj-wrapper"
+               data-bind="click: $parent.selectProject,
+                          css: { 'accordion': $parent.currentProject() !== $data }">
             <div class="manager-content accordion-item">
               <div class="manager-prj-header" data-bind="text: title"></div>
               <a class="glyphicon glyphicon-pencil manager-icon"
@@ -31,7 +32,7 @@
               <a class="glyphicon glyphicon-remove manager-icon"
                  data-bind="click: $parent.removeProject"></a>
               <div class="accordion-item-content"
-                   data-bind="css: { 'accordion-expand': $parent.currentProject() === $data}">
+                   data-bind="css: { 'accordion-expand': $parent.currentProject() === $data }">
                 <span class="manager-content" data-bind="text: description"</span>
               </div>
             </div>
@@ -54,7 +55,9 @@
         </div>
 
         <div data-bind="foreach: sprints">
-          <div class="manager-prj-wrapper accordion" data-bind="click: $parent.selectSprint">
+          <div class="manager-prj-wrapper"
+               data-bind="click: $parent.selectSprint,
+                          css: { 'accordion': $parent.currentSprint() !== $data }">
             <div class="manager-content accordion-item">
               <div class="manager-prj-header" data-bind="text: title"></div>
               <a class="glyphicon glyphicon-pencil manager-icon"

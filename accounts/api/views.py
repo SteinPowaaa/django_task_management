@@ -9,9 +9,8 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from accounts.api.serializers import LoginSerializer, UserSerializer
-
-from PIL import Image
+from accounts.api.serializers import LoginSerializer, UserSerializer, \
+    RegisterSerializer
 
 User = get_user_model()
 
@@ -46,25 +45,35 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
+def transform_avatar(avatar_b64):
+    image_base64 = avatar_b64.split('base64,', 1)
+    image_data = b64decode(image_base64[1])
+    image_name = str(uuid.uuid4())+".jpg"
+    return ContentFile(image_data, image_name)
+
+
 @api_view(['POST'])
 @permission_classes([])
 def register(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
+    serializer = RegisterSerializer(data=request.data)
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    username = serializer.validated_data['username']
+    password = serializer.validated_data['password']
+    email = serializer.validated_data['email']
     avatar_thumbnail = request.data.get('avatar_thumbnail')
-    email = request.data.get('email', '')
-    user, _ = User.objects.get_or_create(username=username, email=email)
-
     if avatar_thumbnail:
-        image_base64 = avatar_thumbnail.split('base64,', 1)
-        image_data = b64decode(image_base64[1])
-        image_name = str(uuid.uuid4())+".jpg"
-        image = ContentFile(image_data, image_name)
-        user.avatar_thumbnail = image
+        avatar_thumbnail = transform_avatar(request.data.get('avatar_thumbnail'))
 
-    user.set_password(password)
-    user.save()
-    return Response({'details': 'OK'}, status=status.HTTP_201_CREATED)
+    try:
+        user = User(username=username, email=email)
+        user.avatar_thumbnail = avatar_thumbnail
+        user.set_password(password)
+        user.save()
+        return Response({'details': 'OK'}, status=status.HTTP_201_CREATED)
+    except:
+        return Response({'details': 'BAD DATA'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])

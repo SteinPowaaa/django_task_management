@@ -39,7 +39,7 @@ class TestAccounts:
 
     def test_accounts__register_no_avatar(self, user, client):
         url = reverse('register')
-        response = client.post(url, {'username': 'stein',
+        response = client.post(url, {'username': 'noavatar',
                                      'password': 'password123',
                                      'email': 'stein@example.com'})
         assert response.data['details'] == 'OK'
@@ -47,8 +47,15 @@ class TestAccounts:
     def test_accounts__register_with_avatar(self, user, client):
         url = reverse('register')
         image = 'data:image/jpeg;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
-        response = client.post(url, {'username': 'stein',
+        response = client.post(url, {'username': 'avatar',
                                      'password': 'password123',
                                      'email': 'stein@example.com',
                                      'avatar_thumbnail': image})
         assert response.data['details'] == 'OK'
+
+    def test_accounts__register_exists(self, user, client):
+        url = reverse('register')
+        response = client.post(url, {'username': 'admin',
+                                     'password': 'password123',
+                                     'email': 'admin@example.com'})
+        assert response.data['details'] == 'BAD DATA'

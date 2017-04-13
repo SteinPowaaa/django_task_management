@@ -5,25 +5,44 @@ function Task(data) {
     data = data || {};
 
     self.id = data.id || "";
-    self.title = ko.observable(data.title || "");
-    self.description = ko.observable(data.description || "");
+    self.title = ko.protectedObservable(data.title || "");
+    self.description = ko.protectedObservable(data.description || "");
     self.status = ko.protectedObservable(data.status || "");
-    self.priority = ko.observable(data.priority || "");
+    self.priority = ko.protectedObservable(data.priority || "");
     self.creator = data.creator || null;
-    self.assignees = ko.observableArray((data.assignees || []).map(function (assigneeData) {
+    self.assignees = ko.protectedObservableArray((data.assignees || []).map(function (assigneeData) {
       return new User(assigneeData);
     }));
-    self.taskType = ko.observable(data.task_type || "");
-    self.project = ko.observable(data.project || "");
-    self.refTask = ko.observable((data.refTask || []).map(function (task) {
+    self.taskType = ko.protectedObservable(data.task_type || "");
+    self.project = ko.protectedObservable(data.project || "");
+    self.refTask = ko.protectedObservable((data.refTask || []).map(function (task) {
       return new Task(task);
     }));
-    //self.refTask = data.ref_task ? ko.observable(new Task(data.ref_task)) : ko.observable(null);
-    self.sprint = ko.observable(data.sprint || null);
+    self.sprint = ko.protectedObservable(data.sprint || null);
   };
 
   self.commitAll = function () {
+    self.title.commit();
+    self.description.commit();
+    self.priority.commit();
+    self.taskType.commit();
+    self.project.commit();
+    self.refTask.commit();
+    self.sprint.commit();
     self.status.commit();
+    self.assignees.commit();
+  };
+
+  self.resetAll = function () {
+    self.title.reset();
+    self.description.reset();
+    self.priority.reset();
+    self.taskType.reset();
+    self.project.reset();
+    self.refTask.reset();
+    self.sprint.reset();
+    self.status.reset();
+    self.assignees.reset();
   };
 
   self.normalize = function () {
@@ -83,6 +102,7 @@ function Task(data) {
       data: data
     }).then(function (data) {
       self.sprint(data.sprint);
+      self.sprint.commit();
     });
   };
 
