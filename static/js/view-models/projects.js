@@ -30,6 +30,7 @@ function Project(data) {
 
   self.load = function () {
     if (self.dataLoaded()) {
+      self.currentSprint(self.sprints()[0]);
       return;
     }
 
@@ -143,6 +144,9 @@ function Project(data) {
   self.removeSprint = function (sprint) {
     sprint.delete().then(function () {
       self.sprints.remove(sprint);
+      if (self.currentSprint() === sprint) {
+        self.currentSprint(self.sprints()[0]);
+      }
     });
   };
 
@@ -173,7 +177,9 @@ function Project(data) {
   };
 
   self.addSprint = function (data) {
-    self.sprints.push(new Sprint(data));
+    if (data.project === self.id) {
+      self.sprints.push(new Sprint(data));
+    }
   };
 
   self.selectSprint = function (sprint) {
@@ -241,6 +247,9 @@ function ProjectsViewModel() {
   self.removeProject = function (project) {
     project.delete().then(function () {
       self.projects.remove(project);
+      if (self.currentProject() === project) {
+        self.currentProject(self.projects()[0]);
+      }
     });
   };
 

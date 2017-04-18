@@ -90,7 +90,8 @@
                           dragZone: { name: 'backlog' }">
             <div class="manager-content accordion-item">
               <div class="manager-prj-header" data-bind="text: title"></div>
-              <a class="glyphicon glyphicon-pencil manager-icon"></a>
+              <a class="glyphicon glyphicon-pencil manager-icon"
+                 data-bind="click: $parent.editTask, openModal: 'task'"></a>
               <a class="glyphicon glyphicon-remove manager-icon"
                  data-bind="click: $parent.removeTask"></a>
               <div class="accordion-item-content">

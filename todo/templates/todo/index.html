@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="en" class="height-max">
   <head>
     <title>Minimal TMS</title>
     <script
@@ -34,9 +34,9 @@
     <!-- static css -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
   </head>
-  <body class="main">
+  <body class="main height-max">
 
-    <div>
+    <div class="height-max">
       <div class="overlay-background"
            data-bind="style: {
                       width: menuToggled() ? '100%' : '0',
@@ -52,30 +52,30 @@
       {% include '_sprint_modal.html' %}
       {% include '_task_modal.html' %}
 
-      <div data-bind="with: projects">
+      <div data-bind="with: projects" class="height-max">
         <!-- ko if: currentProject -->
-        <div data-bind="with: currentProject" class="row">
-          <div class="col-md-4 col-sm-6">
+        <div data-bind="with: currentProject" class="row height-max">
+          <div class="col-md-4 col-sm-6 height-max">
             <p class="tsk-header">To Do</p>
-            <div class="tsk-wrapper" data-bind="foreach: taskTodo, dropZone: { accepts: 'tasks',
+            <div class="tsk-wrapper height-max" data-bind="foreach: taskTodo, dropZone: { accepts: 'tasks',
                                                 drop:
                                                 changeTaskStatus.bind($data, 'todo') }">
                 {% include '_task_data.html' %}
             </div>
           </div>
 
-          <div class="col-md-4 col-sm-6">
+          <div class="col-md-4 col-sm-6 height-max">
             <p class="tsk-header">In Progress</p>
-            <div class="tsk-wrapper" data-bind="foreach: taskInProgress, dropZone: { accepts: 'tasks',
+            <div class="tsk-wrapper height-max" data-bind="foreach: taskInProgress, dropZone: { accepts: 'tasks',
                                                 drop:
             changeTaskStatus.bind($data, 'in-progress') }">
                 {% include '_task_data.html' %}
             </div>
           </div>
 
-          <div class="col-md-4 col-sm-6">
+          <div class="col-md-4 col-sm-6 height-max">
             <p class="tsk-header">Completed</p>
-            <div class="tsk-wrapper" data-bind="foreach: taskCompleted, dropZone: { accepts: 'tasks',
+            <div class="tsk-wrapper height-max" data-bind="foreach: taskCompleted, dropZone: { accepts: 'tasks',
                                                 drop:
             changeTaskStatus.bind($data, 'completed') }">
                 {% include '_task_data.html' %}
