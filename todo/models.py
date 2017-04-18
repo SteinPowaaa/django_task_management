@@ -69,6 +69,8 @@ class Task(models.Model):
     estimation = models.DateField(blank=True, null=True)
     forecast = models.NullBooleanField()
 
+    comments = models.ManyToManyField('Comment', related_name='task_comments')
+
 
 class Project(models.Model):
     title = models.CharField(max_length=50)
@@ -79,3 +81,9 @@ class Sprint(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=1024, blank=True)
+
+
+class Comment(models.Model):
+    task = models.ForeignKey('Task', on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    text = models.CharField(max_length=50)

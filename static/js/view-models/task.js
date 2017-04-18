@@ -19,6 +19,34 @@ function Task(data) {
       return new Task(task);
     }));
     self.sprint = ko.protectedObservable(data.sprint || null);
+    self.comments = ko.observableArray((data.comments || []).map(function (commentData) {
+      return new Comment(commentData);
+    }));
+
+    self.commentToggle = ko.observable(false);
+    self.commentForEdit = ko.observable();
+
+    Arbiter.subscribe('comment.created', self.addComment);
+  };
+
+  self.toggleComment = function () {
+    self.commentToggle(!self.commentToggle());
+  };
+
+  self.createComment = function () {
+    self.commentForEdit().create(self.project(), self.id);
+  };
+
+  self.newComment = function () {
+    self.commentForEdit(new Comment());
+    self.commentForEdit().task(self.id);
+  };
+
+  self.addComment = function (data) {
+    if (data.task === self.id) {
+      self.comments.push(new Comment(data));
+      self.update();
+    }
   };
 
   self.commitAll = function () {
@@ -59,7 +87,10 @@ function Task(data) {
       task_type: self.taskType(),
       project: self.project(),
       ref_task: self.refTask(),
-      sprint: self.sprint()
+      sprint: self.sprint(),
+      comments: self.comments().map(function (commentData) {
+        return commentData.normalize();
+      })
     };
   };
 

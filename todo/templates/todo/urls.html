@@ -1,48 +1,62 @@
-{% with dumbId=0000 childId=0000 %}
+{% with mainId=0000 parentId=0000 childId=0000 %}
 <script>
  var Urls = function () {
      var self = this;
 
-     self.taskListUrl = "{% url 'task-list' dumbId %}";
-     self.taskDetailUrl = "{% url 'task-detail' dumbId childId %}";
+     self.commentListUrl = "{% url 'comment-list' mainId parentId %}";
+     self.commentDetailUrl = "{% url 'comment-detail' mainId parentId childId %}";
+
+     self.taskListUrl = "{% url 'task-list' mainId %}";
+     self.taskDetailUrl = "{% url 'task-detail' mainId parentId %}";
      self.projectListUrl = "{% url 'project-list' %}";
-     self.projectDetailUrl = "{% url 'project-detail' dumbId %}";
-     self.sprintListUrl = "{% url 'sprint-list' dumbId %}";
-     self.sprintDetailUrl = "{% url 'sprint-detail' dumbId childId %}";
+     self.projectDetailUrl = "{% url 'project-detail' mainId %}";
+     self.sprintListUrl = "{% url 'sprint-list' mainId %}";
+     self.sprintDetailUrl = "{% url 'sprint-detail' mainId parentId %}";
 
      self.userListUrl = "{% url 'user-list' %}";
-     self.userDetailUrl = "{% url 'user-detail' dumbId %}";
+     self.userDetailUrl = "{% url 'user-detail' mainId %}";
      self.currentUserUrl = "{% url 'current_user' %}"
      self.registerUrl = "{% url 'register' %}"
 
      self.loginUrl = "{% url 'login' %}";
      self.logoutUrl = "{% url 'logout' %}";
 
+     self.getCommentDetailUrl = function (projectId, taskId, commentId) {
+         return self.commentDetailUrl.replace('{{mainId}}', projectId)
+                    .replace('{{parentId}}', taskId)
+                    .replace('{{childId}}', commentId);
+     };
+
+     self.getCommentListUrl = function (projectId, taskId) {
+         return self.commentListUrl.replace('{{mainId}}', projectId)
+                    .replace('{{parentId}}', taskId);
+     };
+
      self.getUserDetailUrl = function (userId) {
-         return self.userDetailUrl.replace('{{dumbId}}', userId);
+         return self.userDetailUrl.replace('{{mainId}}', userId);
      };
 
      self.getTaskListUrl = function (projectId) {
-         return self.taskListUrl.replace('{{dumbId}}', projectId);
+         return self.taskListUrl.replace('{{mainId}}', projectId);
      };
 
      self.getSprintListUrl = function (projectId) {
-         return self.sprintListUrl.replace('{{dumbId}}', projectId);
+         return self.sprintListUrl.replace('{{mainId}}', projectId);
      };
 
      self.getTaskDetailUrl = function (projectId, taskId) {
-         return self.taskDetailUrl.replace('{{dumbId}}', projectId)
-                    .replace('{{childId}}', taskId);
+         return self.taskDetailUrl.replace('{{mainId}}', projectId)
+                    .replace('{{parentId}}', taskId);
      };
 
      self.getSprintDetailUrl = function (projectId, sprintId) {
          return self.sprintDetailUrl
-                    .replace('{{dumbId}}', projectId)
-                    .replace('{{childId}}', sprintId);
+                    .replace('{{mainId}}', projectId)
+                    .replace('{{parentId}}', sprintId);
      };
 
      self.getProjectDetailUrl = function (projectId) {
-         return self.projectDetailUrl.replace('{{dumbId}}', projectId)
+         return self.projectDetailUrl.replace('{{mainId}}', projectId)
      };
 
      return self;

@@ -11,7 +11,11 @@ tasks_router = routers.NestedSimpleRouter(router, r'projects', lookup='project')
 tasks_router.register(r'tasks', views.TaskViewSet)
 tasks_router.register(r'sprints', views.SprintViewSet)
 
+comments_router = routers.NestedSimpleRouter(tasks_router, r'tasks', lookup='task')
+comments_router.register(r'comments', views.CommentViewSet)
+
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^', include(tasks_router.urls)),
+    url(r'^', include(comments_router.urls))
 ]
