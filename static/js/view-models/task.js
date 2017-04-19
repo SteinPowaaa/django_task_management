@@ -42,10 +42,17 @@ function Task(data) {
     self.commentForEdit().task(self.id);
   };
 
+  self.removeComment = function (comment) {
+    comment.delete(self.project, self.id).then(function () {
+      self.comments.remove(comment);
+    });
+  };
+
   self.addComment = function (data) {
     if (data.task === self.id) {
       self.comments.push(new Comment(data));
-      self.update();
+      self.update().then(function () {
+      });
     }
   };
 
@@ -89,7 +96,7 @@ function Task(data) {
       ref_task: self.refTask(),
       sprint: self.sprint(),
       comments: self.comments().map(function (commentData) {
-        return commentData.normalize();
+        return commentData.id;
       })
     };
   };

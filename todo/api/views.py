@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.http import QueryDict
 
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -7,7 +8,7 @@ from rest_framework import status
 from todo.models import Task, Project, Sprint, Comment
 from todo.api.serializers import TaskSerializer, ProjectSerializer, \
     SprintSerializer, CommentSerializer
-from todo.api.permissions import isAssigneeOrReadOnly
+from todo.api.permissions import isAssigneeOrReadOnly, isCorrectUserOrReadOnly
 
 User = get_user_model()
 
@@ -29,7 +30,6 @@ class TaskViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
 
-        # http://stackoverflow.com/questions/37511421/add-an-object-by-id-in-a-manytomany-relation-in-django
         assignees = User.objects.filter(id__in=assignee_ids)
 
         serializer.instance.assignees = assignees
@@ -38,6 +38,25 @@ class TaskViewSet(viewsets.ModelViewSet):
         return Response(serializer.data,
                         status=status.HTTP_201_CREATED,
                         headers=headers)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        try:
+            comment_ids = request.data.getlist('comments[]')
+            comments = Comment.objects.filter(id__in=comment_ids)
+            serializer.instance.comments = comments
+        except:
+            pass
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -57,6 +76,7 @@ class SprintViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = (isCorrectUserOrReadOnly,)
 
     def get_queryset(self):
         task_pk = self.kwargs['task_pk']

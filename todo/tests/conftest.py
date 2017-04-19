@@ -29,7 +29,7 @@ def project_default():
 def task_default():
     return mommy.make(
         'Task',
-        project_id=1
+        project_id=1,
                       )
 
 
@@ -43,8 +43,24 @@ def task_with_assignee(user):
 
 
 @pytest.fixture
-def sprint_default(user):
+def sprint_default():
     return mommy.make(
         'Sprint',
         project_id=1
+    )
+
+
+@pytest.fixture
+def comment_default(task_default):
+    return mommy.make(
+        'Comment',
+        task=task_default
+    )
+
+
+@pytest.fixture
+def comment_with_assignee(task_with_assignee):
+    return mommy.make(
+        'Comment',
+        task=task_with_assignee
     )

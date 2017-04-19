@@ -146,3 +146,33 @@ class TestSprint:
         data = {'project': 1}
         response = client.post(url, data)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+@pytest.mark.django_db
+class TestComment:
+    def test_comment__get_comments(self, project_default, task_default,
+                                   comment_default, client):
+        url = reverse('comment-list', args=[1, 1])
+        response = client.get(url)
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_comment__add_comment(self, project_default, task_default,
+                                  comment_default, client):
+        url = reverse('comment-list', args=[1, 1])
+        data = {"task": 1, "author": 1, "text": "Lorem"}
+        response = client.post(url, data)
+        assert response.status_code == status.HTTP_201_CREATED
+
+    def test_comment__add_comment_invalid_data(self, project_default,
+                                               task_default, comment_default,
+                                               client):
+        url = reverse('comment-list', args=[1, 1])
+        data = {"text": "Lorem"}
+        response = client.post(url, data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    def test_comment__delete_comment(self, project_default, task_with_assignee,
+                                     comment_with_assignee, client):
+        url = reverse('comment-detail', args=[1, 1, 1])
+        response = client.delete(url)
+        assert response.status_code == status.HTTP_204_NO_CONTENT
