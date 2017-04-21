@@ -28,8 +28,6 @@ function Comment(data) {
   };
 
   self.addAttachment = function (data, projectId, taskId) {
-    self.attachment(data);
-
     return $.ajax({
       url: Urls().getCommentAttachmentUrl(projectId, taskId, self.id),
       type: 'POST',
@@ -37,6 +35,9 @@ function Comment(data) {
       processData: false,
       contentType: false,
       data: data
+    }).then(function (data) {
+      debugger
+      self.attachment(data);
     });
   };
 

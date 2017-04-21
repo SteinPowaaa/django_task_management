@@ -1,6 +1,7 @@
 import uuid
 from base64 import b64decode
 
+from django.db import IntegrityError
 from django.core.files.base import ContentFile
 from django.contrib.auth import login as django_login, \
     logout as django_logout, authenticate, get_user_model
@@ -63,17 +64,19 @@ def register(request):
     password = serializer.validated_data['password']
     email = serializer.validated_data['email']
     avatar_thumbnail = request.data.get('avatar_thumbnail')
+    user = User(username=username, email=email)
+
     if avatar_thumbnail:
         avatar_thumbnail = transform_avatar(request.data.get('avatar_thumbnail'))
+        user.avatar_thumbnail = avatar_thumbnail
+
+    user.set_password(password)
 
     try:
-        user = User(username=username, email=email)
-        user.avatar_thumbnail = avatar_thumbnail
-        user.set_password(password)
         user.save()
         return Response({'details': 'OK'}, status=status.HTTP_201_CREATED)
-    except:
-        return Response({'details': 'BAD DATA'}, status=status.HTTP_400_BAD_REQUEST)
+    except IntegrityError:
+        return Response({'details': 'USER ALREADY EXISTS'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])

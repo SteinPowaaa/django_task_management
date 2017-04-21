@@ -1,11 +1,11 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.admin import UserAdmin as OriginalUserAdmin
 
 from .models import User
 
 
-class PersonAdmin(UserAdmin):
+class UserAdmin(OriginalUserAdmin):
     pass
 
 
-admin.site.register(User, PersonAdmin)
+admin.site.register(User, UserAdmin)

@@ -7,17 +7,17 @@ from todo.api import views
 router = routers.SimpleRouter()
 router.register(r'projects', views.ProjectViewSet)
 
-tasks_router = routers.NestedSimpleRouter(router, r'projects', lookup='project')
-tasks_router.register(r'tasks', views.TaskViewSet)
-tasks_router.register(r'sprints', views.SprintViewSet)
+projects_router = routers.NestedSimpleRouter(router, r'projects', lookup='project')
+projects_router.register(r'tasks', views.TaskViewSet)
+projects_router.register(r'sprints', views.SprintViewSet)
 
-comments_router = routers.NestedSimpleRouter(tasks_router, r'tasks', lookup='task')
-comments_router.register(r'comments', views.CommentViewSet)
+tasks_router = routers.NestedSimpleRouter(projects_router, r'tasks', lookup='task')
+tasks_router.register(r'comments', views.CommentViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
+    url(r'^', include(projects_router.urls)),
     url(r'^', include(tasks_router.urls)),
-    url(r'^', include(comments_router.urls)),
     url(r'^projects/(?P<project_pk>[^/.]+)/tasks/(?P<task_pk>[^/.]+)/comments/(?P<pk>[^/.]+)/attachment/$',
         views.upload_attachment, name='comment-attachment')
 ]

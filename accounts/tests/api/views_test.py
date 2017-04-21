@@ -58,4 +58,4 @@ class TestAccounts:
         response = client.post(url, {'username': 'admin',
                                      'password': 'password123',
                                      'email': 'admin@example.com'})
-        assert response.data['details'] == 'BAD DATA'
+        assert response.data['details'] == 'USER ALREADY EXISTS'

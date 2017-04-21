@@ -29,10 +29,15 @@
         <a class="tsk-btn glyphicon glyphicon-remove"
            data-bind="click: $parent.removeComment"></a>
         <label class="file-uploader">
-          <input type="file" id="fileinput" data-bind="uploadFile"
+          <input type="file" data-bind="uploadFile"
                  class="hide" />
           <i class="fa fa-paperclip tsk-btn"></i>
         </label>
+        <!-- ko if: attachment -->
+        <a data-bind="attr: { href: attachment }">
+          <div class="tsk-btn glyphicon glyphicon-file"></div>
+        </a>
+        <!-- /ko -->
       </div>
     </div>
 

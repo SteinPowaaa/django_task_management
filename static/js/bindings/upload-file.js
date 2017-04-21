@@ -1,7 +1,7 @@
 ko.bindingHandlers.uploadFile = {
   init: function(element, valueAccessor, allBindings, viewModel,
                  bindingContext){
-    $('#fileinput').change(function () {
+    $(element).on('change', function () {
       var file = element.files[0];
       var data = new FormData();
       data.append(file.name, file);

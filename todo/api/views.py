@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view
 from todo.models import Task, Project, Sprint, Comment
 from todo.api.serializers import TaskSerializer, ProjectSerializer, \
     SprintSerializer, CommentSerializer
-from todo.api.permissions import isAssigneeOrReadOnly, isCorrectUserOrReadOnly
+from todo.api.permissions import IsAssigneeOrReadOnly, IsCorrectUserOrReadOnly
 
 User = get_user_model()
 
@@ -15,7 +15,7 @@ User = get_user_model()
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    permission_classes = (isAssigneeOrReadOnly,)
+    permission_classes = (IsAssigneeOrReadOnly,)
 
     def get_queryset(self):
         project_pk = self.kwargs['project_pk']
@@ -75,7 +75,7 @@ class SprintViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = (isCorrectUserOrReadOnly,)
+    permission_classes = (IsCorrectUserOrReadOnly,)
 
     def get_queryset(self):
         task_pk = self.kwargs['task_pk']
@@ -100,4 +100,5 @@ def upload_attachment(request, *args, **kwargs):
     comment = Comment.objects.filter(id=kwargs['pk'])[0]
     comment.attachment = attachment
     comment.save()
-    return Response({'details': 'OK'}, status=status.HTTP_200_OK)
+    import pdb;pdb.set_trace()
+    return Response(comment.attachment, status=status.HTTP_200_OK)

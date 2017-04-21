@@ -3,7 +3,7 @@ from todo.models import Task
 from rest_framework import permissions
 
 
-class isAssigneeOrReadOnly(permissions.BasePermission):
+class IsAssigneeOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
@@ -12,7 +12,7 @@ class isAssigneeOrReadOnly(permissions.BasePermission):
                     for assignee in obj.assignees.values('id')])
 
 
-class isCorrectUserOrReadOnly(permissions.BasePermission):
+class IsCorrectUserOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True

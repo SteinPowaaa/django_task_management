@@ -5,8 +5,7 @@ from imagekit.processors import ResizeToFill
 
 
 def user_directory_path(instance, filename):
-    username = 'user' + instance.id
-    return '{0}/{1}'.format(username, filename)
+    return '{0}/{1}'.format(instance.username, filename)
 
 
 class User(AbstractUser):
