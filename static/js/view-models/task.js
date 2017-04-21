@@ -29,6 +29,12 @@ function Task(data) {
     Arbiter.subscribe('comment.created', self.addComment);
   };
 
+  self.addAttachment = function (comment, data) {
+    comment.addAttachment(data, self.project(), self.id).then(function () {
+      self.update();
+    });
+  };
+
   self.toggleComment = function () {
     self.commentToggle(!self.commentToggle());
   };
@@ -51,8 +57,7 @@ function Task(data) {
   self.addComment = function (data) {
     if (data.task === self.id) {
       self.comments.push(new Comment(data));
-      self.update().then(function () {
-      });
+      self.update();
     }
   };
 

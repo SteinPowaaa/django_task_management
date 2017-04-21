@@ -278,6 +278,9 @@
   display: table-cell;
   width: 50%;
 }
+.hide {
+  display: none;
+}
 .options-selector:hover {
   opacity: 1;
 }
@@ -349,6 +352,10 @@
 }
 .tsk-high-priority {
   border-color: #f76b6f;
+}
+.file-uploader {
+  float: right;
+  cursor: pointer;
 }
 .comment-input-wrapper {
   display: initial;

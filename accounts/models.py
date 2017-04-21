@@ -1,12 +1,12 @@
 from django.contrib.auth.models import AbstractUser
-from django.db import models
 
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 
 
 def user_directory_path(instance, filename):
-    return '{0}/{1}'.format(instance.username, filename)
+    username = 'user' + instance.id
+    return '{0}/{1}'.format(username, filename)
 
 
 class User(AbstractUser):

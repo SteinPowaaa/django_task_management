@@ -23,18 +23,23 @@
   </div>
 
   <div data-bind="visible: commentToggle">
-    <div class="comment-input-wrapper">
-      <div class="comment-input">
-        <input type="text" class="form-control"
-               data-bind="value: commentForEdit() && commentForEdit().text, submitInput">
-      </div>
-    </div>
-
     <div data-bind="foreach: comments">
       <div class="comment-output-wrapper">
         <div class="comment-output" data-bind="text: text"></div>
         <a class="tsk-btn glyphicon glyphicon-remove"
            data-bind="click: $parent.removeComment"></a>
+        <label class="file-uploader">
+          <input type="file" id="fileinput" data-bind="uploadFile"
+                 class="hide" />
+          <i class="fa fa-paperclip tsk-btn"></i>
+        </label>
+      </div>
+    </div>
+
+    <div class="comment-input-wrapper">
+      <div class="comment-input">
+        <input type="text" class="form-control"
+               data-bind="value: commentForEdit() && commentForEdit().text, submitInput">
       </div>
     </div>
   </div>

@@ -1,9 +1,8 @@
 from django.contrib.auth import get_user_model
-from django.http import QueryDict
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.decorators import api_view
 
 from todo.models import Task, Project, Sprint, Comment
 from todo.api.serializers import TaskSerializer, ProjectSerializer, \
@@ -93,3 +92,12 @@ class CommentViewSet(viewsets.ModelViewSet):
         return Response(serializer.data,
                         status=status.HTTP_201_CREATED,
                         headers=headers)
+
+
+@api_view(['POST'])
+def upload_attachment(request, *args, **kwargs):
+    attachment = [attached_file for attached_file in request.data.values()][0]
+    comment = Comment.objects.filter(id=kwargs['pk'])[0]
+    comment.attachment = attachment
+    comment.save()
+    return Response({'details': 'OK'}, status=status.HTTP_200_OK)

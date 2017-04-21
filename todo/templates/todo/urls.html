@@ -5,6 +5,7 @@
 
      self.commentListUrl = "{% url 'comment-list' mainId parentId %}";
      self.commentDetailUrl = "{% url 'comment-detail' mainId parentId childId %}";
+     self.commentAttachmentUrl = "{% url 'comment-attachment' mainId parentId childId %}";
 
      self.taskListUrl = "{% url 'task-list' mainId %}";
      self.taskDetailUrl = "{% url 'task-detail' mainId parentId %}";
@@ -20,6 +21,12 @@
 
      self.loginUrl = "{% url 'login' %}";
      self.logoutUrl = "{% url 'logout' %}";
+
+     self.getCommentAttachmentUrl = function (projectId, taskId, commentId) {
+         return self.commentAttachmentUrl.replace('{{mainId}}', projectId)
+                    .replace('{{parentId}}', taskId)
+                    .replace('{{childId}}', commentId);
+     };
 
      self.getCommentDetailUrl = function (projectId, taskId, commentId) {
          return self.commentDetailUrl.replace('{{mainId}}', projectId)

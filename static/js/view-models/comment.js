@@ -8,6 +8,7 @@ function Comment(data) {
     self.author = data.author || "";
     self.task = ko.observable(data.task || "");
     self.text = ko.observable(data.text || "");
+    self.attachment = ko.observable(data.attachment || "");
   };
 
   self.normalize = function () {
@@ -23,6 +24,19 @@ function Comment(data) {
     return $.ajax({
       url: Urls().getCommentDetailUrl(projectId, taskId, self.id),
       type: 'DELETE'
+    });
+  };
+
+  self.addAttachment = function (data, projectId, taskId) {
+    self.attachment(data);
+
+    return $.ajax({
+      url: Urls().getCommentAttachmentUrl(projectId, taskId, self.id),
+      type: 'POST',
+      dataType: 'json',
+      processData: false,
+      contentType: false,
+      data: data
     });
   };
 

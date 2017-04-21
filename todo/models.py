@@ -1,5 +1,14 @@
+import uuid
+
 from django.db import models
 from django.conf import settings
+
+
+def user_directory_path(instance, filename):
+    filename = str(uuid.uuid4()) + filename
+    task_name = 'task' + str(instance.task.id)
+    comment_name = 'comment' + str(instance.id)
+    return '{0}/{1}/{2}'.format(task_name, comment_name, filename)
 
 
 class Task(models.Model):
@@ -87,3 +96,5 @@ class Comment(models.Model):
     task = models.ForeignKey('Task', on_delete=models.CASCADE)
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     text = models.CharField(max_length=50)
+    attachment = models.FileField(upload_to=user_directory_path,
+                                  blank=True, null=True)
