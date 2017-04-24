@@ -36,7 +36,6 @@ function Comment(data) {
       contentType: false,
       data: data
     }).then(function (data) {
-      debugger
       self.attachment(data);
     });
   };

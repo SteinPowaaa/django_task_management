@@ -96,9 +96,9 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 @api_view(['POST'])
 def upload_attachment(request, *args, **kwargs):
+    import pdb;pdb.set_trace()
     attachment = [attached_file for attached_file in request.data.values()][0]
     comment = Comment.objects.filter(id=kwargs['pk'])[0]
     comment.attachment = attachment
     comment.save()
-    import pdb;pdb.set_trace()
-    return Response(comment.attachment, status=status.HTTP_200_OK)
+    return Response(comment.attachment.url, status=status.HTTP_200_OK)

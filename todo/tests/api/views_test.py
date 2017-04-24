@@ -176,3 +176,10 @@ class TestComment:
         url = reverse('comment-detail', args=[1, 1, 1])
         response = client.delete(url)
         assert response.status_code == status.HTTP_204_NO_CONTENT
+
+    def test_comment__add_attachment(self, project_default,
+                                     task_with_assignee, comment_with_assignee,
+                                     client, file_default):
+        url = reverse('comment-attachment', args=[1, 1, 1])
+        response = client.post(url, {'files': file_default})
+        assert response.status_code == status.HTTP_200_OK

@@ -1,7 +1,9 @@
 import pytest
+from unittest.mock import MagicMock
 
 from django.contrib.auth import get_user_model
 from django.test import Client
+from django.core.files import File
 
 from model_mommy import mommy
 
@@ -64,3 +66,10 @@ def comment_with_assignee(task_with_assignee):
         'Comment',
         task=task_with_assignee
     )
+
+
+@pytest.fixture
+def file_default():
+    mock_file = MagicMock(spec=File)
+    mock_file.read.return_value = "lorem ipsum"
+    return mock_file
