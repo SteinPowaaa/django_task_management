@@ -10,15 +10,19 @@
 
 .tsk-btn {
   .anchor-general;
-  float: right;
+  float: left;
   margin-right: 5px;
-  margin-top: 3px;
+  margin-top: 7px;
   font-size: 15px;
 
   &:hover {
     text-decoration: none;
     opacity: 0.7;
   }
+}
+
+.float-right {
+  float: right;
 }
 
 .tsk-header {
@@ -52,7 +56,7 @@
 
 .tsk-title {
   margin: 5px;
-  word-wrap: break-word;
+  word-break: break-all;
   width: auto;
   float: left;
 }
@@ -75,15 +79,15 @@
 }
 
 .tsk-low-priority {
-  border-color: #91c05b;
+  border-color: @mantis;
 }
 
 .tsk-medium-priority {
-  border-color: #faaa7a;
+  border-color: @tacao;
 }
 
 .tsk-high-priority {
-  border-color: #f76b6f;
+  border-color: @froly;
 }
 
 .file-uploader {

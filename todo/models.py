@@ -71,7 +71,8 @@ class Task(models.Model):
                                        related_name='task_assignees')
 
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
-    sprint = models.ForeignKey('Sprint', null=True, blank=True)
+    sprint = models.ForeignKey('Sprint', on_delete=models.SET_NULL,
+                               null=True, blank=True)
     ref_task = models.ForeignKey('self', null=True, blank=True)
 
     location = models.CharField(max_length=50, blank=True, null=True)

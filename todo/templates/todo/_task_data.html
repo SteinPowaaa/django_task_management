@@ -6,13 +6,6 @@
                                         },
                                         dragZone: { name: 'tasks' }">
     <div class="tsk-icon" title="" data-bind="iconPicker: taskType"></div>
-    <div class="tsk-title" data-bind="text: title"></div>
-    <div data-bind="foreach: assignees">
-      <!-- ko if: avatar_thumbnail -->
-      <img class="tsk-output"
-           data-bind="attr: { src: avatar_thumbnail }"></img>
-      <!-- /ko -->
-    </div>
     <a class="tsk-btn create-task glyphicon glyphicon-pencil"
        data-bind="click: $parent.editTask, clickBubble: false, openModal: 'task'"></a>
     <a class="tsk-btn glyphicon glyphicon-remove"
@@ -20,13 +13,20 @@
     <a class="tsk-btn glyphicon glyphicon-comment"
        data-bind="click: function () { toggleComment(), newComment() },
                   clickBubble: false"></a>
+    <div data-bind="foreach: assignees">
+      <!-- ko if: avatar_thumbnail -->
+      <img class="tsk-output"
+           data-bind="attr: { src: avatar_thumbnail }"></img>
+      <!-- /ko -->
+    </div>
+    <div class="tsk-title" data-bind="text: title"></div>
   </div>
 
   <div data-bind="visible: commentToggle">
     <div data-bind="foreach: comments">
       <div class="comment-output-wrapper">
         <div class="comment-output" data-bind="text: text"></div>
-        <a class="tsk-btn glyphicon glyphicon-remove"
+        <a class="tsk-btn float-right glyphicon glyphicon-remove"
            data-bind="click: $parent.removeComment"></a>
         <label class="file-uploader">
           <input type="file" data-bind="uploadFile"
@@ -35,7 +35,7 @@
         </label>
         <!-- ko if: attachment -->
         <a data-bind="attr: { href: attachment }">
-          <div class="tsk-btn glyphicon glyphicon-file"></div>
+          <div class="tsk-btn float-right glyphicon glyphicon-file"></div>
         </a>
         <!-- /ko -->
       </div>

@@ -1,3 +1,5 @@
+@import (reference) 'global.less';
+
 .comment-input-wrapper {
   display: initial;
 }
@@ -11,11 +13,12 @@
 }
 
 .comment-output-wrapper {
-  height: 40px;
+  overflow: hidden;
+  min-height: 40px;
   position: relative;
   padding: 10px;
   margin: 15px 10px 10px 10px;
-  background: #fbfbfb;
+  background: @snow;
   border-radius: 2px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 
@@ -25,7 +28,7 @@
     right: 10px;
     border-width: 0 10px 10px;
     top: -10px;
-    border-color: #ffffff transparent;
+    border-color: white transparent;
     border-style: solid;
   }
 }

@@ -4,6 +4,8 @@ from django.urls import reverse
 
 from rest_framework import status
 
+from accounts.tasks import user_send_email
+
 
 @pytest.mark.django_db
 class TestAccounts:
@@ -59,3 +61,6 @@ class TestAccounts:
                                      'password': 'password123',
                                      'email': 'admin@example.com'})
         assert response.data['details'] == 'USER ALREADY EXISTS'
+
+    def test_accounts__send_email(self, user):
+        assert user_send_email(user) == 1

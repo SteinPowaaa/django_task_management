@@ -13,6 +13,8 @@ from rest_framework.response import Response
 from accounts.api.serializers import LoginSerializer, UserSerializer, \
     RegisterSerializer
 
+from accounts.tasks import user_send_email
+
 User = get_user_model()
 
 
@@ -45,6 +47,10 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    # @list_route(['GET'])
+    # def current(self, request):
+    #     pass
+
 
 def transform_avatar(avatar_b64):
     image_base64 = avatar_b64.split('base64,', 1)
@@ -74,6 +80,7 @@ def register(request):
 
     try:
         user.save()
+        user_send_email.delay(user.email)
         return Response({'details': 'OK'}, status=status.HTTP_201_CREATED)
     except IntegrityError:
         return Response({'details': 'USER ALREADY EXISTS'}, status=status.HTTP_400_BAD_REQUEST)

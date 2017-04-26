@@ -1,0 +1,209 @@
+[2017-04-25 12:04:22,169: INFO/MainProcess] Connected to amqp://guest:**@127.0.0.1:5672//
+[2017-04-25 12:04:22,182: INFO/MainProcess] mingle: searching for neighbors
+[2017-04-25 12:04:23,211: INFO/MainProcess] mingle: all alone
+[2017-04-25 12:04:23,222: WARNING/MainProcess] /home/mihail/venv/local/lib/python3.5/site-packages/kombu/pidbox.py:71: UserWarning: A node named celery@mihailPC is already using this process mailbox!
+
+Maybe you forgot to shutdown the other node or did not do so properly?
+Or if you meant to start multiple nodes on the same host please make sure
+you give each node a unique node name!
+
+  warnings.warn(W_PIDBOX_IN_USE.format(node=self))
+[2017-04-25 12:04:23,233: WARNING/MainProcess] /home/mihail/venv/local/lib/python3.5/site-packages/celery/fixups/django.py:202: UserWarning: Using settings.DEBUG leads to a memory leak, never use this setting in production environments!
+  warnings.warn('Using settings.DEBUG leads to a memory leak, never '
+[2017-04-25 12:04:23,233: INFO/MainProcess] celery@mihailPC ready.
+[2017-04-25 12:05:18,751: INFO/MainProcess] Received task: accounts.tasks.user_send_email[73173850-62a8-4a12-8bc4-52099296820f]  
+[2017-04-25 12:05:18,830: INFO/MainProcess] Received task: accounts.tasks.user_send_email[9cd8709e-dead-476d-9b55-633893ede1e5]  
+[2017-04-25 12:05:18,910: INFO/PoolWorker-1] Task accounts.tasks.user_send_email[73173850-62a8-4a12-8bc4-52099296820f] succeeded in 0.07840300300449599s: None
+[2017-04-25 12:05:18,916: INFO/PoolWorker-2] Task accounts.tasks.user_send_email[9cd8709e-dead-476d-9b55-633893ede1e5] succeeded in 0.08175823900091927s: None
+[2017-04-25 12:05:30,238: INFO/MainProcess] Received task: accounts.tasks.user_send_email[228171be-f721-445f-a3b4-52b1084ceaee]  
+[2017-04-25 12:05:30,316: INFO/MainProcess] Received task: accounts.tasks.user_send_email[fbea129b-da71-478d-b6a1-81f9a0242afa]  
+[2017-04-25 12:05:30,371: INFO/PoolWorker-1] Task accounts.tasks.user_send_email[fbea129b-da71-478d-b6a1-81f9a0242afa] succeeded in 0.054552129993680865s: None
+[2017-04-25 12:05:30,388: INFO/PoolWorker-4] Task accounts.tasks.user_send_email[228171be-f721-445f-a3b4-52b1084ceaee] succeeded in 0.07138485000177752s: None
+
+worker: Warm shutdown (MainProcess)
+ 
+ -------------- celery@mihailPC v4.0.2 (latentcall)
+---- **** ----- 
+--- * ***  * -- Linux-4.4.0-72-generic-x86_64-with-Ubuntu-16.04-xenial 2017-04-25 12:04:21
+-- * - **** --- 
+- ** ---------- [config]
+- ** ---------- .> app:         nemeproject:0x7f7d18e7c470
+- ** ---------- .> transport:   amqp://guest:**@localhost:5672//
+- ** ---------- .> results:     sqlite:///results.sqlite
+- *** --- * --- .> concurrency: 4 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . accounts.tasks.user_send_email
+  . imagekit.cachefiles.backends._generate_file
+  . nemeproject.celery.debug_task
+
+[2017-04-25 12:16:32,844: INFO/MainProcess] Connected to amqp://guest:**@127.0.0.1:5672//
+[2017-04-25 12:16:32,857: INFO/MainProcess] mingle: searching for neighbors
+[2017-04-25 12:16:33,883: INFO/MainProcess] mingle: all alone
+[2017-04-25 12:16:33,902: WARNING/MainProcess] /home/mihail/venv/local/lib/python3.5/site-packages/celery/fixups/django.py:202: UserWarning: Using settings.DEBUG leads to a memory leak, never use this setting in production environments!
+  warnings.warn('Using settings.DEBUG leads to a memory leak, never '
+[2017-04-25 12:16:33,902: INFO/MainProcess] celery@mihailPC ready.
+[2017-04-25 12:16:33,903: INFO/MainProcess] Received task: accounts.tasks.user_send_email[2acc531e-a5b4-4ad2-b8dd-dd0698fff43b]  
+[2017-04-25 12:16:33,904: INFO/MainProcess] Received task: accounts.tasks.user_send_email[fe96457d-1dcc-4105-8545-c868831c36ae]  
+[2017-04-25 12:16:33,904: INFO/MainProcess] Received task: accounts.tasks.user_send_email[cfea12eb-cb10-4343-a49b-fe862f6f50e7]  
+[2017-04-25 12:16:33,905: INFO/MainProcess] Received task: accounts.tasks.user_send_email[ff4a572a-a551-4b83-806a-84eac5f8aa66]  
+[2017-04-25 12:16:34,085: INFO/PoolWorker-2] Task accounts.tasks.user_send_email[fe96457d-1dcc-4105-8545-c868831c36ae] succeeded in 0.07886221099761315s: None
+[2017-04-25 12:16:34,103: INFO/PoolWorker-3] Task accounts.tasks.user_send_email[cfea12eb-cb10-4343-a49b-fe862f6f50e7] succeeded in 0.09625498199602589s: None
+[2017-04-25 12:16:34,110: INFO/PoolWorker-1] Task accounts.tasks.user_send_email[2acc531e-a5b4-4ad2-b8dd-dd0698fff43b] succeeded in 0.10397334599110764s: None
+[2017-04-25 12:16:34,121: INFO/PoolWorker-4] Task accounts.tasks.user_send_email[ff4a572a-a551-4b83-806a-84eac5f8aa66] succeeded in 0.10846635501366109s: None
+[2017-04-25 12:16:36,248: INFO/MainProcess] Received task: accounts.tasks.user_send_email[4c1c105d-eb49-403d-b8bb-410acd79392f]  
+[2017-04-25 12:16:36,331: INFO/MainProcess] Received task: accounts.tasks.user_send_email[cd89dee4-03c0-4988-b090-95dfadba1c18]  
+[2017-04-25 12:16:36,384: INFO/PoolWorker-2] Task accounts.tasks.user_send_email[cd89dee4-03c0-4988-b090-95dfadba1c18] succeeded in 0.05274923599790782s: None
+[2017-04-25 12:16:36,393: INFO/PoolWorker-1] Task accounts.tasks.user_send_email[4c1c105d-eb49-403d-b8bb-410acd79392f] succeeded in 0.06136716000037268s: None
+[2017-04-25 12:17:36,650: INFO/MainProcess] Received task: accounts.tasks.user_send_email[678aa71b-fd7d-44c2-8f35-57fbac415473]  
+[2017-04-25 12:17:36,743: INFO/MainProcess] Received task: accounts.tasks.user_send_email[58c12523-655d-45c8-a63d-270a31669c10]  
+[2017-04-25 12:17:36,792: INFO/PoolWorker-4] Task accounts.tasks.user_send_email[678aa71b-fd7d-44c2-8f35-57fbac415473] succeeded in 0.04837543799658306s: None
+[2017-04-25 12:17:36,796: INFO/PoolWorker-1] Task accounts.tasks.user_send_email[58c12523-655d-45c8-a63d-270a31669c10] succeeded in 0.05217802900006063s: None
+
+worker: Warm shutdown (MainProcess)
+ 
+ -------------- celery@mihailPC v4.0.2 (latentcall)
+---- **** ----- 
+--- * ***  * -- Linux-4.4.0-72-generic-x86_64-with-Ubuntu-16.04-xenial 2017-04-25 12:16:32
+-- * - **** --- 
+- ** ---------- [config]
+- ** ---------- .> app:         nemeproject:0x7f306d8ac438
+- ** ---------- .> transport:   amqp://guest:**@localhost:5672//
+- ** ---------- .> results:     sqlite:///results.sqlite
+- *** --- * --- .> concurrency: 4 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . accounts.tasks.user_send_email
+  . imagekit.cachefiles.backends._generate_file
+  . nemeproject.celery.debug_task
+
+[2017-04-25 12:20:04,261: INFO/MainProcess] Connected to amqp://guest:**@127.0.0.1:5672//
+[2017-04-25 12:20:04,276: INFO/MainProcess] mingle: searching for neighbors
+[2017-04-25 12:20:05,306: INFO/MainProcess] mingle: all alone
+[2017-04-25 12:20:05,324: WARNING/MainProcess] /home/mihail/venv/local/lib/python3.5/site-packages/celery/fixups/django.py:202: UserWarning: Using settings.DEBUG leads to a memory leak, never use this setting in production environments!
+  warnings.warn('Using settings.DEBUG leads to a memory leak, never '
+[2017-04-25 12:20:05,324: INFO/MainProcess] celery@mihailPC ready.
+
+worker: Warm shutdown (MainProcess)
+ 
+ -------------- celery@mihailPC v4.0.2 (latentcall)
+---- **** ----- 
+--- * ***  * -- Linux-4.4.0-72-generic-x86_64-with-Ubuntu-16.04-xenial 2017-04-25 12:20:03
+-- * - **** --- 
+- ** ---------- [config]
+- ** ---------- .> app:         nemeproject:0x7fc95b5b3470
+- ** ---------- .> transport:   amqp://guest:**@localhost:5672//
+- ** ---------- .> results:     sqlite:///results.sqlite
+- *** --- * --- .> concurrency: 4 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . accounts.tasks.user_send_email
+  . imagekit.cachefiles.backends._generate_file
+  . nemeproject.celery.debug_task
+
+[2017-04-25 12:20:56,206: INFO/MainProcess] Connected to amqp://guest:**@127.0.0.1:5672//
+[2017-04-25 12:20:56,219: INFO/MainProcess] mingle: searching for neighbors
+[2017-04-25 12:20:57,248: INFO/MainProcess] mingle: all alone
+[2017-04-25 12:20:57,269: WARNING/MainProcess] /home/mihail/venv/local/lib/python3.5/site-packages/celery/fixups/django.py:202: UserWarning: Using settings.DEBUG leads to a memory leak, never use this setting in production environments!
+  warnings.warn('Using settings.DEBUG leads to a memory leak, never '
+[2017-04-25 12:20:57,269: INFO/MainProcess] celery@mihailPC ready.
+[2017-04-26 08:57:13,431: INFO/MainProcess] Received task: accounts.tasks.user_send_email[97e56490-dc79-4ab3-a335-99a4f6e104a3]  
+[2017-04-26 08:57:13,509: INFO/MainProcess] Received task: accounts.tasks.user_send_email[e3b2566a-0879-4c95-b7aa-8887e97f328b]  
+[2017-04-26 08:57:13,539: INFO/PoolWorker-1] Task accounts.tasks.user_send_email[97e56490-dc79-4ab3-a335-99a4f6e104a3] succeeded in 0.07228031600243412s: None
+[2017-04-26 08:57:13,610: INFO/PoolWorker-3] Task accounts.tasks.user_send_email[e3b2566a-0879-4c95-b7aa-8887e97f328b] succeeded in 0.06902763902326114s: None
+[2017-04-26 09:29:38,478: INFO/MainProcess] Received task: accounts.tasks.user_send_email[d1b8b504-0332-41f9-8aa3-1dd3538d3bdf]  
+[2017-04-26 09:29:39,175: INFO/PoolWorker-1] Task accounts.tasks.user_send_email[d1b8b504-0332-41f9-8aa3-1dd3538d3bdf] succeeded in 0.055556233011884615s: None
+[2017-04-26 09:45:10,888: INFO/MainProcess] Received task: accounts.tasks.user_send_email[9f57bdcc-7e8f-49c0-9f9c-f4c051fbeeb5]  
+[2017-04-26 09:45:12,938: INFO/PoolWorker-3] Task accounts.tasks.user_send_email[9f57bdcc-7e8f-49c0-9f9c-f4c051fbeeb5] succeeded in 0.052054239000426605s: None
+[2017-04-26 09:45:15,773: INFO/MainProcess] Received task: accounts.tasks.user_send_email[5a40b78e-2bee-4ebc-9bb3-0109e831aab2]  
+[2017-04-26 09:45:15,859: INFO/MainProcess] Received task: accounts.tasks.user_send_email[f8f1c4e7-598d-4db8-b1fd-de68b55ef4e0]  
+[2017-04-26 09:45:15,915: INFO/PoolWorker-1] Task accounts.tasks.user_send_email[5a40b78e-2bee-4ebc-9bb3-0109e831aab2] succeeded in 0.054741803993238136s: None
+[2017-04-26 09:45:15,934: INFO/PoolWorker-2] Task accounts.tasks.user_send_email[f8f1c4e7-598d-4db8-b1fd-de68b55ef4e0] succeeded in 0.07327010598964989s: None
+[2017-04-26 09:45:31,630: INFO/MainProcess] Received task: accounts.tasks.user_send_email[481d2fdb-8c56-412d-a5bb-c309cced5bc9]  
+[2017-04-26 09:45:31,712: INFO/MainProcess] Received task: accounts.tasks.user_send_email[419d876a-34b1-4970-8b9f-5a01e109ab2f]  
+[2017-04-26 09:45:31,762: INFO/PoolWorker-1] Task accounts.tasks.user_send_email[419d876a-34b1-4970-8b9f-5a01e109ab2f] succeeded in 0.04894418700132519s: None
+[2017-04-26 09:45:31,785: INFO/PoolWorker-4] Task accounts.tasks.user_send_email[481d2fdb-8c56-412d-a5bb-c309cced5bc9] succeeded in 0.07081419098540209s: None
+[2017-04-26 09:45:57,184: INFO/MainProcess] Received task: accounts.tasks.user_send_email[899976f3-cfee-4d3b-828d-83bd40ea8c46]  
+[2017-04-26 09:45:59,001: INFO/PoolWorker-3] Task accounts.tasks.user_send_email[899976f3-cfee-4d3b-828d-83bd40ea8c46] succeeded in 0.051528635987779126s: None
+[2017-04-26 09:46:41,429: INFO/MainProcess] Received task: accounts.tasks.user_send_email[fe08f2c6-0522-4cab-9313-d31a69d28dc3]  
+[2017-04-26 09:46:41,506: INFO/MainProcess] Received task: accounts.tasks.user_send_email[72fbde59-58fc-462d-921c-ea81d369e172]  
+[2017-04-26 09:46:41,559: INFO/PoolWorker-2] Task accounts.tasks.user_send_email[72fbde59-58fc-462d-921c-ea81d369e172] succeeded in 0.051394861977314577s: None
+[2017-04-26 09:46:41,565: INFO/PoolWorker-1] Task accounts.tasks.user_send_email[fe08f2c6-0522-4cab-9313-d31a69d28dc3] succeeded in 0.05862750401138328s: None
+[2017-04-26 09:46:56,484: INFO/MainProcess] Received task: accounts.tasks.user_send_email[70f197af-83c6-43b8-9891-6e3eb665712b]  
+[2017-04-26 09:46:57,087: INFO/PoolWorker-4] Task accounts.tasks.user_send_email[70f197af-83c6-43b8-9891-6e3eb665712b] succeeded in 0.05612314399331808s: None
+[2017-04-26 09:48:06,574: INFO/MainProcess] Received task: accounts.tasks.user_send_email[6d60db2f-0d82-4765-a878-8dbf4adb2faa]  
+[2017-04-26 09:48:06,652: INFO/MainProcess] Received task: accounts.tasks.user_send_email[ebffc7bc-5fcc-4643-9692-2442b63a5195]  
+[2017-04-26 09:48:06,703: INFO/PoolWorker-2] Task accounts.tasks.user_send_email[6d60db2f-0d82-4765-a878-8dbf4adb2faa] succeeded in 0.050481256999773905s: None
+[2017-04-26 09:48:06,710: INFO/PoolWorker-3] Task accounts.tasks.user_send_email[ebffc7bc-5fcc-4643-9692-2442b63a5195] succeeded in 0.057747209997614846s: None
+
+worker: Warm shutdown (MainProcess)
+ 
+ -------------- celery@mihailPC v4.0.2 (latentcall)
+---- **** ----- 
+--- * ***  * -- Linux-4.4.0-72-generic-x86_64-with-Ubuntu-16.04-xenial 2017-04-25 12:20:55
+-- * - **** --- 
+- ** ---------- [config]
+- ** ---------- .> app:         nemeproject:0x7f81b8149438
+- ** ---------- .> transport:   amqp://guest:**@localhost:5672//
+- ** ---------- .> results:     sqlite:///results.sqlite
+- *** --- * --- .> concurrency: 4 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . accounts.tasks.user_send_email
+  . imagekit.cachefiles.backends._generate_file
+  . nemeproject.celery.debug_task
+
+[2017-04-26 11:12:17,903: INFO/MainProcess] Connected to amqp://guest:**@127.0.0.1:5672//
+[2017-04-26 11:12:17,914: INFO/MainProcess] mingle: searching for neighbors
+[2017-04-26 11:12:18,941: INFO/MainProcess] mingle: all alone
+[2017-04-26 11:12:18,959: WARNING/MainProcess] /home/mihail/venv/local/lib/python3.5/site-packages/celery/fixups/django.py:202: UserWarning: Using settings.DEBUG leads to a memory leak, never use this setting in production environments!
+  warnings.warn('Using settings.DEBUG leads to a memory leak, never '
+[2017-04-26 11:12:18,959: INFO/MainProcess] celery@mihailPC ready.
+[2017-04-26 11:12:23,079: INFO/MainProcess] Received task: accounts.tasks.user_send_email[df3bf11a-db6e-422b-9155-46062292d6a8]  
+[2017-04-26 11:12:23,156: INFO/MainProcess] Received task: accounts.tasks.user_send_email[f7a4c366-c6b7-4745-b0e3-0d6acd8ca4ee]  
+[2017-04-26 11:12:23,228: INFO/PoolWorker-2] Task accounts.tasks.user_send_email[df3bf11a-db6e-422b-9155-46062292d6a8] succeeded in 0.07102834200486541s: None
+[2017-04-26 11:12:23,237: INFO/PoolWorker-1] Task accounts.tasks.user_send_email[f7a4c366-c6b7-4745-b0e3-0d6acd8ca4ee] succeeded in 0.08009986599790864s: None
+[2017-04-26 11:14:34,019: INFO/MainProcess] Received task: accounts.tasks.user_send_email[3f6d7e8d-0dc1-421a-afea-f63471e59e29]  
+[2017-04-26 11:14:34,101: INFO/MainProcess] Received task: accounts.tasks.user_send_email[f51cb57c-7021-450b-9189-5331a1467df7]  
+[2017-04-26 11:14:34,154: INFO/PoolWorker-2] Task accounts.tasks.user_send_email[f51cb57c-7021-450b-9189-5331a1467df7] succeeded in 0.05108902099891566s: None
+[2017-04-26 11:14:34,176: INFO/PoolWorker-4] Task accounts.tasks.user_send_email[3f6d7e8d-0dc1-421a-afea-f63471e59e29] succeeded in 0.07319357601227239s: None
+[2017-04-26 11:17:20,804: INFO/MainProcess] Received task: accounts.tasks.user_send_email[5cd0621b-d836-4bd4-ba2e-ec93e8d5c412]  
+[2017-04-26 11:17:20,881: INFO/MainProcess] Received task: accounts.tasks.user_send_email[2eab6920-dd20-40ef-93af-fd149dbb0e07]  
+[2017-04-26 11:17:20,936: INFO/PoolWorker-4] Task accounts.tasks.user_send_email[2eab6920-dd20-40ef-93af-fd149dbb0e07] succeeded in 0.05013808800140396s: None
+[2017-04-26 11:17:20,948: INFO/PoolWorker-3] Task accounts.tasks.user_send_email[5cd0621b-d836-4bd4-ba2e-ec93e8d5c412] succeeded in 0.06558933900669217s: None
+[2017-04-26 12:39:11,793: INFO/MainProcess] Received task: accounts.tasks.user_send_email[02ac666a-a67e-4cee-99b2-5dd09748644a]  
+[2017-04-26 12:39:11,878: INFO/MainProcess] Received task: accounts.tasks.user_send_email[b499245f-1400-4db3-989a-cf529fb8faf9]  
+[2017-04-26 12:39:11,930: INFO/PoolWorker-1] Task accounts.tasks.user_send_email[02ac666a-a67e-4cee-99b2-5dd09748644a] succeeded in 0.050894554995466024s: None
+[2017-04-26 12:39:11,938: INFO/PoolWorker-3] Task accounts.tasks.user_send_email[b499245f-1400-4db3-989a-cf529fb8faf9] succeeded in 0.05919918799190782s: None
+[2017-04-26 12:46:19,021: INFO/MainProcess] Received task: accounts.tasks.user_send_email[5c421d55-895e-46bc-a52c-ea9f8eb38fe6]  
+[2017-04-26 12:46:19,101: INFO/MainProcess] Received task: accounts.tasks.user_send_email[9f8f3168-a257-4fc6-ba90-28b0a668dc7c]  
+[2017-04-26 12:46:19,151: INFO/PoolWorker-1] Task accounts.tasks.user_send_email[9f8f3168-a257-4fc6-ba90-28b0a668dc7c] succeeded in 0.0485686479951255s: None
+[2017-04-26 12:46:19,155: INFO/PoolWorker-2] Task accounts.tasks.user_send_email[5c421d55-895e-46bc-a52c-ea9f8eb38fe6] succeeded in 0.053196302003925666s: None
+[2017-04-26 13:23:53,515: INFO/MainProcess] Received task: accounts.tasks.user_send_email[c0a625a8-9738-4dc7-a55a-2c97d9f41a26]  
+[2017-04-26 13:23:53,598: INFO/MainProcess] Received task: accounts.tasks.user_send_email[0b75408c-3fbc-4440-83c8-03483b2cd952]  
+[2017-04-26 13:23:53,649: INFO/PoolWorker-4] Task accounts.tasks.user_send_email[c0a625a8-9738-4dc7-a55a-2c97d9f41a26] succeeded in 0.049280573992291465s: None
+[2017-04-26 13:23:53,652: INFO/PoolWorker-2] Task accounts.tasks.user_send_email[0b75408c-3fbc-4440-83c8-03483b2cd952] succeeded in 0.05274398697656579s: None
+[2017-04-26 13:24:27,079: INFO/MainProcess] Received task: accounts.tasks.user_send_email[586cef13-c005-4b62-9bff-0b31111100fc]  
+[2017-04-26 13:24:27,158: INFO/MainProcess] Received task: accounts.tasks.user_send_email[500db696-e70c-431e-ab44-eecee8920e86]  
+[2017-04-26 13:24:27,207: INFO/PoolWorker-3] Task accounts.tasks.user_send_email[586cef13-c005-4b62-9bff-0b31111100fc] succeeded in 0.048152892995858565s: None
+[2017-04-26 13:24:27,213: INFO/PoolWorker-4] Task accounts.tasks.user_send_email[500db696-e70c-431e-ab44-eecee8920e86] succeeded in 0.053046604996779934s: None

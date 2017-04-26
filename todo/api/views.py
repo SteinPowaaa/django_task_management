@@ -93,10 +93,16 @@ class CommentViewSet(viewsets.ModelViewSet):
                         status=status.HTTP_201_CREATED,
                         headers=headers)
 
+    # @detail_route(['POST'])
+    # def upload_attachment(self, request, *args, **kwargs):
+    #     pass
+
+    # put funcs in routers
+    # put author set in serializer and remove create
+    # set comment in creation instead in update
 
 @api_view(['POST'])
 def upload_attachment(request, *args, **kwargs):
-    import pdb;pdb.set_trace()
     attachment = [attached_file for attached_file in request.data.values()][0]
     comment = Comment.objects.filter(id=kwargs['pk'])[0]
     comment.attachment = attachment
