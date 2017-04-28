@@ -7,7 +7,7 @@ from django.contrib.auth import login as django_login, \
     logout as django_logout, authenticate, get_user_model
 
 from rest_framework import status, viewsets
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, list_route
 from rest_framework.response import Response
 
 from accounts.api.serializers import LoginSerializer, UserSerializer, \
@@ -47,9 +47,10 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    # @list_route(['GET'])
-    # def current(self, request):
-    #     pass
+    @list_route(methods=['GET'])
+    def current(self, request):
+        serializer = UserSerializer(request.user)
+        return Response({'details': serializer.data}, status=status.HTTP_200_OK)
 
 
 def transform_avatar(avatar_b64):
@@ -85,8 +86,4 @@ def register(request):
     except IntegrityError:
         return Response({'details': 'USER ALREADY EXISTS'}, status=status.HTTP_400_BAD_REQUEST)
 
-
-@api_view(['GET'])
-def current_user(request):
-    serializer = UserSerializer(request.user)
-    return Response({'details': serializer.data}, status=status.HTTP_200_OK)
+    # check if user exists instead of integrityError

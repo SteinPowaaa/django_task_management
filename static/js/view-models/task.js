@@ -19,20 +19,35 @@ function Task(data) {
       return new Task(task);
     }));
     self.sprint = ko.protectedObservable(data.sprint || null);
-    self.comments = ko.observableArray((data.comments || []).map(function (commentData) {
-      return new Comment(commentData);
-    }));
+    self.comments = ko.observableArray([]);
 
     self.commentToggle = ko.observable(false);
     self.commentForEdit = ko.observable();
 
     Arbiter.subscribe('comment.created', self.addComment);
+
+    self.load();
+  };
+
+  self.load = function () {
+    self.loadComments();
+  };
+
+  self.loadComments = function () {
+    $.getJSON(Urls().getCommentListUrl(self.project(), self.id))
+      .then(self.populateComments);
+  };
+
+  self.populateComments = function (data) {
+    var comments = data.map(function (commentData) {
+      return new Comment(commentData);
+    });
+
+    self.comments(comments);
   };
 
   self.addAttachment = function (comment, data) {
-    comment.addAttachment(data, self.project(), self.id).then(function () {
-      self.update();
-    });
+    comment.addAttachment(data, self.project(), self.id);
   };
 
   self.toggleComment = function () {
@@ -57,7 +72,6 @@ function Task(data) {
   self.addComment = function (data) {
     if (data.task === self.id) {
       self.comments.push(new Comment(data));
-      self.update();
     }
   };
 
@@ -99,10 +113,7 @@ function Task(data) {
       task_type: self.taskType(),
       project: self.project(),
       ref_task: self.refTask(),
-      sprint: self.sprint(),
-      comments: self.comments().map(function (commentData) {
-        return commentData.id;
-      })
+      sprint: self.sprint()
     };
   };
 
@@ -150,11 +161,12 @@ function Task(data) {
   };
 
   self.updateStatus = function (status) {
-    var data = self.normalize();
-    data.status = status;
+    var data = {
+      'status': status
+    };
 
     return $.ajax({
-      url: Urls().getTaskDetailUrl(self.project(), self.id),
+      url: Urls().getTaskChangeStatusUrl(self.project(), self.id),
       type: 'PUT',
       data: data
     });
@@ -162,7 +174,7 @@ function Task(data) {
 
   self.changeStatus = function (status) {
     self.updateStatus(status).then(function (data) {
-      self.status(data.status);
+      self.status(data);
       self.status.commit();
     });
   };

@@ -79,8 +79,6 @@ class Task(models.Model):
     estimation = models.DateField(blank=True, null=True)
     forecast = models.NullBooleanField()
 
-    comments = models.ManyToManyField('Comment', related_name='task_comments')
-
 
 class Project(models.Model):
     title = models.CharField(max_length=50)

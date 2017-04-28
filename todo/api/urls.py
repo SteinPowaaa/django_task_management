@@ -18,6 +18,4 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^', include(projects_router.urls)),
     url(r'^', include(tasks_router.urls)),
-    url(r'^projects/(?P<project_pk>[^/.]+)/tasks/(?P<task_pk>[^/.]+)/comments/(?P<pk>[^/.]+)/attachment/$',
-        views.upload_attachment, name='comment-attachment')
 ]

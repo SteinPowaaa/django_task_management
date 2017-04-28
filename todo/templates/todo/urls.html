@@ -9,6 +9,7 @@
 
      self.taskListUrl = "{% url 'task-list' mainId %}";
      self.taskDetailUrl = "{% url 'task-detail' mainId parentId %}";
+     self.taskChangeStatusUrl = "{% url 'task-change-status' mainId parentId %}";
      self.projectListUrl = "{% url 'project-list' %}";
      self.projectDetailUrl = "{% url 'project-detail' mainId %}";
      self.sprintListUrl = "{% url 'sprint-list' mainId %}";
@@ -16,7 +17,7 @@
 
      self.userListUrl = "{% url 'user-list' %}";
      self.userDetailUrl = "{% url 'user-detail' mainId %}";
-     self.currentUserUrl = "{% url 'current_user' %}"
+     self.currentUserUrl = "{% url 'user-current' %}"
      self.registerUrl = "{% url 'register' %}"
 
      self.loginUrl = "{% url 'login' %}";
@@ -53,6 +54,11 @@
 
      self.getTaskDetailUrl = function (projectId, taskId) {
          return self.taskDetailUrl.replace('{{mainId}}', projectId)
+                    .replace('{{parentId}}', taskId);
+     };
+
+     self.getTaskChangeStatusUrl = function (projectId, taskId) {
+         return self.taskChangeStatusUrl.replace('{{mainId}}', projectId)
                     .replace('{{parentId}}', taskId);
      };
 

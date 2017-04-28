@@ -17,12 +17,17 @@ function PageViewModel() {
     self.loadUsers();
   };
 
-  // $('.nav-form').hide();
-  // $('.logged-in').show();
   self.getCurrentUser = function () {
     $.get(Urls().currentUserUrl).then(function (data){
       self.setUserLoadData(data);
     });
+  };
+
+  self.setUserLoadData = function (data) {
+    self.currentUser(new User(data.details));
+    self.currentUser().loggedIn(true);
+    self.loadUsers();
+    Arbiter.publish('loggedIn');
   };
 
   self.addUser = function (data) {
@@ -69,21 +74,12 @@ function PageViewModel() {
     });
   };
 
-  // $('.logged-in').hide();
-  // $('.nav-form').show();
   self.logout = function () {
     $.post(Urls().logoutUrl).then(function () {
       self.currentUser().clear();
       self.users([]);
       Arbiter.publish('loggedOut');
     });
-  };
-
-  self.setUserLoadData = function (data) {
-    self.currentUser(new User(data.details));
-    self.currentUser().loggedIn(true);
-    self.loadUsers();
-    Arbiter.publish('loggedIn');
   };
 
   self.init();
